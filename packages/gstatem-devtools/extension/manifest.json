@@ -1,7 +1,7 @@
 {
 	"name": "GStatem devtools",
 	"description": "GStatem devtools",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "./dist/background.js"
