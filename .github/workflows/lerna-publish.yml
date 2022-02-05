@@ -33,6 +33,5 @@ jobs:
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
 
-      - run: |
-        git tag test-push
-        git push origin --tags
+      - run: git tag test-push
+      - run: git push origin --tags
