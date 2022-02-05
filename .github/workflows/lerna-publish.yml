@@ -12,3 +12,4 @@ jobs:
       - run: yarn
       - run: ls -la
       - run: npm -v && yarn -v && node -v && lerna -v
+      - run: yarn pub
