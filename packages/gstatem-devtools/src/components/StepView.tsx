@@ -1,4 +1,5 @@
-import React, { FC, MouseEventHandler, RefObject } from "react";
+// @ts-ignore
+import React, { FC, MouseEventHandler, MutableRefObject } from "react";
 import { getStepState } from "../utils/Utils";
 import { StepPayload } from "../utils/Types";
 
@@ -10,7 +11,7 @@ export type StepViewProps = {
 	timestamp?: number;
 	isFirstItem?: boolean;
 	extraCss?: string;
-	nodeRef?: RefObject<HTMLDivElement>;
+	nodeRef?: MutableRefObject<HTMLDivElement>;
 };
 
 const StepView: FC<StepViewProps> = ({
@@ -68,9 +69,9 @@ const StepView: FC<StepViewProps> = ({
 };
 
 StepView.defaultProps = {
-	onMouseDown: e => e,
-	onMouseUp: e => e,
-	onMouseOver: e => e,
+	onMouseDown: () => {},
+	onMouseUp: () => {},
+	onMouseOver: () => {},
 	isFirstItem: false,
 	extraCss: ""
 };
