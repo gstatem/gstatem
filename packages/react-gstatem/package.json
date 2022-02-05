@@ -1,7 +1,7 @@
 {
 	"name": "react-gstatem",
 	"description": "A light weight global state management library for React",
-	"version": "1.0.0-alpha.10",
+	"version": "1.0.0-alpha.11",
 	"author": "shuieryin",
 	"main": "dist/index.js",
 	"scripts": {
@@ -15,7 +15,7 @@
 		"react-dom": ">=16.14.0"
 	},
 	"dependencies": {
-		"gstatem": "^1.0.0-alpha.7"
+		"gstatem": "^1.0.0-alpha.8"
 	},
 	"license": "MIT",
 	"repository": {
