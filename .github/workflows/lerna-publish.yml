@@ -8,8 +8,32 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16"
+
+      - run: |
+        git config --global user.name "gstatem-builder"
+        git config --global user.email "gstatem-builder@users.noreply.github.com"
+        git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+
       - run: npm i -g yarn
       - run: yarn
       - run: ls -la
       - run: npm -v && yarn -v && node -v && lerna -v
+
       - run: yarn pub
+
+  test-push:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+        git config --global user.name "gstatem-builder"
+        git config --global user.email "gstatem-builder@users.noreply.github.com"
+        git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+
+      - run: |
+        git tag test-push
+        git push origin --tags
