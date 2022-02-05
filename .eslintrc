@@ -1,0 +1,48 @@
+{
+	"parser": "@babel/eslint-parser",
+	"rules": {
+		"no-console": "off",
+		"semi": [
+			"error",
+			"always"
+		]
+	},
+	"ignorePatterns": ["packages/*/dist/**/*"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:prettier/recommended",
+		"plugin:react/recommended"
+	],
+	"plugins": [
+		"import"
+	],
+	"env": {
+		"browser": true,
+		"node": true,
+		"es6": true,
+		"jest": true,
+		"webextensions": true
+	},
+	"overrides": [
+		{
+			"files": [
+				"**/*.ts",
+				"**/*.tsx"
+			],
+			"parser": "@typescript-eslint/parser",
+			"extends": [
+				"eslint:recommended",
+				"plugin:@typescript-eslint/eslint-recommended",
+				"plugin:@typescript-eslint/recommended"
+			],
+			"plugins": [
+				"@typescript-eslint"
+			],
+			"rules": {
+				"@typescript-eslint/no-unused-vars": "off",
+				"@typescript-eslint/ban-ts-comment": "off",
+				"@typescript-eslint/no-empty-function": "off"
+			}
+		}
+	]
+}

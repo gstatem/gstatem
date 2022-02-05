@@ -1,0 +1,13 @@
+# ignore all stories.js in src
+extension/
+public/
+src/
+package/
+webpack.*
+
+# ignore all .log files
+*.log
+*.tgz
+
+tsconfig.json
+rollup.config.js

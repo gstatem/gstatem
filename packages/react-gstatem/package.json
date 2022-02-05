@@ -1,0 +1,30 @@
+{
+	"name": "react-gstatem",
+	"description": "A light weight global state management library for React",
+	"version": "1.0.0-alpha.9",
+	"author": "shuieryin",
+	"main": "dist/index.js",
+	"scripts": {
+		"check-types": "tsc --project ./ -outDir dist",
+		"babel": "babel --config-file ../../babel.config.js dist -d dist --verbose",
+		"build": "yarn clean && yarn check-types && yarn babel",
+		"clean": "rimraf dist node_modules package-lock.json"
+	},
+	"peerDependencies": {
+		"react": ">=16.14.0",
+		"react-dom": ">=16.14.0"
+	},
+	"dependencies": {
+		"gstatem": "^1.0.0-alpha.6"
+	},
+	"keywords": [
+		"react",
+		"state",
+		"management",
+		"redux",
+		"zustand",
+		"store",
+		"statem",
+		"gstatem"
+	]
+}

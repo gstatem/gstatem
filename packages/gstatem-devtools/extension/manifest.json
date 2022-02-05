@@ -1,0 +1,34 @@
+{
+	"name": "GStatem devtools",
+	"description": "GStatem devtools",
+	"version": "1.0.1",
+	"manifest_version": 3,
+	"background": {
+		"service_worker": "./dist/background.js"
+	},
+	"permissions": [
+		"storage"
+	],
+	"devtools_page": "./dist/devtoolsPage/index.html",
+	"content_scripts": [
+		{
+			"matches": [
+				"<all_urls>"
+			],
+			"exclude_globs": [
+				"https://www.google*"
+			],
+			"js": [
+				"dist/pageScript.js"
+			],
+			"run_at": "document_start",
+			"all_frames": true
+		}
+	],
+	"icons": {
+		"16": "/icons/gstatem_icon16.png",
+		"32": "/icons/gstatem_icon32.png",
+		"48": "/icons/gstatem_icon48.png",
+		"128": "/icons/gstatem_icon128.png"
+	}
+}
