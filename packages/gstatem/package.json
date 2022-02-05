@@ -10,6 +10,15 @@
 		"build": "yarn clean && yarn check-types && yarn babel",
 		"clean": "rimraf dist node_modules package-lock.json"
 	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/gstatem/gstatem.git"
+	},
+	"homepage": "https://github.com/gstatem/gstatem/tree/main/packages/gstatem",
+	"bugs": {
+		"url": "https://github.com/gstatem/gstatem/issues"
+	},
 	"keywords": [
 		"react",
 		"state",

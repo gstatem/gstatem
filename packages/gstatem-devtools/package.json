@@ -16,6 +16,15 @@
 	"dependencies": {
 		"gstatem": "^1.0.0-alpha.6"
 	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/gstatem/gstatem.git"
+	},
+	"homepage": "https://github.com/gstatem/gstatem/tree/main/packages/gstatem-devtools",
+	"bugs": {
+		"url": "https://github.com/gstatem/gstatem/issues"
+	},
 	"keywords": [
 		"react",
 		"state",

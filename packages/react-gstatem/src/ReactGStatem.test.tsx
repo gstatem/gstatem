@@ -2,6 +2,7 @@
  * Created by shuieryin on 17. Oct 2021 5:50 PM.
  */
 
+// @ts-ignore
 import React, { FC } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
