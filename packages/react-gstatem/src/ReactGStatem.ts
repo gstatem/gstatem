@@ -148,7 +148,7 @@ export const init = <GState extends State>(
  */
 export const newStatem = <GState extends State>(
 	config?: Init<GState>
-): GStatem<GState> => new GStatem(config);
+): GStatem<GState> => new GStatem<GState>(config);
 
 /**
  * @template GState

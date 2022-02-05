@@ -6,9 +6,8 @@
 import React, { FC } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { create, GSC, newStatem } from "./";
+import { create, GSC, newStatem, EqualityFn, State } from "./";
 import Counter from "../../../storybook/components/Counter";
-import { EqualityFn, State } from "gstatem";
 
 type StateProps = {
 	count?: number;
