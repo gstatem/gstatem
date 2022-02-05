@@ -20,8 +20,8 @@ jobs:
       - run: ls -la
       - run: npm -v && yarn -v && node -v && lerna -v
 
-      - name: Publish package
-        run: yarn pub
+      - run: yarn build
+      - run: lerna publish --bump=prerelease --yes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
