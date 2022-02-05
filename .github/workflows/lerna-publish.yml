@@ -10,8 +10,8 @@ jobs:
           node-version: "16"
 
       - run: |
-        git config --global user.name 'gstatem-builder'
-        git config --global user.email 'gstatem-builder@users.noreply.github.com'
+        git config --global user.name "gstatem-builder" \
+        git config --global user.email "gstatem-builder@users.noreply.github.com" \
         git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
@@ -19,7 +19,11 @@ jobs:
       - run: npm i -g yarn
       - run: yarn
       - run: ls -la
-      - run: npm -v && yarn -v && node -v && lerna -v
+      - run: |
+        npm -v \
+        yarn -v \
+        node -v \
+        lerna -v
 
       - run: yarn pub
 
@@ -28,8 +32,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-        git config --global user.name 'gstatem-builder'
-        git config --global user.email 'gstatem-builder@users.noreply.github.com'
+        git config --global user.name "gstatem-builder" \
+        git config --global user.email "gstatem-builder@users.noreply.github.com" \
         git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
