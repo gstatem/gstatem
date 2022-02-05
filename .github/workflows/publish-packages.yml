@@ -1,4 +1,4 @@
-name: publish
+name: Publish packages
 on: [workflow_dispatch]
 jobs:
   publish:
