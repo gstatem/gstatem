@@ -1,4 +1,4 @@
-name: lerna-publish
+name: publish
 on: [workflow_dispatch]
 jobs:
   publish:
