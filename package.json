@@ -1,5 +1,6 @@
 {
 	"name": "gstatem-workspace",
+	"description": "GStatem is a small, simple and fast state-management tool.",
 	"private": true,
 	"scripts": {
 		"build": "lerna exec -- yarn build",
