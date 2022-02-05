@@ -20,6 +20,14 @@ jobs:
       - run: ls -la
       - run: npm -v && yarn -v && node -v && lerna -v
 
+      - name: Authenticate with Registry
+        run: |
+          echo "registry=https://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - run: yarn build
       - run: lerna publish --bump=prerelease --yes
         env:
