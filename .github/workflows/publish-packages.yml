@@ -34,11 +34,11 @@ jobs:
           node -v
           lerna -v
 
+      - name: Build all packages before tests
+        run: yarn build
+
       - name: Run tests
         run: yarn test
-
-      - name: Build all packages
-        run: yarn build
 
       - name: Publish with lerna
         run: lerna publish --bump=prerelease --yes
