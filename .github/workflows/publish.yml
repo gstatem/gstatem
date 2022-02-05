@@ -17,6 +17,14 @@ jobs:
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
 
+      - name: Authenticate with registry
+        run: |
+          echo "registry=https://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - run: npm i -g yarn
       - run: yarn
       - run: ls -la
@@ -26,13 +34,8 @@ jobs:
           node -v
           lerna -v
 
-      - name: Authenticate with registry
-        run: |
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
-          npm whoami
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Run tests before publish
+        run: yarn test
 
       - run: yarn build
       - name: Publish with lerna
