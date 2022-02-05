@@ -26,7 +26,7 @@ jobs:
           node -v
           lerna -v
 
-      - name: Authenticate with Registry
+      - name: Authenticate with registry
         run: |
           echo "registry=https://registry.npmjs.org/" >> .npmrc
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
@@ -35,7 +35,8 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: yarn build
-      - run: lerna publish --bump=prerelease --yes
+      - name: Publish with lerna
+        run: lerna publish --bump=prerelease --yes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
