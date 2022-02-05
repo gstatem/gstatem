@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, { FC, MouseEventHandler, MutableRefObject } from "react";
 import { getStepState } from "../utils/Utils";
 import { StepPayload } from "../utils/Types";
