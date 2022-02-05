@@ -9,7 +9,7 @@
 		"babel": "babel --config-file ../../babel.config.js dist -d dist --verbose",
 		"build": "rimraf dist && yarn check-types && yarn babel && rollup -c && rimraf dist/background dist/pageScript/pageScript*",
 		"build-extension": "rimraf dist extension/dist && webpack --config webpack.prod.js --progress",
-		"pack-extension": "yarn build-extension && mkdir -p ../../dist && rimraf ../../dist/gstatem-devtools.zip && cd ./extension && zip ../../../dist/gstatem-devtools.zip ./*",
+		"pack-extension": "yarn build-extension && mkdir -p ../../dist && rimraf ../../dist/gstatem-devtools.zip && cd ./extension && zip -r ../../../dist/gstatem-devtools.zip ./*",
 		"clean": "rimraf extension/dist dist node_modules package-lock.json",
 		"start": "yarn clean && webpack-dev-server"
 	},
