@@ -9,7 +9,7 @@
 		"build-storybook": "build-storybook",
 		"pub": "yarn build && lerna publish --bump=prerelease --yes && yarn clean",
 		"updep": "yarn add -D -W gstatem-devtools@latest gstatem@latest react-gstatem@latest",
-		"build-extension": "cd ./packages/gstatem-devtools && yarn build-extension && yarn pack-extension"
+		"build-extension": "cd ./packages/gstatem-devtools && yarn pack-extension"
 	},
 	"author": "shuieryin",
 	"license": "MIT",
