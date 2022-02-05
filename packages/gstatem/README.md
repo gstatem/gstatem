@@ -32,7 +32,7 @@ console.log(get(({ count }) => count)); // count is 0
 set(({ count }) => ({ count: count + 1 }));
 console.log(get(({ count }) => count)); // count is 1
 
-// prints updated count;
+// prints updated count
 const subscribeFn = ({ count }) => console.log("updated count", count);
 
 subscribe(
