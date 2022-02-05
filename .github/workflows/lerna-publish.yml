@@ -10,9 +10,7 @@ jobs:
           node-version: "16"
 
       - run: |
-        git config --global user.name "gstatem-builder" && \
-        git config --global user.email "gstatem-builder@users.noreply.github.com" && \
-        git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
+        git config --global user.name "gstatem-builder" && git config --global user.email "gstatem-builder@users.noreply.github.com" && git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
 
@@ -32,9 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-        git config --global user.name "gstatem-builder" && \
-        git config --global user.email "gstatem-builder@users.noreply.github.com" && \
-        git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
+        git config --global user.name "gstatem-builder" && git config --global user.email "gstatem-builder@users.noreply.github.com" && git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
 
