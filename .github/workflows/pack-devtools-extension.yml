@@ -1,4 +1,4 @@
-name: Build devtools extension
+name: Pack devtools extension
 on: [ workflow_dispatch ]
 jobs:
   pack-extension:
@@ -34,7 +34,7 @@ jobs:
       - name: Pack extension
         run: yarn pack-extension
 
-      - run: echo .env >> $EXTENSION_FILE
+      - run: echo .env >> $GITHUB_ENV
       - run: echo $EXTENSION_FILE
 
 #      - name: Upload extension to artifact
