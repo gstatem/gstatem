@@ -1,7 +1,7 @@
 name: Build devtools extension
 on: [ workflow_dispatch ]
 jobs:
-  build:
+  pack-extension:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
