@@ -34,8 +34,10 @@ jobs:
       - name: Pack extension
         run: yarn pack-extension
 
-      - run: echo .env >> $GITHUB_ENV
-      - run: echo $EXTENSION_FILE
+      - run: ls -la
+      - run: echo .env
+#      - run: echo .env >> $GITHUB_ENV
+#      - run: echo $EXTENSION_FILE
 
 #      - name: Upload extension to artifact
 #        uses: actions/upload-artifact@v2
