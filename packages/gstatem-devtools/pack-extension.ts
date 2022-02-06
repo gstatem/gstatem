@@ -6,23 +6,24 @@ const { version: manifestVersion } = require("./extension/manifest.json");
 const outputDir = "./dist";
 
 const packedFilename = `gstatem-devtools-extension-${manifestVersion}.zip`;
-const outputFilepath = path.resolve(path.join(outputDir, packedFilename));
+const relativeOutputFilePath = path.join(outputDir, packedFilename);
+const outputFilePath = path.resolve(relativeOutputFilePath);
 
 fs.mkdirSync(outputDir, { recursive: true });
 
-if (fs.existsSync(outputFilepath)) {
-	fs.rmSync(outputFilepath);
+if (fs.existsSync(outputFilePath)) {
+	fs.rmSync(outputFilePath);
 }
 
-const output = fs.createWriteStream(outputFilepath);
+const output = fs.createWriteStream(outputFilePath);
 const archive = archiver("zip");
 
 output.on("close", function () {
 	console.log(`\nTotal ${archive.pointer()} bytes.`);
-	console.log(`Packed and saved to ${outputFilepath}`);
+	console.log(`Packed and saved to ${outputFilePath}`);
 	fs.writeFileSync(
 		"./.extension_filepath",
-		`EXTENSION_FILENAME=${packedFilename}\nEXTENSION_FILEPATH=${outputFilepath}`,
+		`EXTENSION_FILENAME=${packedFilename}\nEXTENSION_FILEPATH=${relativeOutputFilePath}`,
 		{
 			encoding: "utf-8"
 		}
