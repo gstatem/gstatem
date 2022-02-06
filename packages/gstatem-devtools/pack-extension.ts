@@ -23,7 +23,7 @@ output.on("close", function () {
 	console.log(`Packed and saved to ${outputFilePath}`);
 	fs.writeFileSync(
 		"./.extension_filepath",
-		`EXTENSION_FILENAME=${packedFilename}\nEXTENSION_FILEPATH=${relativeOutputFilePath}`,
+		`EXTENSION_FILENAME=${packedFilename}\nEXTENSION_FILEPATH=${outputFilePath}`,
 		{
 			encoding: "utf-8"
 		}

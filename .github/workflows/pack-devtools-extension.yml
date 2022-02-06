@@ -42,5 +42,5 @@ jobs:
       - name: Upload extension to artifact
         uses: actions/upload-artifact@v2
         with:
-          name: $EXTENSION_FILENAME
-          path: $EXTENSION_FILEPATH
+          name: ${{ env.EXTENSION_FILENAME }}
+          path: ${{ env.EXTENSION_FILEPATH }}
