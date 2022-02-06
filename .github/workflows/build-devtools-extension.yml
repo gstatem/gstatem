@@ -12,7 +12,11 @@ jobs:
         with:
           path: "./packages/gstatem-devtools/extension/manifest.json"
           prop_path: "version"
-      - run: echo extension version $EXTENSION_VERSION
+
+      - name: "Use extension version in variable"
+      - run: |
+          echo extension version $EXTENSION_VERSION
+          echo ${{steps.manifestVersion.outputs.prop}}
         env:
           EXTENSION_VERSION: ${{steps.manifestVersion.outputs.prop}}
 #      - uses: actions/setup-node@v2
