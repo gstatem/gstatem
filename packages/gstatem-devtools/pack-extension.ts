@@ -20,9 +20,13 @@ const archive = archiver("zip");
 output.on("close", function () {
 	console.log(`\nTotal ${archive.pointer()} bytes.`);
 	console.log(`Packed and saved to ${outputFilepath}`);
-	fs.writeFileSync("./.env", `EXTENSION_FILE=${packedFilename}`, {
-		encoding: "utf-8"
-	});
+	fs.writeFileSync(
+		"./.extension_filepath",
+		`EXTENSION_FILENAME=${packedFilename}\nEXTENSION_FILEPATH=${outputFilepath}`,
+		{
+			encoding: "utf-8"
+		}
+	);
 });
 
 archive.on("error", function (err) {

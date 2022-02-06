@@ -34,11 +34,13 @@ jobs:
       - name: Pack extension
         run: yarn pack-extension
 
-      - run: cat .env >> $GITHUB_ENV
-      - run: echo $EXTENSION_FILE
+      - name: Create env variables for uploading artifact
+        run: |
+          cat .extension_filepath
+          cat .extension_filepath >> $GITHUB_ENV
 
-#      - name: Upload extension to artifact
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: $EXTENSION_FILE
-#          path: ./dist/$EXTENSION_FILE
+      - name: Upload extension to artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: $EXTENSION_FILENAME
+          path: $EXTENSION_FILEPATH
