@@ -1,5 +1,5 @@
 name: Publish packages
-on: [workflow_dispatch]
+on: [ workflow_dispatch ]
 jobs:
   publish:
     runs-on: ubuntu-20.04
