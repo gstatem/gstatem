@@ -14,7 +14,7 @@ jobs:
           prop_path: "version"
 
       - name: "Use extension version in variable"
-      - run: |
+        run: |
           echo extension version $EXTENSION_VERSION
           echo ${{steps.manifestVersion.outputs.prop}}
         env:
