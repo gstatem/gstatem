@@ -1,7 +1,16 @@
 name: On pull request
 on: [ push ]
 jobs:
+  checkout:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      with:
+        node-version: "16"
+
   setup-workspace:
+    needs: checkout
     uses: gstatem/gstatem/.github/workflows/setup.yml@setup-pr-workflow
 
   on-pull-request:

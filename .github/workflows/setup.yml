@@ -4,11 +4,6 @@ jobs:
   setup-workspace:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "16"
-
       - name: Install dependencies
       - run: |
           npm i -g yarn
