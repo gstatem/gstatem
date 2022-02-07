@@ -36,11 +36,11 @@ jobs:
 
       - name: Create env variables for uploading artifact
         run: |
-          cat .extension_filepath
-          cat .extension_filepath >> $GITHUB_ENV
+          cat .extension_info_vars
+          cat .extension_info_vars >> $GITHUB_ENV
 
-      - name: Upload extension to artifact
-        uses: actions/upload-artifact@v2
+      - uses: ncipollo/release-action@v1
         with:
-          name: ${{ env.EXTENSION_FILENAME }}
-          path: ${{ env.EXTENSION_FILEPATH }}
+          tag: ${{ env.TAG_NAME }}
+          artifacts: ${{ env.EXTENSION_FILEPATH }}
+          token: ${{ secrets.GITHUB_TOKEN }}

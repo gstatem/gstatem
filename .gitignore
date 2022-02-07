@@ -9,4 +9,4 @@ lerna-debug.log
 .yarnrc
 yarn.lock
 *.log
-.extension_filepath
+.extension_info_vars
