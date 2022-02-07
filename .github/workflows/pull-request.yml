@@ -5,9 +5,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          ls -la
-          ls -la ./.github/actions
       - uses: ./.github/actions/setup.yml
 
       - name: Run tests
