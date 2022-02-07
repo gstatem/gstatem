@@ -1,0 +1,46 @@
+name: Pack devtools extension
+on: [ workflow_dispatch ]
+jobs:
+  pack-extension:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get manifest version
+        id: manifestVersion
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: "./packages/gstatem-devtools/extension/manifest.json"
+          prop_path: "version"
+
+      - name: "Use extension version in variable"
+        run: |
+          echo extension version $EXTENSION_VERSION
+        env:
+          EXTENSION_VERSION: ${{steps.manifestVersion.outputs.prop}}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - run: npm i -g yarn
+      - run: yarn
+      - run: ls -la
+      - run: |
+          npm -v
+          yarn -v
+          node -v
+          lerna -v
+
+      - name: Pack extension
+        run: yarn pack-extension
+
+      - name: Create env variables for uploading artifact
+        run: |
+          cat .extension_info_vars
+          cat .extension_info_vars >> $GITHUB_ENV
+
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.TAG_NAME }}
+          artifacts: ${{ env.EXTENSION_FILEPATH }}
+          token: ${{ secrets.GITHUB_TOKEN }}
