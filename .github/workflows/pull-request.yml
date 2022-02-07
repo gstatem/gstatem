@@ -1,5 +1,5 @@
 name: On pull request
-on: [ push ]
+on: [ pull_request ]
 jobs:
   on-pull-request:
     runs-on: ubuntu-20.04
