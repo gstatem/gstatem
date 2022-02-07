@@ -4,6 +4,7 @@ jobs:
   on-pull-request:
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/setup.yml
 
       - name: Run tests
