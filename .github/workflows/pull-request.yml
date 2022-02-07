@@ -2,7 +2,7 @@ name: On pull request
 on: [ push ]
 jobs:
   setup-workspace:
-    uses: gstatem/gstatem/.github/workflows/setup.yml
+    uses: gstatem/gstatem/.github/workflows/setup.yml@setup-pr-workflow
 
   on-pull-request:
     needs: setup-workspace
