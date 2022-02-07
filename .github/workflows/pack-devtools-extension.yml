@@ -43,5 +43,4 @@ jobs:
         with:
           tag: ${{ env.TAG_NAME }}
           artifacts: ${{ env.EXTENSION_FILEPATH }}
-          removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
