@@ -1,4 +1,6 @@
 name: Setup workspace
+on:
+  workflow_call:
 jobs:
   setup-workspace:
     runs-on: ubuntu-20.04
