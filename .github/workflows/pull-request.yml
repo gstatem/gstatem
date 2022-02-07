@@ -4,22 +4,7 @@ jobs:
   on-pull-request:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "16"
-
-      - name: Install dependencies
-      - run: |
-          npm i -g yarn
-          yarn
-          ls -la
-          npm -v
-          yarn -v
-          node -v
-
-      - name: Build all packages
-        run: yarn build
+      - uses: gstatem/gstatem/.github/workflows/setup.yml@setup-pr-workflow
 
       - name: Run tests
         run: yarn test
