@@ -1,12 +1,12 @@
 name: On pull request
 on: [ push ]
 jobs:
+  setup-workspace:
+    uses: ./.github/workflows/setup.yml
+
   on-pull-request:
+    needs: setup-workspace
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - run: ls -la ./.github/workflows
-      - uses: gstatem/gstatem/.github/workflows/setup.yml@setup-pr-workflow
-
       - name: Run tests
         run: yarn test
