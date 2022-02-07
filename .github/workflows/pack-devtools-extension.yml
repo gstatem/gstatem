@@ -5,6 +5,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
 
       - name: Get manifest version
         id: manifestVersion
@@ -19,13 +22,11 @@ jobs:
         env:
           EXTENSION_VERSION: ${{steps.manifestVersion.outputs.prop}}
 
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "16"
-      - run: npm i -g yarn
-      - run: yarn
-      - run: ls -la
-      - run: |
+      - name: Install dependencies
+        run: |
+          npm i -g yarn
+          yarn
+          ls -la
           npm -v
           yarn -v
           node -v
@@ -34,12 +35,13 @@ jobs:
       - name: Pack extension
         run: yarn pack-extension
 
-      - name: Create env variables for uploading artifact
+      - name: Create env variables for release
         run: |
           cat .extension_info_vars
           cat .extension_info_vars >> $GITHUB_ENV
 
-      - uses: ncipollo/release-action@v1
+      - name: Create release
+        uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.TAG_NAME }}
           omitBody: true

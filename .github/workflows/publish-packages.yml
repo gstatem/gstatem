@@ -25,10 +25,11 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - run: npm i -g yarn
-      - run: yarn
-      - run: ls -la
-      - run: |
+      - name: Install dependencies
+        run: |
+          npm i -g yarn
+          yarn
+          ls -la
           npm -v
           yarn -v
           node -v
