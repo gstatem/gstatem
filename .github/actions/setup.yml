@@ -1,0 +1,18 @@
+on:
+  workflow_call:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+    with:
+      node-version: "16"
+
+        - name: Install dependencies
+        - run: |
+            npm i -g yarn
+            yarn
+            ls -la
+            npm -v
+            yarn -v
+            node -v
+
+        - name: Build all packages before tests
+          run: yarn build
