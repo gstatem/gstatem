@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ls -la ./.github/actions
-      - uses: ./.github/actions/setup.yml
+      - uses: ./.github/shared/setup.yml
 
       - name: Run tests
         run: yarn test
