@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: ls -la ./.github/actions
+      - run: ls -la ./.github/shared
       - uses: ./.github/shared/setup.yml
 
       - name: Run tests
