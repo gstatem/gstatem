@@ -4,7 +4,7 @@ jobs:
   on-pull-request:
     runs-on: ubuntu-20.04
     steps:
-      - uses: ./.github/actinos/setup.yml
+      - uses: ./.github/actions/setup.yml
 
       - name: Run tests
         run: yarn test
