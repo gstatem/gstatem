@@ -1,6 +1,8 @@
 name: Pack devtools extension
 
-on: [ workflow_dispatch ]
+on:
+  workflow_dispatch:
+    branches: [main, improve-workflows]
 
 jobs:
   pack-extension:

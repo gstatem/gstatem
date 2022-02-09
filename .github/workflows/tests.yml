@@ -2,13 +2,13 @@ name: Tests
 
 on:
   push:
-    branches: [main, improve-workflows]
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -28,19 +28,6 @@ jobs:
 
       - name: Build all packages
         run: yarn build
-
-      - name: Run tests
-        run: yarn test
-
-  tests:
-    runs-on: ubuntu-20.04
-    needs: build
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
-          cache: 'yarn'
 
       - name: Run tests
         run: yarn test

@@ -1,6 +1,8 @@
 name: Publish packages
 
-on: [ workflow_dispatch ]
+on:
+  workflow_dispatch:
+    branches: [main]
 
 jobs:
   publish-packages:
