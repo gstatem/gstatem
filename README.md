@@ -1,5 +1,7 @@
 React GStatem is a small, simple and fast state-management tool.
 
+[![Build](https://github.com/gstatem/gstatem/actions/workflows/build.yml/badge.svg)](https://github.com/gstatem/gstatem/actions/workflows/build.yml)
+
 ## Installation
 ### npm
 ```shell

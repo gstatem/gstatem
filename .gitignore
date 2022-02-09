@@ -7,6 +7,5 @@ coverage
 misc/
 lerna-debug.log
 .yarnrc
-yarn.lock
 *.log
 .extension_info_vars
