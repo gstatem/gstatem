@@ -1,6 +1,3 @@
-/**
- * Created by shuieryin on 19. Oct 2021 11:56 PM.
- */
 import {
 	CHANNEL_NAME,
 	PAGE_OPEN,

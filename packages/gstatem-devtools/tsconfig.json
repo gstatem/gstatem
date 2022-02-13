@@ -1,7 +1,14 @@
 {
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"declaration": true
+		"declaration": true,
+		"module": "ESNext",
+		"allowSyntheticDefaultImports": true
+	},
+	"ts-node": {
+		"compilerOptions": {
+			"module": "CommonJS"
+		}
 	},
 	"include": ["./src"],
 	"exclude": ["./node_modules", "./dist", "./extension"]

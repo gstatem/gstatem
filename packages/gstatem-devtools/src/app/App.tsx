@@ -27,7 +27,7 @@ import {
 } from "../utils/Utils";
 import ReactJson from "react-json-view";
 import StepView from "../components/StepView";
-import OptionToggles from "../components/OptionToggles";
+import SwitchButtons from "../components/SwitchButtons";
 import StatemSelection from "../components/StatemSelection";
 import { State as GState } from "gstatem";
 
@@ -43,7 +43,7 @@ type State = {
 	scrollLeftPanelToBottom?: boolean;
 };
 
-const toggleConfigs = [
+const switchButtonConfigs = [
 	{ desc: "State", value: "state" },
 	{ desc: "Step(s)", value: "step" }
 ];
@@ -58,7 +58,7 @@ class App extends Component {
 	selectedStepIndexStart;
 	selectedStepIndexEnd;
 	viewMode = "state";
-	observer;
+	observer: IntersectionObserver;
 	stepNodeRefs: StepNodeRefs = new Map();
 	stepNodes: StepNodes = new Map();
 	isMouseDownInLeftPanel = false;
@@ -316,12 +316,11 @@ class App extends Component {
 			this.leftSidePanelScrollToBottom();
 		}
 
-		const obsOptions = {};
 		this.stepNodes.clear();
 		this.stepNodeRefs.forEach((stepNodeStatus, stepNodeRef) => {
 			const stepNode = stepNodeRef.current;
 			if (stepNode instanceof HTMLDivElement) {
-				this.observer.observe(stepNode, obsOptions);
+				this.observer.observe(stepNode);
 				this.stepNodes.set(stepNode, stepNodeStatus);
 			}
 		});
@@ -491,7 +490,7 @@ class App extends Component {
 						statems={this.statems}
 						onChange={this.onStatemChange}
 					/>
-					<div className="header-title">GStatem dev tool</div>
+					<div className="header-title">GStatem dev tools</div>
 				</div>
 				<div className="main-body">
 					<div className="step-container">
@@ -524,9 +523,9 @@ class App extends Component {
 					</div>
 					<div className="state-container">
 						<div className="body-container-header">
-							<OptionToggles
+							<SwitchButtons
 								name="view-mode"
-								options={toggleConfigs}
+								options={switchButtonConfigs}
 								value="state"
 								onChange={this.onViewModeChange}
 							/>

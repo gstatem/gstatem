@@ -107,7 +107,7 @@ class GStatem<GState extends State> {
 	 *
 	 * const selector = state => state.count;
 	 * const subscriber = state => {
-	 *      console.log("count is updated", state.count);
+	 *   console.log("count is updated", state.count);
 	 * };
 	 * subscribe(selector, subscriber);
 	 *
@@ -142,7 +142,7 @@ class GStatem<GState extends State> {
 	 *
 	 * const selector = state => state.count;
 	 * const subscriber = state => {
-	 *      console.log("count is updated", state.count);
+	 *   console.log("count is updated", state.count);
 	 * };
 	 * subscribe(selector, subscriber);
 	 *

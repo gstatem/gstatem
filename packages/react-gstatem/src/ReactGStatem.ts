@@ -1,7 +1,3 @@
-/**
- * Created by shuieryin on 16. Oct 2021 1:30 PM.
- */
-
 import { useState, useLayoutEffect, Component } from "react";
 import GStatem, {
 	State,
@@ -28,15 +24,15 @@ export type ReactGStatem<GState extends State> = {
 	 * const { useSelect, dispatch } = create({ state: { count: 0 } });
 	 *
 	 * export default = () => {
-	 *     const count = useSelect(state => state.count);
+	 *   const count = useSelect(state => state.count);
 	 *
-	 *     return (
-	 *         <Counter
-	 *             value={count}
-	 *             onIncrement={() => dispatch(({ count }) => ({ count: count + 1 }))}
-	 *             onDecrement={() => dispatch(({ count }) => ({ count: count - 1 }))}
-	 *         />
-	 *     );
+	 *   return (
+	 *     <Counter
+	 *       value={count}
+	 *       onIncrement={() => dispatch(({ count }) => ({ count: count + 1 }))}
+	 *       onDecrement={() => dispatch(({ count }) => ({ count: count - 1 }))}
+	 *     />
+	 *   );
 	 * };
 	 */
 	useSelect: <Piece>(
@@ -58,15 +54,15 @@ export type ReactGStatem<GState extends State> = {
 	 * const { useSelect, dispatch } = create({ state: { count: 0 } });
 	 *
 	 * export default = () => {
-	 *     const count = useSelect(state => state.count);
+	 *   const count = useSelect(state => state.count);
 	 *
-	 *     return (
-	 *         <Counter
-	 *             value={count}
-	 *             onIncrement={() => dispatch(({ count }) => ({ count: count + 1 }))}
-	 *             onDecrement={() => dispatch(({ count }) => ({ count: count - 1 }))}
-	 *         />
-	 *     );
+	 *   return (
+	 *     <Counter
+	 *       value={count}
+	 *       onIncrement={() => dispatch(({ count }) => ({ count: count + 1 }))}
+	 *       onDecrement={() => dispatch(({ count }) => ({ count: count - 1 }))}
+	 *     />
+	 *   );
 	 * };
 	 */
 	dispatch: (piece: GState | SelectState<GState>) => void;
@@ -85,8 +81,8 @@ export type ReactGStatem<GState extends State> = {
 	 * const { get } = create({ state: { count: 0 } });
 	 *
 	 * export default = () => {
-	 *     const count = get(state => state.count);
-	 *     return <div>count: {count}</div>;
+	 *   const count = get(state => state.count);
+	 *   return <div>count: {count}</div>;
 	 * };
 	 */
 	get: <Piece>(selector: Selector<GState, Piece>) => Piece;
@@ -105,8 +101,8 @@ export type ReactGStatem<GState extends State> = {
 	 * const { set, get } = create({ state: { count: 0 } });
 	 *
 	 * export const someUtilFunc = () => {
-	 *     set({ count: 2 });
-	 *     set({ count } => ({ count: count + 1 }));
+	 *   set({ count: 2 });
+	 *   set({ count } => ({ count: count + 1 }));
 	 * };
 	 */
 	set: (piece: GState | SelectState<GState>) => void;
@@ -211,14 +207,17 @@ export const create = <GState extends State>(
  *   render() {
  *     return (
  *       <div>
- *           {this.state.count}
- *           <button onClick={this.increaseCount}>+</button>
+ *         {this.state.count}
+ *         <button onClick={this.increaseCount}>+</button>
  *       </div>
  *     );
  *   }
  * }
  */
-export class GSC<Props, GState extends State> extends Component<Props, GState> {
+export class GSC<
+	Props extends State = State,
+	GState extends State = State
+> extends Component<Props, GState> {
 	private unsubscribeList: VoidFunction[] = [];
 
 	/**

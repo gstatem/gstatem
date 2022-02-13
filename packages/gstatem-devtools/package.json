@@ -6,9 +6,9 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"check-types": "tsc --project ./src --declaration -outDir dist",
-		"babel": "babel --config-file ../../babel.config.js dist -d dist --verbose",
-		"build": "rimraf dist && yarn check-types && yarn babel && rollup -c && rimraf dist/background dist/pageScript/pageScript*",
-		"build-extension": "rimraf dist extension/dist && webpack --config webpack.prod.js --progress",
+		"build-package": "babel --config-file ../../babel.config.json dist -d dist --verbose && copyfiles --up 1 ./src/components/**/*.less dist",
+		"build": "rimraf dist && yarn check-types && yarn build-package && rollup -c && rimraf dist/background dist/pageScript/pageScript*",
+		"build-extension": "rimraf dist extension/dist && webpack --config webpack.prod.ts --progress",
 		"pack-extension": "ts-node ./pack-extension",
 		"clean": "rimraf extension/dist dist node_modules package-lock.json",
 		"start": "yarn clean && webpack-dev-server"

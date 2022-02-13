@@ -14,7 +14,7 @@ yarn add react-gstatem
 ## Demo
 https://codesandbox.io/s/react-gstatem-with-devtools-ywi2l
 
-## Usage of function component
+## Basic usage of function component
 ### Create a store
 ```typescript jsx
 // Store.ts
@@ -25,12 +25,12 @@ export default create({
 });
 ```
 
-### <a name="useincomponent" />Use in component
+### <a name="useincomponent" />Use the store in component
 ```typescript jsx
 import Store from "./Store";
 const { useSelect, dispatch } = Store;
 
-const Counter = () => {
+const BasicUsage = () => {
   const count = useSelect(state => state.count);
 
   return (
@@ -46,7 +46,7 @@ const Counter = () => {
   );
 }
 
-export default Counter;
+export default BasicUsage;
 ```
 
 ## Usage of class component

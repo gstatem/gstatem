@@ -1,0 +1,43 @@
+import { Canvas, Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../base/lib/utils";
+import CodeView from "../base/components/CodeView";
+
+import FCBasicUsage from "./base/components/FCBasicUsage";
+import StateJsContent from "!raw-loader!../../dist/react/stories/base/lib/FCStore";
+import StateTsContent from "!raw-loader!./base/lib/FCStore";
+
+import BasicUsageJsContent from "!raw-loader!../../dist/react/stories/base/components/FCBasicUsage";
+import BasicUsageTsContent from "!raw-loader!./base/components/FCBasicUsage";
+
+<Meta
+	title="React/Function component/Basic usage"
+	parameters={defaultDocParams()}
+/>
+
+## Function component - basic usage
+
+**Rendered view**
+
+<Canvas className="custom-docs-story">
+	<FCBasicUsage />
+</Canvas>
+
+### Recipes
+
+---
+
+**Create a store**
+
+<CodeView
+	componentName="FCStore"
+	jsContent={StateJsContent}
+	tsContent={StateTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="FCBasicUsage"
+	jsContent={BasicUsageJsContent}
+	tsContent={BasicUsageTsContent}
+/>

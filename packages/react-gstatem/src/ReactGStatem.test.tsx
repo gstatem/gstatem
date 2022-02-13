@@ -1,20 +1,12 @@
-/**
- * Created by shuieryin on 17. Oct 2021 5:50 PM.
- */
-
 import React, { FC } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import { create, GSC, newStatem, EqualityFn, State } from "./";
-import Counter from "../../../storybook/components/Counter";
+import CounterFC from "../../../storybook/react/base/components/Counter";
 
 type StateProps = {
 	count?: number;
 };
-
-const { useSelect, dispatch, get, set } = create<StateProps>({
-	state: { count: 0 }
-});
 
 type CounterTestProps<T extends State> = {
 	increaseAmount?: number;
@@ -22,25 +14,29 @@ type CounterTestProps<T extends State> = {
 	incrementButtonText?: string;
 	decrementButtonText?: string;
 	equalityFn?: EqualityFn<T>;
-	numOfStressSelectors?: number;
+	customHooks?: VoidFunction;
 };
 
-const CounterTest: FC<CounterTestProps<StateProps>> = ({
+const { useSelect, dispatch, get, set } = create<StateProps>({
+	state: { count: 0 }
+});
+
+const CounterFCTest: FC<CounterTestProps<StateProps>> = ({
 	increaseAmount,
 	decreaseAmount,
 	incrementButtonText,
 	decrementButtonText,
 	equalityFn,
-	numOfStressSelectors
+	customHooks
 }) => {
 	const count = useSelect(state => state.count, equalityFn);
 
-	for (let i = 0; i < numOfStressSelectors; i++) {
-		useSelect(({ count }) => count);
+	if (customHooks instanceof Function) {
+		customHooks();
 	}
 
 	return (
-		<Counter
+		<CounterFC
 			value={count}
 			onIncrement={() =>
 				dispatch(state => ({ count: state.count + increaseAmount }))
@@ -54,16 +50,15 @@ const CounterTest: FC<CounterTestProps<StateProps>> = ({
 	);
 };
 
-CounterTest.defaultProps = {
+CounterFCTest.defaultProps = {
 	increaseAmount: 1,
-	decreaseAmount: 1,
-	numOfStressSelectors: 0
+	decreaseAmount: 1
 };
 
-const statemCc = newStatem<StateProps>({ state: { count: 0 } });
+const statem = newStatem<StateProps>({ state: { count: 0 } });
 
-class CounterCc extends GSC<object, StateProps> {
-	state = { count: statemCc.get(({ count }) => count) };
+class CounterCC extends GSC<object, StateProps> {
+	state = { count: statem.get(({ count }) => count) };
 
 	constructor(props) {
 		super(props);
@@ -71,13 +66,13 @@ class CounterCc extends GSC<object, StateProps> {
 			count: this.select(
 				({ count }) => count, // selector
 				({ count }) => this.setState({ count }), // subscriber
-				statemCc
+				statem
 			)
 		};
 	}
 
 	increaseCount = () => {
-		this.dispatch(({ count }) => ({ count: count + 1 }), statemCc);
+		this.dispatch(({ count }) => ({ count: count + 1 }), statem);
 	};
 
 	componentWillUnmount() {
@@ -96,7 +91,7 @@ class CounterCc extends GSC<object, StateProps> {
 
 describe("ReactGStatem test", () => {
 	it("renders Counter component", () => {
-		render(<CounterTest />);
+		render(<CounterFCTest />);
 		screen.getByText("Clicked: 0 times");
 
 		const incrementButton = screen.getByRole("button", { name: "+" });
@@ -113,7 +108,7 @@ describe("ReactGStatem test", () => {
 
 	it("Custom equalityFn", () => {
 		render(
-			<CounterTest
+			<CounterFCTest
 				increaseAmount={2}
 				decreaseAmount={1}
 				equalityFn={({ count: prevCount }, { count: nextCount }) =>
@@ -138,12 +133,20 @@ describe("ReactGStatem test", () => {
 		const counterTests = [];
 		for (let i = 0; i < numOfComponents; i++) {
 			const index = i + 1;
+			// TODO: 1. get rid of customizing button texts in Counter
+			// TODO: 2. gen hyperlink for appendix components
+			// TODO: 3. gen README.md examples from storybook examples
+			// TODO: 4. add more examples
 			counterTests.push(
-				<CounterTest
+				<CounterFCTest
 					key={`counter_${index}`}
 					incrementButtonText={`+${index}`}
 					decrementButtonText={`-${index}`}
-					numOfStressSelectors={numOfSelectorForEach}
+					customHooks={() => {
+						for (let i = 0; i < numOfSelectorForEach; i++) {
+							useSelect(({ count }) => count);
+						}
+					}}
 				/>
 			);
 		}
@@ -162,7 +165,7 @@ describe("ReactGStatem test", () => {
 	});
 
 	it("GSC for class component", () => {
-		render(<CounterCc />);
+		render(<CounterCC />);
 		screen.getByText("Count: 0");
 
 		const increaseCountButton = screen.getByRole("button", {
