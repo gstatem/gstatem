@@ -4,29 +4,23 @@ type CounterProps = {
 	value: number;
 	onIncrement: MouseEventHandler<HTMLButtonElement>;
 	onDecrement: MouseEventHandler<HTMLButtonElement>;
-	incrementButtonText?: string;
-	decrementButtonText?: string;
+	onReset?: MouseEventHandler<HTMLButtonElement>;
 };
 
 const Counter: FC<CounterProps> = ({
 	value,
 	onIncrement,
 	onDecrement,
-	incrementButtonText,
-	decrementButtonText
+	onReset
 }) => {
 	return (
-		<p>
+		<div>
 			<span>Clicked: {value} times</span>{" "}
-			<button onClick={onIncrement}>{incrementButtonText}</button>{" "}
-			<button onClick={onDecrement}>{decrementButtonText}</button>{" "}
-		</p>
+			<button onClick={onIncrement}>+</button>{" "}
+			<button onClick={onDecrement}>-</button>{" "}
+			<button onClick={onReset}>Reset</button>
+		</div>
 	);
-};
-
-Counter.defaultProps = {
-	incrementButtonText: "+",
-	decrementButtonText: "-"
 };
 
 export default Counter;

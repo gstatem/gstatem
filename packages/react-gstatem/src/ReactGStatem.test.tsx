@@ -11,8 +11,6 @@ type StateProps = {
 type CounterTestProps<T extends State> = {
 	increaseAmount?: number;
 	decreaseAmount?: number;
-	incrementButtonText?: string;
-	decrementButtonText?: string;
 	equalityFn?: EqualityFn<T>;
 	customHooks?: VoidFunction;
 };
@@ -24,8 +22,6 @@ const { useSelect, dispatch, get, set } = create<StateProps>({
 const CounterFCTest: FC<CounterTestProps<StateProps>> = ({
 	increaseAmount,
 	decreaseAmount,
-	incrementButtonText,
-	decrementButtonText,
 	equalityFn,
 	customHooks
 }) => {
@@ -35,17 +31,18 @@ const CounterFCTest: FC<CounterTestProps<StateProps>> = ({
 		customHooks();
 	}
 
+	const increaseCount = () =>
+		dispatch(state => ({ count: state.count + increaseAmount }));
+	const decreaseCount = () =>
+		dispatch(state => ({ count: state.count - decreaseAmount }));
+	const reset = () => dispatch({ count: 0 });
+
 	return (
 		<CounterFC
 			value={count}
-			onIncrement={() =>
-				dispatch(state => ({ count: state.count + increaseAmount }))
-			}
-			onDecrement={() =>
-				dispatch(state => ({ count: state.count - decreaseAmount }))
-			}
-			incrementButtonText={incrementButtonText}
-			decrementButtonText={decrementButtonText}
+			onIncrement={increaseCount}
+			onDecrement={decreaseCount}
+			onReset={reset}
 		/>
 	);
 };
@@ -55,24 +52,26 @@ CounterFCTest.defaultProps = {
 	decreaseAmount: 1
 };
 
-const statem = newStatem<StateProps>({ state: { count: 0 } });
+const store = newStatem<StateProps>({ state: { count: 0 } });
 
 class CounterCC extends GSC<object, StateProps> {
-	state = { count: statem.get(({ count }) => count) };
+	state = { count: store.get(({ count }) => count) };
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			count: this.select(
-				({ count }) => count, // selector
-				({ count }) => this.setState({ count }), // subscriber
-				statem
+				/* selector */
+				({ count }) => count,
+				/* subscriber */
+				({ count }) => this.setState({ count }),
+				store
 			)
 		};
 	}
 
 	increaseCount = () => {
-		this.dispatch(({ count }) => ({ count: count + 1 }), statem);
+		this.dispatch(({ count }) => ({ count: count + 1 }), store);
 	};
 
 	componentWillUnmount() {
@@ -125,6 +124,10 @@ describe("ReactGStatem test", () => {
 		const incrementButton = screen.getByRole("button", { name: "+" });
 		fireEvent.click(incrementButton);
 		screen.getByText("Clicked: 5 times"); // Because the actual count is 3, increasing by 2 will trigger re-render of the component so now shows 5.
+
+		const resetButton = screen.getByRole("button", { name: "Reset" });
+		fireEvent.click(resetButton);
+		screen.getByText("Clicked: 0 times");
 	});
 
 	it("Performance testing", () => {
@@ -140,8 +143,6 @@ describe("ReactGStatem test", () => {
 			counterTests.push(
 				<CounterFCTest
 					key={`counter_${index}`}
-					incrementButtonText={`+${index}`}
-					decrementButtonText={`-${index}`}
 					customHooks={() => {
 						for (let i = 0; i < numOfSelectorForEach; i++) {
 							useSelect(({ count }) => count);
@@ -153,9 +154,7 @@ describe("ReactGStatem test", () => {
 		render(<>{counterTests}</>);
 
 		const t1 = performance.now();
-		const incrementButton = screen.getByRole("button", {
-			name: `+${numOfComponents}`
-		});
+		const incrementButton = screen.getAllByRole("button", { name: `+` })[0];
 		fireEvent.click(incrementButton);
 		console.log(
 			`${numOfComponents} components with ${numOfSelectorForEach} selectors each, took ${
