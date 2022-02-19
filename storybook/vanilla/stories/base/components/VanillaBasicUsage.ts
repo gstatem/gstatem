@@ -1,22 +1,30 @@
-import Store from "../lib/VanillaStore";
-const { get, set, subscribe, unsubscribe } = Store;
+import {
+	increaseCount,
+	resetCount,
+	get,
+	subscribe,
+	unsubscribe
+} from "../lib/VanillaStore";
 
-console.log(get(({ count }) => count)); // count is 0
+const selector = state => state.count;
 
-set(({ count }) => ({ count: count + 1 }));
-console.log(get(({ count }) => count)); // count is 1
+console.log(get(selector)); // count is 0
+
+increaseCount();
+console.log(get(selector)); // count is 1
 
 /* prints updated count */
-const subscribeFn = ({ count }) => console.log("updated count", count);
+const subscribeFn = state => console.log("updated count", state.count);
 
-const unsubscribeFn = subscribe(({ count }) => count, subscribeFn);
+const unsubscribeFn = subscribe(selector, subscribeFn);
 /* triggers the subscribe function */
-set(({ count }) => ({ count: count + 1 }), { isDispatch: true });
+increaseCount({ isDispatch: true });
+
+/* reset count */
+resetCount();
 
 window.onbeforeunload = () => {
 	unsubscribe(subscribeFn);
 	/* alternative way of unsubscribe */
 	unsubscribeFn();
 };
-
-export default {};

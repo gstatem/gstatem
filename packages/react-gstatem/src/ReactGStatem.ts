@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, Component } from "react";
+import { useState, useLayoutEffect } from "react";
 import GStatem, {
 	State,
 	Init,
@@ -11,7 +11,7 @@ import GStatem, {
 export type ReactGStatem<GState extends State> = {
 	/**
 	 * @template GState, Piece
-	 * Subscribe the state with selector and subscribe functions, when the selected piece is dispatched by {@link dispatch}, the subscriber function is invoked and the component that wraps the useSelect is re-rendered.
+	 * Subscribe state piece with selector function, when the selected piece is dispatched by {@link dispatch}, the subscriber function is invoked and the component that wraps the useSelect is re-rendered.
 	 *
 	 * @param {Selector<GState, Piece>} selector - The selector function.
 	 * @param {EqualityFn<GState>} [equalityFn] - The equality function.
@@ -39,6 +39,22 @@ export type ReactGStatem<GState extends State> = {
 		selector: Selector<GState, Piece>,
 		equalityFn?: EqualityFn<GState>
 	) => Piece;
+
+	/**
+	 * @template GState, Piece
+	 * Subscribe state piece with selector function, when the selected piece is dispatched by {@link dispatch}, the subscriber function is invoked and the component that wraps the useSelect is re-rendered.
+	 *
+	 * @param {Selector<GState, Piece>} selector - The selector function.
+	 * @param {Subscriber<GState>} subscriber - The subscriber function.
+	 * @param {EqualityFn<GState>} [equalityFn] - The equality function.
+	 *
+	 * @returns {[Piece, VoidFunction]} The subscribing piece and the unsubscribe function.
+	 */
+	select<Piece>(
+		selector: Selector<GState, Piece>,
+		subscriber: Subscriber<GState>,
+		equalityFn?: EqualityFn<GState>
+	): [Piece, VoidFunction];
 
 	/**
 	 * @template GState
@@ -69,7 +85,7 @@ export type ReactGStatem<GState extends State> = {
 
 	/**
 	 * @template GState, Piece
-	 * Get the piece of state with a selector function.
+	 * Get a piece of state without triggering the subscribe function.
 	 *
 	 * @param {Selector<GState, Piece>} selector - The selector function to select value from the state.
 	 *
@@ -89,7 +105,7 @@ export type ReactGStatem<GState extends State> = {
 
 	/**
 	 * @template GState
-	 * Set a piece to state, will not trigger any subscribers.
+	 * Set a piece of state without triggering the subscribe function.
 	 *
 	 * @param {GState|SelectState<GState>} piece - The piece the state or a callback to select and return the piece of the state.
 	 *
@@ -120,6 +136,14 @@ export const init = <GState extends State>(
 		return value;
 	},
 
+	select: <Piece>(
+		selector: Selector<GState, Piece>,
+		subscriber: Subscriber<GState>,
+		equalityFn?: EqualityFn<GState>
+	): [Piece, VoidFunction] => {
+		return statem.select(selector, subscriber, equalityFn);
+	},
+
 	dispatch: (piece): void => {
 		statem.set(piece, { isDispatch: true });
 	},
@@ -128,23 +152,6 @@ export const init = <GState extends State>(
 
 	set: piece => statem.set(piece)
 });
-
-/**
- * @template GState
- *
- * Create a new statem.
- *
- * @param {Init<GState>} [config] - Init config for new statem.
- *
- * @returns {GStatem<GState>} Returns the new statem.
- *
- * @example
- * import { newStatem } from "react-gstatem";
- * const statem = newStatem();
- */
-export const newStatem = <GState extends State>(
-	config?: Init<GState>
-): GStatem<GState> => new GStatem<GState>(config);
 
 /**
  * @template GState
@@ -172,96 +179,3 @@ export const create = <GState extends State>(
 
 	return init(statem);
 };
-
-/**
- * The React class component implementation of GStatem.
- *
- * @example
- * import { GSC, newStatem } from "react-gstatem";
- *
- * const statem = newStatem({ state: { count: 0 } });
- *
- * class Counter extends GSC {
- *   state = { count: 0 };
- *
- *   constructor(props) {
- *     super(props);
- *
- *     this.state = {
- *       count: this.select(
- *         ({ count }) => count, // selector
- *         ({ count }) => this.setState({ count }), // subscriber
- *         statem
- *       )
- *     };
- *   }
- *
- *   increaseCount = () => {
- *     this.dispatch(({ count }) => ({ count: count + 1 }), statem);
- *   };
- *
- *   componentWillUnmount() {
- *     super.componentWillUnmount();
- *   }
- *
- *   render() {
- *     return (
- *       <div>
- *         {this.state.count}
- *         <button onClick={this.increaseCount}>+</button>
- *       </div>
- *     );
- *   }
- * }
- */
-export class GSC<
-	Props extends State = State,
-	GState extends State = State
-> extends Component<Props, GState> {
-	private unsubscribeList: VoidFunction[] = [];
-
-	/**
-	 * @template GState, Piece
-	 * Subscribe the state with selector and subscribe functions, when the selected piece is dispatched by {@link dispatch}, the subscriber function is invoked and the component that wraps the useSelect is re-rendered.
-	 *
-	 * @param {Selector<GState, Piece>} selector - The selector function.
-	 * @param {Subscriber<GState>} subscriber - The subscriber function.
-	 * @param {GStatem<GState>} statem - The statem.
-	 * @param {EqualityFn<GState>} [equalityFn] - The equality function.
-	 *
-	 * @returns {Piece} The subscribing piece.
-	 */
-	select<Piece>(
-		selector: Selector<GState, Piece>,
-		subscriber: Subscriber<GState>,
-		statem: GStatem<GState>,
-		equalityFn?: EqualityFn<GState>
-	): Piece {
-		this.unsubscribeList.push(
-			statem.subscribe(selector, subscriber, equalityFn)
-		);
-		return statem.get(selector);
-	}
-
-	/**
-	 * @template GState
-	 * Dispatch a state value by the key of the state value, the value will be changed and all related subscribe functions are triggered in the order of subscribe.
-	 *
-	 * @param {GState|SelectState<GState>} piece - The piece the state or a callback to select and return the piece of the state.
-	 * @param {GStatem<GState>} statem - The statem.
-	 *
-	 * @returns {void}
-	 */
-	dispatch(piece: GState | SelectState<GState>, statem: GStatem<GState>) {
-		statem.set(piece, { isDispatch: true });
-	}
-
-	/**
-	 * Unsubscribes all selectors on component unmount.
-	 */
-	componentWillUnmount() {
-		for (const unsubscribe of this.unsubscribeList) {
-			unsubscribe();
-		}
-	}
-}

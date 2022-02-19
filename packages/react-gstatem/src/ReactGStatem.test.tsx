@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React, { Component, FC } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import { create, GSC, newStatem, EqualityFn, State } from "./";
+import { create, EqualityFn, State } from "./";
 import CounterFC from "../../../storybook/react/base/components/Counter";
 
 type StateProps = {
@@ -9,19 +9,18 @@ type StateProps = {
 };
 
 type CounterTestProps<T extends State> = {
-	increaseAmount?: number;
-	decreaseAmount?: number;
 	equalityFn?: EqualityFn<T>;
 	customHooks?: VoidFunction;
 };
 
-const { useSelect, dispatch, get, set } = create<StateProps>({
+const { useSelect, dispatch, get, set, select } = create<StateProps>({
 	state: { count: 0 }
 });
 
+const increaseCount = () => dispatch(({ count }) => ({ count: count + 1 }));
+const reset = () => dispatch({ count: 0 });
+
 const CounterFCTest: FC<CounterTestProps<StateProps>> = ({
-	increaseAmount,
-	decreaseAmount,
 	equalityFn,
 	customHooks
 }) => {
@@ -31,58 +30,35 @@ const CounterFCTest: FC<CounterTestProps<StateProps>> = ({
 		customHooks();
 	}
 
-	const increaseCount = () =>
-		dispatch(state => ({ count: state.count + increaseAmount }));
-	const decreaseCount = () =>
-		dispatch(state => ({ count: state.count - decreaseAmount }));
-	const reset = () => dispatch({ count: 0 });
-
 	return (
-		<CounterFC
-			value={count}
-			onIncrement={increaseCount}
-			onDecrement={decreaseCount}
-			onReset={reset}
-		/>
+		<CounterFC value={count} onIncrement={increaseCount} onReset={reset} />
 	);
 };
 
-CounterFCTest.defaultProps = {
-	increaseAmount: 1,
-	decreaseAmount: 1
-};
-
-const store = newStatem<StateProps>({ state: { count: 0 } });
-
-class CounterCC extends GSC<object, StateProps> {
-	state = { count: store.get(({ count }) => count) };
+class CounterCC extends Component<object, StateProps> {
+	unsubscribes = [];
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			count: this.select(
-				/* selector */
-				({ count }) => count,
-				/* subscriber */
-				({ count }) => this.setState({ count }),
-				store
-			)
-		};
+
+		const [count, unsubCount] = select(
+			({ count }) => count,
+			({ count }) => this.setState({ count })
+		);
+		this.unsubscribes.push(unsubCount);
+
+		this.state = { count };
 	}
 
-	increaseCount = () => {
-		this.dispatch(({ count }) => ({ count: count + 1 }), store);
-	};
-
 	componentWillUnmount() {
-		super.componentWillUnmount();
+		this.unsubscribes.forEach(unsub => unsub());
 	}
 
 	render() {
 		return (
 			<div>
 				Count: {this.state.count}
-				<button onClick={this.increaseCount}>Increase count</button>
+				<button onClick={() => increaseCount()}>Increase count</button>
 			</div>
 		);
 	}
@@ -99,31 +75,21 @@ describe("ReactGStatem test", () => {
 
 		set({ count: 5 });
 		expect(get(({ count }) => count)).toBe(5);
-
-		const decrementButton = screen.getByRole("button", { name: "-" });
-		fireEvent.click(decrementButton);
-		screen.getByText("Clicked: 4 times");
 	});
 
 	it("Custom equalityFn", () => {
 		render(
 			<CounterFCTest
-				increaseAmount={2}
-				decreaseAmount={1}
 				equalityFn={({ count: prevCount }, { count: nextCount }) =>
 					Math.abs(prevCount - nextCount) < 2
 				}
 			/>
 		);
-		screen.getByText("Clicked: 4 times");
-
-		const decrementButton = screen.getByRole("button", { name: "-" });
-		fireEvent.click(decrementButton);
-		screen.getByText("Clicked: 4 times"); // although the fire button is clicked, the count doesn't trigger re-render of the component as defined in equalityFn, but the actual count is 3.
+		screen.getByText("Clicked: 5 times");
 
 		const incrementButton = screen.getByRole("button", { name: "+" });
 		fireEvent.click(incrementButton);
-		screen.getByText("Clicked: 5 times"); // Because the actual count is 3, increasing by 2 will trigger re-render of the component so now shows 5.
+		screen.getByText("Clicked: 5 times"); // +1 to count will not trigger re-render.
 
 		const resetButton = screen.getByRole("button", { name: "Reset" });
 		fireEvent.click(resetButton);
@@ -136,7 +102,6 @@ describe("ReactGStatem test", () => {
 		const counterTests = [];
 		for (let i = 0; i < numOfComponents; i++) {
 			const index = i + 1;
-			// TODO: 1. get rid of customizing button texts in Counter
 			// TODO: 2. gen hyperlink for appendix components
 			// TODO: 3. gen README.md examples from storybook examples
 			// TODO: 4. add more examples
@@ -161,6 +126,10 @@ describe("ReactGStatem test", () => {
 				performance.now() - t1
 			} ms.`
 		);
+
+		const resetButton = screen.getAllByRole("button", { name: "Reset" })[0];
+		fireEvent.click(resetButton);
+		screen.getAllByText("Clicked: 0 times");
 	});
 
 	it("GSC for class component", () => {

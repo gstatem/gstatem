@@ -18,6 +18,30 @@ type WalkPath<T> = (
 	}
 ) => void;
 
+export type GenSbJsExtension = "js" | "jsx" | "ts" | "tsx";
+
+export type ReplaceInFilesPayload = {
+	dirs: string[];
+	searchValue: string | RegExp;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	replaceValue: string | ((substring: string, ...args: any[]) => string);
+	extensions?: GenSbJsExtension[];
+};
+
+export type FileInfo = {
+	fileBasename: string;
+	filename: string;
+	extName: string;
+	relativeFilePath: string;
+	fullFilePath: string;
+};
+
+export type FilesInfo = {
+	[fileBasename: string]: FileInfo;
+};
+
+export type ReplaceInFiles = (payload: ReplaceInFilesPayload) => FilesInfo;
+
 const cmd = (cmdStr: string) =>
 	new Promise<void>(resolve => {
 		exec(cmdStr, (error, stdout, stderr) => {
@@ -59,15 +83,29 @@ const walkPaths: WalkPath<string[]> = (baseDirs, callback, options) => {
 	}
 };
 
-const replaceInFiles = (
+const replaceInFiles: ReplaceInFiles = ({
 	dirs,
 	searchValue,
 	replaceValue,
 	extensions = ["ts", "tsx"]
-) => {
+}) => {
+	const filesInfo: FilesInfo = {};
 	walkPaths(
 		dirs.map(dir => path.join(workDir, dir)),
 		filePath => {
+			const filename = path.basename(filePath);
+			const extName = path.extname(filename);
+			const fileBasename = filename.replace(extName, "");
+			const config: FileInfo = {
+				filename,
+				fileBasename,
+				extName,
+				relativeFilePath: path.join(".", filePath.replace(__dirname, "")),
+				fullFilePath: filePath
+			};
+			filesInfo[fileBasename] = config;
+			filesInfo[filename] = config;
+
 			const fileContent = fs.readFileSync(filePath, { encoding: "utf-8" });
 			fs.writeFileSync(
 				filePath,
@@ -79,24 +117,31 @@ const replaceInFiles = (
 			extensions
 		}
 	);
+
+	return filesInfo;
 };
 
 (async () => {
 	console.log("Generating JS files...");
 	rimraf.sync(outputDir);
 
-	replaceInFiles(resourceDirs, /\n{2}/g, `\n${blankLineKey}\n`);
+	const filesInfo = replaceInFiles({
+		dirs: resourceDirs,
+		searchValue: /\n{2}/g,
+		replaceValue: `\n${blankLineKey}\n`
+	});
+	console.log("==filesInfo", filesInfo);
 
 	const toJsCmd = `tsc -p ${workDir}`;
 	console.log(toJsCmd);
 	await cmd(toJsCmd);
 
-	replaceInFiles([...resourceDirs, "dist"], new RegExp(blankLineKey, "g"), "", [
-		"js",
-		"jsx",
-		"ts",
-		"tsx"
-	]);
+	replaceInFiles({
+		dirs: [...resourceDirs, "dist"],
+		searchValue: new RegExp(blankLineKey, "g"),
+		replaceValue: "",
+		extensions: ["js", "jsx", "ts", "tsx"]
+	});
 
 	const prettierCmd = `eslint -c ${eslintConfigPath} --rule "{'react/prop-types': 0}" --ext js,jsx --fix ${outputDir}`;
 	console.log(prettierCmd);

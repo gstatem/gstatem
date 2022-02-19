@@ -1,44 +1,40 @@
-import React from "react";
-import { GSC } from "react-gstatem";
-import Store, { StateType } from "../lib/CCStoreWithDevTools";
+import React, { Component } from "react";
+import {
+	StateType,
+	increaseCount,
+	resetCount,
+	selectCount
+} from "../lib/StoreWithDevTools";
 import Counter from "../../../base/components/Counter";
 
-type Props = object;
-
-class CCWithDevTools extends GSC<Props, StateType> {
-	state = { count: Store.get(({ count }) => count) };
+class CCWithDevTools extends Component<object, StateType> {
+	unsubscribes = [];
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			count: this.select(
-				/* selector */
-				({ count }) => count,
-				/* subscriber */
-				({ count }) => this.setState({ count }),
-				Store
-			)
-		};
+
+		/* select the piece in constructor */
+		const [count, unsubCount] = selectCount(state =>
+			this.setState({ count: state.count })
+		);
+		/* store the unsubscribe function of the selected piece */
+		this.unsubscribes.push(unsubCount);
+
+		/* initialize component state with the selected piece */
+		this.state = { count };
 	}
 
-	increaseCount = () => {
-		this.dispatch(({ count }) => ({ count: count + 1 }), Store);
-	};
-
-	decreaseCount = () => {
-		this.dispatch(({ count }) => ({ count: count - 1 }), Store);
-	};
-
 	componentWillUnmount() {
-		super.componentWillUnmount();
+		/* unsubscribe all pieces on component unmount */
+		this.unsubscribes.forEach(unsub => unsub());
 	}
 
 	render() {
 		return (
 			<Counter
 				value={this.state.count}
-				onIncrement={this.increaseCount}
-				onDecrement={this.decreaseCount}
+				onIncrement={increaseCount}
+				onReset={resetCount}
 			/>
 		);
 	}

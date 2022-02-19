@@ -1,15 +1,16 @@
-import React, { FC, useState, useRef, useEffect } from "react";
+import React, { FC, useState, useRef } from "react";
 import { Source } from "@storybook/addon-docs";
 import { prettifySource, RawFileContent } from "../../../base/lib/utils";
 import { uuidv4 } from "gstatem";
 import { SwitchButtons, SwitchButtonOption } from "gstatem-devtools";
+import useCodeViewTopRight from "../hooks/useCodeViewTopRight";
 
-type Mode = "jsx" | "tsx";
+type Lang = "jsx" | "tsx";
 
 type CodeViewProps = {
 	id?: string;
-	mode?: Mode;
-	enableSwitchMode?: boolean;
+	lang?: Lang;
+	enableSwitchLang?: boolean;
 	componentName?: string;
 	jsContent?: RawFileContent;
 	tsContent?: RawFileContent;
@@ -22,58 +23,27 @@ const switchButtonOptions: SwitchButtonOption[] = [
 
 const CodeView: FC<CodeViewProps> = ({
 	id = uuidv4(),
-	mode: modeProp,
-	enableSwitchMode,
+	lang: langProp,
+	enableSwitchLang,
 	componentName,
 	jsContent,
 	tsContent
 }) => {
 	const viewRef = useRef<HTMLDivElement>();
-	const [mode, setMode] = useState<Mode>(modeProp);
+	const [lang, setLang] = useState<Lang>(langProp);
 
-	const isEnableSwitchMode =
-		(typeof enableSwitchMode === "boolean" && enableSwitchMode) ||
-		(typeof enableSwitchMode !== "boolean" && jsContent !== tsContent);
+	const isEnableSwitchLang =
+		(typeof enableSwitchLang === "boolean" && enableSwitchLang) ||
+		(typeof enableSwitchLang !== "boolean" && jsContent !== tsContent);
 
-	const isDisplayTopRight = isEnableSwitchMode || componentName;
+	const isDisplayTopRight = isEnableSwitchLang || componentName;
 
 	if (isDisplayTopRight) {
-		useEffect(() => {
-			if (viewRef.current instanceof HTMLDivElement) {
-				const observerCallback = (_mutations?, observer?) => {
-					const sourceBlockElem =
-						viewRef.current.getElementsByClassName("docblock-source")[0];
-					const switchButtonsElem = viewRef.current.getElementsByClassName(
-						"code-view__top-right"
-					)[0];
-
-					if (
-						sourceBlockElem instanceof HTMLDivElement &&
-						switchButtonsElem instanceof HTMLDivElement
-					) {
-						sourceBlockElem.insertBefore(
-							switchButtonsElem,
-							sourceBlockElem.firstChild
-						);
-
-						if (observer) {
-							observer.disconnect();
-						}
-					}
-				};
-				const observer = new MutationObserver(observerCallback);
-				observerCallback(); // for remount;
-
-				observer.observe(viewRef.current, { childList: true });
-				return () => {
-					observer.disconnect();
-				};
-			}
-		}, []);
+		useCodeViewTopRight(viewRef);
 	}
 
 	let content;
-	switch (mode) {
+	switch (lang) {
 		case "jsx":
 			content = jsContent;
 			break;
@@ -89,23 +59,23 @@ const CodeView: FC<CodeViewProps> = ({
 					{componentName && (
 						<div className="code-view__component-name">{componentName}</div>
 					)}
-					{isEnableSwitchMode && (
+					{isEnableSwitchLang && (
 						<SwitchButtons
-							name={`code-mode-${id}`}
+							name={`code-lang-${id}`}
 							options={switchButtonOptions}
-							value={mode}
-							onChange={({ value }) => setMode(value as Mode)}
+							value={lang}
+							onChange={({ value }) => setLang(value as Lang)}
 						/>
 					)}
 				</div>
 			)}
-			<Source dark={true} language={mode} code={prettifySource({ content })} />
+			<Source dark={true} language={lang} code={prettifySource({ content })} />
 		</div>
 	);
 };
 
 CodeView.defaultProps = {
-	mode: "jsx"
+	lang: "jsx"
 };
 
 export default CodeView;
