@@ -19,6 +19,7 @@ jobs:
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
+          cat ~/.gitconfig
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
 
@@ -47,7 +48,7 @@ jobs:
         run: yarn test
 
       - name: Publish with lerna
-        run: lerna publish --bump=patch --yes
+        run: GITHUB_ACTOR=${GITHUB_ACTOR} lerna publish --bump=patch --yes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
