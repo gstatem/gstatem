@@ -18,10 +18,7 @@ jobs:
         run: |
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
           cat ~/.gitconfig
-        env:
-          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
 
       - name: Authenticate with registry
         run: |
