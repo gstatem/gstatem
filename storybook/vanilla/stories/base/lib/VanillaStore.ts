@@ -3,12 +3,9 @@ import GStatem, { Subscriber, SetOptions } from "gstatem";
 export type StateType = { count: number };
 
 const initialState = { count: 0 };
-const Store = new GStatem<StateType>({
+const { get, set, select } = new GStatem<StateType>({
 	state: initialState
 });
-
-/* static methods to manipulate the store */
-const { get, set, select } = Store;
 
 export const countSelector = state => state.count;
 

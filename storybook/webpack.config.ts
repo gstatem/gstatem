@@ -5,6 +5,6 @@ module.exports = baseConfig => {
 		...baseConfig.config.module.rules,
 		...rules
 	];
-	baseConfig.config.plugins = [...baseConfig.config.plugins, ...plugins];
+	baseConfig.config.plugins = [...baseConfig.config.plugins, plugins[0]];
 	return baseConfig.config;
 };

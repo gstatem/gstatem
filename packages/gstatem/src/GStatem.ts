@@ -7,8 +7,8 @@ import {
 	SetOptions,
 	Subscribers,
 	EqualityFn
-} from "./common/Types";
-import { deepCopy, uuidv4 } from "./common/Utils";
+} from "./common/types";
+import { deepCopy, uuidv4 } from "./common/utils";
 
 /**
  * @template GState, Piece

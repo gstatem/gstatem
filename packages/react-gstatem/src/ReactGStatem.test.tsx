@@ -117,9 +117,6 @@ describe("ReactGStatem test", () => {
 		const counterTests = [];
 		for (let i = 0; i < numOfComponents; i++) {
 			const index = i + 1;
-			// TODO: 2. gen hyperlink for appendix components
-			// TODO: 3. gen README.md examples from storybook examples
-			// TODO: 4. add more examples
 			counterTests.push(
 				<CounterFCTest
 					key={`counter_${index}`}
@@ -174,3 +171,6 @@ describe("ReactGStatem test", () => {
 		expect(middlewareGet(state => state.count)).toBe(1);
 	});
 });
+
+// TODO: 1. gen README.md examples from storybook examples
+// TODO: 2. add more examples

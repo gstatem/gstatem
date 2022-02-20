@@ -1,10 +1,10 @@
-import { create, Subscriber } from "react-gstatem";
+import { create } from "react-gstatem";
 import DevTools from "gstatem-devtools";
 
 export type StateType = { count: number };
 
 const initialState = { count: 0 };
-const Store = create<StateType>(
+const { useSelect, dispatch } = create<StateType>(
 	new DevTools({
 		/* optional, will be displayed as store id in devtools */
 		id: "fc-store-with-devtools",
@@ -12,17 +12,8 @@ const Store = create<StateType>(
 	})
 );
 
-/* static methods to manipulate the store */
-const { useSelect, select, dispatch } = Store;
-
-const countSelector = state => state.count;
-
 /* select count hook for function component */
-export const useCount = () => useSelect(countSelector);
-
-/* select count for non function component */
-export const selectCount = (subscribe: Subscriber<StateType>) =>
-	select<number>(countSelector, subscribe);
+export const useCount = () => useSelect(state => state.count);
 
 /* update the store with callback */
 export const increaseCount = () =>

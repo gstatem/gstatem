@@ -1,3 +1,3 @@
 export * from "./ReactGStatem";
-export * from "./common/Types";
+export * from "./common/types";
 export * from "gstatem";

@@ -1,9 +1,14 @@
 import React, { FC, useState, useRef } from "react";
 import { Source } from "@storybook/addon-docs";
-import { prettifySource, RawFileContent } from "../../../base/lib/utils";
+import {
+	appendTopRight,
+	genCodeTokenLinks,
+	prettifySource
+} from "../../../base/lib/utils";
+import { FiddleCodeView, RawFileContent } from "../../../base/lib/types";
 import { uuidv4 } from "gstatem";
 import { SwitchButtons, SwitchButtonOption } from "gstatem-devtools";
-import useCodeViewTopRight from "../hooks/useCodeViewTopRight";
+import useCodeBlock from "../hooks/useCodeBlock";
 
 type Lang = "jsx" | "tsx";
 
@@ -20,6 +25,11 @@ const switchButtonOptions: SwitchButtonOption[] = [
 	{ value: "jsx", desc: "JS" },
 	{ value: "tsx", desc: "TS" }
 ];
+
+const onCodeBlockMount: FiddleCodeView = (codeView, sourceBlock) => {
+	appendTopRight(codeView, sourceBlock);
+	genCodeTokenLinks(codeView, sourceBlock);
+};
 
 const CodeView: FC<CodeViewProps> = ({
 	id = uuidv4(),
@@ -38,9 +48,7 @@ const CodeView: FC<CodeViewProps> = ({
 
 	const isDisplayTopRight = isEnableSwitchLang || componentName;
 
-	if (isDisplayTopRight) {
-		useCodeViewTopRight(viewRef);
-	}
+	useCodeBlock(viewRef, onCodeBlockMount);
 
 	let content;
 	switch (lang) {

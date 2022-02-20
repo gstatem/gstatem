@@ -3,10 +3,7 @@ import { create, Subscriber } from "react-gstatem";
 export type StateType = { count: number };
 
 const initialState = { count: 0 };
-const Store = create<StateType>({ state: initialState });
-
-/* static methods to manipulate the store */
-const { select, dispatch } = Store;
+const { select, dispatch } = create<StateType>({ state: initialState });
 
 /* select count for non function component */
 export const selectCount = (subscribe: Subscriber<StateType>) =>

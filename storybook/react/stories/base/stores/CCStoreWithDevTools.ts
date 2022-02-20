@@ -4,16 +4,13 @@ import DevTools from "gstatem-devtools";
 export type StateType = { count: number };
 
 const initialState = { count: 0 };
-const Store = create<StateType>(
+const { select, dispatch } = create<StateType>(
 	new DevTools({
 		/* optional, will be displayed as store id in devtools */
 		id: "cc-store-with-devtools",
 		state: initialState
 	})
 );
-
-/* static methods to manipulate the store */
-const { select, dispatch } = Store;
 
 /* select count for non function component */
 export const selectCount = (subscribe: Subscriber<StateType>) =>

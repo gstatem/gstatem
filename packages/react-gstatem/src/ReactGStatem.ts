@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect } from "react";
 import GStatem, { State, Init } from "gstatem";
-import { ReactGStatem } from "./common/Types";
+import { ReactGStatem } from "./common/types";
 
 export const init = <GState extends State>(
 	statem: GStatem<GState>

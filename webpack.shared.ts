@@ -47,11 +47,11 @@ module.exports = {
 		}
 	],
 	plugins: [
-		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
 			filename: "[name].[contenthash:8].css",
 			chunkFilename: "[id].[name].[contenthash:8].css"
-		})
+		}),
+		new CleanWebpackPlugin()
 	],
 	optimization: {
 		minimize: true,

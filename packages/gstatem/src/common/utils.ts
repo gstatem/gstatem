@@ -1,4 +1,4 @@
-import { State, ValueOf } from "./Types";
+import { State, ValueOf } from "./types";
 
 export const deepCopy = <T extends State>(
 	inObj: T | ValueOf<T> | object

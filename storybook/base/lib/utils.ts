@@ -1,17 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type RawFileContent = string | any;
+import { FiddleCodeView, PrettifySource } from "./types";
+import { FilesInfo } from "../../gen_js";
 
-export type PrettifySource = (payload: {
-	content: string;
-	isRemoveExportForConst?: boolean;
-	replacements?: {
-		searchValue: string;
-		replaceValue: string;
-	}[];
-	isRemoveComments?: boolean;
-	tabWidth?: number;
-	isTrimImportDir?: boolean;
-}) => string;
+const filesInfo: FilesInfo = require("../../dist/files-info.json");
 
 export const defaultDocParams = () => ({
 	viewMode: "docs",
@@ -71,4 +61,54 @@ export const prettifySource: PrettifySource = ({
 
 	returnContent = returnContent.replace(/\t/g, " ".repeat(tabWidth));
 	return returnContent;
+};
+
+export const observeUntil = (
+	element: HTMLElement,
+	callback: (element: HTMLElement) => boolean | unknown,
+	observeOptions: MutationObserverInit = { childList: true }
+) => {
+	if (!(element instanceof HTMLElement)) return;
+
+	const observerCallback = (_mutations?, observer?) => {
+		const isObserveDone = callback(element);
+		if (isObserveDone && observer) {
+			observer.disconnect();
+		}
+	};
+	const observer = new MutationObserver(observerCallback);
+	observerCallback(); // for remount;
+
+	observer.observe(element, observeOptions);
+	return () => {
+		observer.disconnect();
+	};
+};
+
+export const appendTopRight: FiddleCodeView = (codeView, sourceBlock) => {
+	const topRightElement = codeView.getElementsByClassName(
+		"code-view__top-right"
+	)[0];
+	if (topRightElement instanceof HTMLDivElement) {
+		sourceBlock.insertBefore(topRightElement, sourceBlock.firstChild);
+	}
+};
+
+export const genCodeTokenLinks: FiddleCodeView = (_codeView, sourceBlock) => {
+	setTimeout(() => {
+		const codeBody = sourceBlock.getElementsByTagName("code")[0];
+		observeUntil(codeBody, () => {
+			const elements = sourceBlock.getElementsByClassName("token class-name");
+			for (const element of elements) {
+				const { innerHTML: filename } = element;
+				const { storybookPath } = filesInfo[filename] || {};
+				if (storybookPath) {
+					element.classList.add("code-view__token-jump");
+					element.addEventListener("click", () => {
+						parent.location.search = `path=${storybookPath}`;
+					});
+				}
+			}
+		});
+	}, 300);
 };

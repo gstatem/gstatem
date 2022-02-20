@@ -1,3 +1,5 @@
+import { AppendixComponents } from "./base/lib/types";
+
 const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
@@ -9,6 +11,7 @@ const outputDir = path.resolve(path.join(__dirname, "./dist"));
 const eslintConfigPath = path.join(parentDir, ".eslintrc");
 const resourceDirs = ["base", "react", "vanilla"];
 const blankLineKey = "//_blank-line";
+const appendixComponentsInfo: AppendixComponents = require("./base/lib/appendix-components.json");
 
 type WalkPath<T> = (
 	baseDir: T,
@@ -34,6 +37,7 @@ export type FileInfo = {
 	extName: string;
 	relativeFilePath: string;
 	fullFilePath: string;
+	storybookPath?: string;
 };
 
 export type FilesInfo = {
@@ -103,6 +107,15 @@ const replaceInFiles: ReplaceInFiles = ({
 				relativeFilePath: path.join(".", filePath.replace(__dirname, "")),
 				fullFilePath: filePath
 			};
+			const { path: storybookPath } =
+				appendixComponentsInfo[fileBasename] ||
+				appendixComponentsInfo[filename] ||
+				{};
+
+			if (storybookPath) {
+				config.storybookPath = storybookPath;
+			}
+
 			filesInfo[fileBasename] = config;
 			filesInfo[filename] = config;
 
@@ -122,15 +135,21 @@ const replaceInFiles: ReplaceInFiles = ({
 };
 
 (async () => {
-	console.log("Generating JS files...");
+	console.log("Start Generating files...\n");
 	rimraf.sync(outputDir);
+	fs.mkdirSync(outputDir, { recursive: true });
 
 	const filesInfo = replaceInFiles({
 		dirs: resourceDirs,
 		searchValue: /\n{2}/g,
 		replaceValue: `\n${blankLineKey}\n`
 	});
-	console.log("==filesInfo", filesInfo);
+
+	const filesInfoFilePath = path.join(outputDir, "files-info.json");
+	fs.writeFileSync(filesInfoFilePath, JSON.stringify(filesInfo), {
+		encoding: "utf-8"
+	});
+	console.log(`Generated files info to [${filesInfoFilePath}].\n`);
 
 	const toJsCmd = `tsc -p ${workDir}`;
 	console.log(toJsCmd);
