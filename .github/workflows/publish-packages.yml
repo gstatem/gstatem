@@ -48,7 +48,7 @@ jobs:
         run: yarn test
 
       - name: Publish with lerna
-        run: GITHUB_ACTOR=${GITHUB_ACTOR} lerna publish --bump=patch --yes
+        run: GITHUB_ACTOR=${GITHUB_ACTOR} GH_TOKEN=${GH_TOKEN} lerna publish --bump=patch --yes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
