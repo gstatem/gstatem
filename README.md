@@ -13,8 +13,7 @@ npm i react-gstatem
 yarn add react-gstatem
 ```
 
-## Demo
-https://codesandbox.io/s/react-gstatem-with-devtools-ywi2l
+### [Demos](https://gstatem.netlify.app/)
 
 ## Basic usage of function component
 ### Create a store

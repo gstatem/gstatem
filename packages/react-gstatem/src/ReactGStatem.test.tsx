@@ -171,6 +171,3 @@ describe("ReactGStatem test", () => {
 		expect(middlewareGet(state => state.count)).toBe(1);
 	});
 });
-
-// TODO: 1. gen README.md examples from storybook examples
-// TODO: 2. add more examples

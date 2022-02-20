@@ -36,11 +36,7 @@ class GStatem<GState extends State> {
 	 *
 	 * @returns {Piece} The selected piece.
 	 *
-	 * @example
-	 * import GStatem from "gstatem";
-	 *
-	 * const { get } = new GStatem();
-	 * const count = get(state => state.count);
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page}
 	 */
 	get<Piece>(selector: Selector<GState, Piece>): Piece {
 		if (selector instanceof Function) {
@@ -56,15 +52,7 @@ class GStatem<GState extends State> {
 	 *
 	 * @returns {void}
 	 *
-	 * @example
-	 * import GStatem from "gstatem";
-	 *
-	 * const { set } = new GStatem();
-	 *
-	 * // Set with piece.
-	 * set({ count: 2 });
-	 * // Set with callback.
-	 * set(state => ({ count: state.count + 1 }));
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page}
 	 */
 	set(
 		piece: GState | SelectState<GState>,
@@ -102,18 +90,7 @@ class GStatem<GState extends State> {
 	 *
 	 * @returns {VoidFunction} The unsubscribe function.
 	 *
-	 * @example
-	 * import GStatem from "gstatem";
-	 *
-	 * const { set, subscribe } = new GStatem({ state: { count: 0 } });
-	 *
-	 * const selector = state => state.count;
-	 * const subscriber = state => {
-	 *   console.log("count is updated", state.count);
-	 * };
-	 * subscribe(selector, subscriber);
-	 *
-	 * set(state => ({ count: state.count + 1}));
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page}
 	 */
 	subscribe(
 		selector: Selector<GState>,
@@ -137,18 +114,7 @@ class GStatem<GState extends State> {
 	 *
 	 * @returns {void}
 	 *
-	 * @example
-	 * import GStatem from "gstatem";
-	 *
-	 * const { subscribe, unsubscribe } = new GStatem({ state: { count: 0 } });
-	 *
-	 * const selector = state => state.count;
-	 * const subscriber = state => {
-	 *   console.log("count is updated", state.count);
-	 * };
-	 * subscribe(selector, subscriber);
-	 *
-	 * unsubscribe(subscriber);
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page}
 	 */
 	unsubscribe(subscribe: Subscriber<GState>): void {
 		const subscriber = this.subscribers.get(subscribe);
@@ -165,6 +131,8 @@ class GStatem<GState extends State> {
 	 * @param {GState|SelectState<GState>} piece - The piece the state or a callback to select and return the piece of the state.
 	 *
 	 * @returns {void}
+	 *
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page}
 	 */
 	dispatch(piece: GState | SelectState<GState>): void {
 		this.set(piece, { isDispatch: true });
@@ -179,6 +147,8 @@ class GStatem<GState extends State> {
 	 * @param {EqualityFn<GState>} [equalityFn] - The equality function.
 	 *
 	 * @returns {[Piece, VoidFunction]} The subscribing piece and the unsubscribe function.
+	 *
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page}
 	 */
 	select<Piece>(
 		selector: Selector<GState, Piece>,

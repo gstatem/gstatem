@@ -42,10 +42,7 @@ export const newStatem = <GState extends State>(config?: Init<GState>) =>
  *
  * @returns {ReactGStatem<GState>} Returns the store.
  *
- * @example
- * import { create } from "react-gstatem";
- *
- * const statem = create({ state: { count: 0 } });
+ * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/react-function-component-basic-usage--page}
  */
 export const create = <GState extends State>(
 	config?: Init<GState> | GStatem<GState>

@@ -10,22 +10,7 @@ export interface ReactGStatem<GState extends State> {
 	 *
 	 * @returns {Piece} The subscribing piece.
 	 *
-	 * @example
-	 * import { create } from "react-gstatem";
-	 *
-	 * const { useSelect, dispatch } = create({ state: { count: 0 } });
-	 *
-	 * export default = () => {
-	 *   const count = useSelect(state => state.count);
-	 *
-	 *   return (
-	 *     <Counter
-	 *       value={count}
-	 *       onIncrement={() => dispatch(({ count }) => ({ count: count + 1 }))}
-	 *       onDecrement={() => dispatch(({ count }) => ({ count: count - 1 }))}
-	 *     />
-	 *   );
-	 * };
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/react-function-component-basic-usage--page}
 	 */
 	useSelect: <Piece>(
 		selector: Selector<GState, Piece>,
@@ -44,6 +29,8 @@ export interface ReactGStatem<GState extends State> {
 	/**
 	 * @see {@link GStatem#dispatch}
 	 * Dispatch a piece of state, the relevant subscribe functions and the components will be triggered.
+	 *
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/react-function-component-basic-usage--page}
 	 */
 	dispatch: (piece: GState | SelectState<GState>) => void;
 
