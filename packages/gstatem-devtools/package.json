@@ -1,7 +1,7 @@
 {
 	"name": "gstatem-devtools",
 	"description": "Gstatem devtools",
-	"version": "1.0.0-alpha.14",
+	"version": "1.0.0",
 	"author": "shuieryin",
 	"main": "dist/index.js",
 	"scripts": {
@@ -14,7 +14,7 @@
 		"start": "yarn clean && webpack-dev-server"
 	},
 	"dependencies": {
-		"gstatem": "^1.0.0-alpha.12"
+		"gstatem": "^1.0.0"
 	},
 	"license": "MIT",
 	"repository": {
