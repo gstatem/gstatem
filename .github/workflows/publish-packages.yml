@@ -53,3 +53,12 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Update gstatem packages for dev dependencies
+        run: |
+          yarn updep
+          git commit -am "Update gstatem packages for dev dependencies"
+          git push --force origin
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
