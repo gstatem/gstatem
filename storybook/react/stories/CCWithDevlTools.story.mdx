@@ -3,8 +3,8 @@ import { defaultDocParams } from "../../base/lib/utils";
 import CodeView from "../base/components/CodeView";
 
 import CCWithDevTools from "./base/components/CCWithDevTools";
-import StateJsContent from "!raw-loader!../../dist/react/stories/base/lib/StoreWithDevTools";
-import StateTsContent from "!raw-loader!./base/lib/StoreWithDevTools";
+import StateJsContent from "!raw-loader!../../dist/react/stories/base/stores/CCStoreWithDevTools";
+import StateTsContent from "!raw-loader!./base/stores/CCStoreWithDevTools";
 
 import WithDevToolsJsContent from "!raw-loader!../../dist/react/stories/base/components/CCWithDevTools";
 import WithDevToolsTsContent from "!raw-loader!./base/components/CCWithDevTools";
@@ -29,7 +29,7 @@ import WithDevToolsTsContent from "!raw-loader!./base/components/CCWithDevTools"
 **Create a store**
 
 <CodeView
-	componentName="StoreWithDevTools"
+	componentName="CCStoreWithDevTools"
 	jsContent={StateJsContent}
 	tsContent={StateTsContent}
 />

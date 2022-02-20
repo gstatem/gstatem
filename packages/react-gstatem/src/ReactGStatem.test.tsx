@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import { create, EqualityFn, State } from "./";
 import CounterFC from "../../../storybook/react/base/components/Counter";
+import GStatem, { Init, SelectState, SetOptions } from "gstatem";
 
 type StateProps = {
 	count?: number;
@@ -13,11 +14,12 @@ type CounterTestProps<T extends State> = {
 	customHooks?: VoidFunction;
 };
 
-const { useSelect, dispatch, get, set, select } = create<StateProps>({
-	state: { count: 0 }
-});
+const initialConfig = { state: { count: 0 } };
+const countSelector = state => state.count;
+const { useSelect, dispatch, get, set, select, subscribe, unsubscribe } =
+	create<StateProps>(initialConfig);
 
-const increaseCount = () => dispatch(({ count }) => ({ count: count + 1 }));
+const increaseCount = () => dispatch(state => ({ count: state.count + 1 }));
 const reset = () => dispatch({ count: 0 });
 
 const CounterFCTest: FC<CounterTestProps<StateProps>> = ({
@@ -41,9 +43,8 @@ class CounterCC extends Component<object, StateProps> {
 	constructor(props) {
 		super(props);
 
-		const [count, unsubCount] = select(
-			({ count }) => count,
-			({ count }) => this.setState({ count })
+		const [count, unsubCount] = select(countSelector, state =>
+			this.setState({ count: state.count })
 		);
 		this.unsubscribes.push(unsubCount);
 
@@ -64,6 +65,20 @@ class CounterCC extends Component<object, StateProps> {
 	}
 }
 
+class Middleware<GState extends State> extends GStatem<GState> {
+	constructor(config?: Init<GState>) {
+		super(config);
+	}
+
+	set = (
+		piece: GState | SelectState<GState>,
+		setOptions?: SetOptions
+	): void => {
+		/* do something before set */
+		return super.set(piece, setOptions);
+	};
+}
+
 describe("ReactGStatem test", () => {
 	it("renders Counter component", () => {
 		render(<CounterFCTest />);
@@ -74,7 +89,7 @@ describe("ReactGStatem test", () => {
 		screen.getByText("Clicked: 1 times");
 
 		set({ count: 5 });
-		expect(get(({ count }) => count)).toBe(5);
+		expect(get(countSelector)).toBe(5);
 	});
 
 	it("Custom equalityFn", () => {
@@ -110,7 +125,7 @@ describe("ReactGStatem test", () => {
 					key={`counter_${index}`}
 					customHooks={() => {
 						for (let i = 0; i < numOfSelectorForEach; i++) {
-							useSelect(({ count }) => count);
+							useSelect(countSelector);
 						}
 					}}
 				/>
@@ -132,7 +147,7 @@ describe("ReactGStatem test", () => {
 		screen.getAllByText("Clicked: 0 times");
 	});
 
-	it("GSC for class component", () => {
+	it("Class component", () => {
 		render(<CounterCC />);
 		screen.getByText("Count: 0");
 
@@ -141,5 +156,21 @@ describe("ReactGStatem test", () => {
 		});
 		fireEvent.click(increaseCountButton);
 		screen.getByText("Count: 1");
+	});
+
+	it("Pure subscribe and unsubscribe", () => {
+		const subscribeFn = state => {
+			expect(typeof state.count).toBe("number");
+		};
+		subscribe(countSelector, subscribeFn);
+		unsubscribe(subscribeFn);
+	});
+
+	it("Middleware test", () => {
+		const { get: middlewareGet, set: middlewareSet } = create<StateProps>(
+			new Middleware<StateProps>(initialConfig)
+		);
+		middlewareSet({ count: 1 });
+		expect(middlewareGet(state => state.count)).toBe(1);
 	});
 });

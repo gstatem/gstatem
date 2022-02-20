@@ -1,5 +1,4 @@
-import GStatem from "gstatem";
-import { SetOptions } from "gstatem/dist/common/Types";
+import GStatem, { Subscriber, SetOptions } from "gstatem";
 
 export type StateType = { count: number };
 
@@ -8,8 +7,16 @@ const Store = new GStatem<StateType>({
 	state: initialState
 });
 
-/* export static methods to manipulate the store */
-export const { get, set, subscribe, unsubscribe } = Store;
+/* static methods to manipulate the store */
+const { get, set, select } = Store;
+
+export const countSelector = state => state.count;
+
+export const getCount = get(countSelector);
+
+/* select count for non function component */
+export const selectCount = (subscribe: Subscriber<StateType>) =>
+	select<number>(countSelector, subscribe);
 
 /* update the store with callback */
 export const increaseCount = (options?: SetOptions) =>

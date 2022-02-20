@@ -26,6 +26,7 @@ class GStatem<GState extends State> {
 		this.subscribe = this.subscribe.bind(this);
 		this.unsubscribe = this.unsubscribe.bind(this);
 		this.select = this.select.bind(this);
+		this.dispatch = this.dispatch.bind(this);
 	}
 
 	/**
@@ -35,7 +36,7 @@ class GStatem<GState extends State> {
 	 *
 	 * @returns {Piece} The selected piece.
 	 *
-	 * @example - Get the value by selector.
+	 * @example
 	 * import GStatem from "gstatem";
 	 *
 	 * const { get } = new GStatem();
@@ -93,7 +94,7 @@ class GStatem<GState extends State> {
 	}
 
 	/**
-	 * Subscribe a piece of state value by, the subscriber function is called whenever selected piece of state is updated.
+	 * Subscribe a piece of state, the subscriber function will be triggered whenever selected piece of state is updated.
 	 *
 	 * @param {Selector<GState>} selector - The selector function to select value from the state.
 	 * @param {Subscriber<GState>} subscriber - The subscriber function.
@@ -158,8 +159,20 @@ class GStatem<GState extends State> {
 	}
 
 	/**
+	 * @template GState
+	 * Dispatch a piece of state, the relevant subscribe functions will be triggered.
+	 *
+	 * @param {GState|SelectState<GState>} piece - The piece the state or a callback to select and return the piece of the state.
+	 *
+	 * @returns {void}
+	 */
+	dispatch(piece: GState | SelectState<GState>): void {
+		this.set(piece, { isDispatch: true });
+	}
+
+	/**
 	 * @template GState, Piece
-	 * Subscribe state piece with selector function, when the selected piece is dispatched, the subscriber function is invoked and the component that wraps the useSelect is re-rendered.
+	 * Subscribe a piece of state, when the selected piece is dispatched, the subscriber function is invoked.
 	 *
 	 * @param {Selector<GState, Piece>} selector - The selector function.
 	 * @param {Subscriber<GState>} subscriber - The subscriber function.

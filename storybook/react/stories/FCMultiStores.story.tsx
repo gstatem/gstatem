@@ -1,7 +1,7 @@
 import React from "react";
 import Counter from "../base/components/Counter";
-import Store1 from "./base/lib/MultiStore1";
-import Store2 from "./base/lib/MultiStore2";
+import Store1 from "./base/stores/MultiStore1";
+import Store2 from "./base/stores/MultiStore2";
 
 // noinspection JSUnusedGlobalSymbols
 export default {

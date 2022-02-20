@@ -4,7 +4,7 @@ import {
 	increaseCount,
 	resetCount,
 	selectCount
-} from "../lib/StoreWithDevTools";
+} from "../stores/CCStoreWithDevTools";
 import Counter from "../../../base/components/Counter";
 
 class CCWithDevTools extends Component<object, StateType> {
@@ -14,8 +14,9 @@ class CCWithDevTools extends Component<object, StateType> {
 		super(props);
 
 		/* select the piece in constructor */
-		const [count, unsubCount] = selectCount(state =>
-			this.setState({ count: state.count })
+		const [count, unsubCount] = selectCount(
+			/* subscriber */
+			state => this.setState({ count: state.count })
 		);
 		/* store the unsubscribe function of the selected piece */
 		this.unsubscribes.push(unsubCount);

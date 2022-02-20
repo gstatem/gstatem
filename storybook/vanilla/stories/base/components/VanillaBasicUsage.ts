@@ -1,22 +1,21 @@
 import {
 	increaseCount,
 	resetCount,
-	get,
-	subscribe,
-	unsubscribe
+	getCount,
+	selectCount
 } from "../lib/VanillaStore";
 
-const selector = state => state.count;
-
-console.log(get(selector)); // count is 0
+console.log(getCount()); // count is 0
 
 increaseCount();
-console.log(get(selector)); // count is 1
+console.log(getCount()); // count is 1
 
-/* prints updated count */
-const subscribeFn = state => console.log("updated count", state.count);
+/* select count */
+const [count, unsubCount] = selectCount(state =>
+	console.log("updated count", state.count)
+);
+console.log(count); // count is 1
 
-const unsubscribeFn = subscribe(selector, subscribeFn);
 /* triggers the subscribe function */
 increaseCount({ isDispatch: true });
 
@@ -24,7 +23,6 @@ increaseCount({ isDispatch: true });
 resetCount();
 
 window.onbeforeunload = () => {
-	unsubscribe(subscribeFn);
-	/* alternative way of unsubscribe */
-	unsubscribeFn();
+	/* unsubscribe count on page unload */
+	unsubCount();
 };

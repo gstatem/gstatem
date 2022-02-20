@@ -5,16 +5,12 @@ export type StateType = { count: number };
 const initialState = { count: 0 };
 const Store = create<StateType>({ state: initialState });
 
-const { useSelect, select, dispatch } = Store;
-
-const countSelector = state => state.count;
-
-/* select count hook for function component */
-export const useCount = () => useSelect(countSelector);
+/* static methods to manipulate the store */
+const { select, dispatch } = Store;
 
 /* select count for non function component */
 export const selectCount = (subscribe: Subscriber<StateType>) =>
-	select<number>(countSelector, subscribe);
+	select<number>(state => state.count, subscribe);
 
 /* update the store with callback */
 export const increaseCount = () =>

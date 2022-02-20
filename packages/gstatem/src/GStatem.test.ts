@@ -95,14 +95,14 @@ describe("GStatem tests", () => {
 
 	it("Performance testing", () => {
 		const numOfSelectors = 100000;
-		const { set, subscribe } = new GStatem({ state: { count: 0 } });
+		const { dispatch, subscribe } = new GStatem({ state: { count: 0 } });
 
 		for (let i = 0; i < numOfSelectors; i++) {
 			subscribe(countSelector, () => {});
 		}
 
 		const t1 = performance.now();
-		set({ count: 9 }, { isDispatch: true });
+		dispatch({ count: 9 });
 		console.log(
 			`${numOfSelectors} selectors took ${performance.now() - t1} ms.`
 		);
