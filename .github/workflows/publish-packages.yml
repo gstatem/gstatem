@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.ADMIN_TOKEN }}
       - uses: actions/setup-node@v2
         with:
           node-version: 16.x
@@ -20,10 +18,10 @@ jobs:
         run: |
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git remote set-url origin https://$GITHUB_ACTOR:$ADMIN_TOKEN@github.com/gstatem/gstatem
+          git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_PAT@github.com/gstatem/gstatem
           cat ~/.gitconfig
         env:
-          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
 
       - name: Authenticate with registry
         run: |
