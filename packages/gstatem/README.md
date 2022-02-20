@@ -15,31 +15,44 @@ yarn add gstatem
 ### Create a store
 ```typescript jsx
 // Store.ts
-import GStatem from "gstatem";
+import GStatem, { Subscriber, SetOptions } from "gstatem";
 
-export default new GStatem({
-  state: { count: 0 } // init value
+const { get, set, select } = new GStatem<StateType>({
+	state: { count: 0 }
 });
+
+export const countSelector = state => state.count;
+
+export const getCount = get(countSelector);
+
+/* select count for non function component */
+export const selectCount = (subscribe: Subscriber<StateType>) =>
+  select<number>(countSelector, subscribe);
+
+/* update the store with callback */
+export const increaseCount = (options?: SetOptions) =>
+  set(state => ({ count: state.count + 1 }), options);
 ```
 
 ### Use without react
 ```typescript jsx
-import Store from "./Store";
-const { get, set, subscribe, unsubscribe } = Store;
+import {
+  increaseCount,
+  selectCount,
+  getCount
+} from "./Store";
 
-console.log(get(({ count }) => count)); // count is 0
-
-set(({ count }) => ({ count: count + 1 }));
-console.log(get(({ count }) => count)); // count is 1
-
-// prints updated count
-const subscribeFn = ({ count }) => console.log("updated count", count);
-
-subscribe(
-  ({ count }) => count,
-  subscribeFn
+/* select count */
+const [count, unsubCount] = selectCount(state =>
+  console.log("updated count", state.count)
 );
-set(({ count }) => ({ count: count + 1 }), { isDispatch: true }); // triggers the subscribe function
+console.log(count); // count is 0
 
-window.onbeforeunload = () => unsubscribe(subscribeFn);
+increaseCount(); // count is 1
+console.log(getCount()); // count is 1
+
+window.onbeforeunload = () => {
+  /* unsubscribe count on page unload */
+  unsubCount();
+};
 ```
