@@ -1,0 +1,43 @@
+@block-color: #202124;
+
+.custom-docs-story {
+	color: white;
+	background-color: @block-color !important;
+	.docblock-code-toggle {
+		display: none;
+	}
+}
+
+.docblock-source {
+	background-color: @block-color !important;
+	.language-jsx, .language-tsx {
+		font-family: Consolas, serif;
+		font-size: 15px;
+		font-weight: 550;
+	}
+}
+
+.code-view {
+	.code-view__top-right {
+		position: absolute;
+		z-index: 2;
+		right: 0;
+		display: flex;
+
+		.code-view__component-name {
+			font-family: Courier, serif;
+			font-weight: 600;
+			font-size: 13px;
+			color: lightgray;
+			padding: 0 10px;
+			border-bottom: 1px solid;
+			line-height: 30px;
+			height: 30px;
+		}
+	}
+}
+
+.code-view__token-jump {
+	border-bottom: 1px solid;
+	cursor: pointer;
+}

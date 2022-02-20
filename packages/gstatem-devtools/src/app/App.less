@@ -20,42 +20,6 @@
 	font-family: monaco, Consolas, "Lucida Console", monospace;
 }
 
-.gs-toggle {
-	display: inline-flex;
-	border: 1px solid @even-more-lighter;
-	border-radius: 2px;
-}
-
-.gs-toggle > label {
-	cursor: pointer;
-}
-
-.gs-toggle > label > input[type=radio] {
-	display: none;
-}
-
-.gs-toggle > label > input[type=radio]:checked + div {
-	color: #fff;
-	opacity: 1;
-	background: @even-more-lighter;
-}
-
-.gs-toggle > label > input[type=radio]:disabled {
-	cursor: not-allowed !important;
-}
-
-.gs-toggle > label > input[type=radio] + div {
-	color: hsla(0, 0%, 100%, 0.66);
-	padding: 5px 10px;
-	text-align: center;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: 12px;
-	font-weight: 700;
-	user-select: none;
-}
-
 button.current {
 	box-shadow: 0 0 0 2px white,
 	0 0 0 4px black;

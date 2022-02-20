@@ -1,4 +1,12 @@
 {
+	"parserOptions": {
+		"ecmaVersion": 6,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true,
+			"modules": true
+		}
+	},
 	"parser": "@babel/eslint-parser",
 	"rules": {
 		"no-console": "off",
@@ -11,10 +19,11 @@
 	"extends": [
 		"eslint:recommended",
 		"plugin:prettier/recommended",
-		"plugin:react/recommended"
+		"plugin:react/recommended",
+		"plugin:mdx/recommended"
 	],
 	"plugins": [
-		"import"
+		"import", "jsx-a11y", "react"
 	],
 	"env": {
 		"browser": true,
@@ -44,6 +53,18 @@
 				"@typescript-eslint/no-empty-function": "off",
 				"@typescript-eslint/no-var-requires": "off"
 			}
+		},
+		{
+			"files": ["**/*.{md,mdx}"],
+			"extends": ["plugin:mdx/overrides", "plugin:mdx/code-blocks"],
+			"rules": {
+				"semi": "off"
+			}
 		}
-	]
+	],
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	}
 }

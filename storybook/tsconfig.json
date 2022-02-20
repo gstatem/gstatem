@@ -1,0 +1,12 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"jsx": "preserve",
+		"pretty": true,
+		"removeComments": false,
+		"preserveValueImports": true,
+		"preserveSymlinks": true,
+		"outDir": "./dist"
+	},
+	"include": ["./react", "./vanilla"]
+}

@@ -7,8 +7,8 @@ import {
 	SetOptions,
 	Subscribers,
 	EqualityFn
-} from "./common/Types";
-import { deepCopy, uuidv4 } from "./common/Utils";
+} from "./common/types";
+import { deepCopy, uuidv4 } from "./common/utils";
 
 /**
  * @template GState, Piece
@@ -25,16 +25,18 @@ class GStatem<GState extends State> {
 		this.set = this.set.bind(this);
 		this.subscribe = this.subscribe.bind(this);
 		this.unsubscribe = this.unsubscribe.bind(this);
+		this.select = this.select.bind(this);
+		this.dispatch = this.dispatch.bind(this);
 	}
 
 	/**
-	 * Get state value.
+	 * Get a piece of state.
 	 *
 	 * @param {Selector<GState, Piece>} selector - The selector function to select value from the state.
 	 *
 	 * @returns {Piece} The selected piece.
 	 *
-	 * @example - Get the value by selector.
+	 * @example
 	 * import GStatem from "gstatem";
 	 *
 	 * const { get } = new GStatem();
@@ -47,7 +49,7 @@ class GStatem<GState extends State> {
 	}
 
 	/**
-	 * Set a piece to state.
+	 * Set a piece of state.
 	 *
 	 * @param {GState|SelectState<GState>} piece - The piece the state or a callback to select and return the piece of the state.
 	 * @param {SetOptions} [options] - Options for the set method.
@@ -92,7 +94,7 @@ class GStatem<GState extends State> {
 	}
 
 	/**
-	 * Subscribe a piece of state value by, the subscriber function is called whenever selected piece of state is updated.
+	 * Subscribe a piece of state, the subscriber function will be triggered whenever selected piece of state is updated.
 	 *
 	 * @param {Selector<GState>} selector - The selector function to select value from the state.
 	 * @param {Subscriber<GState>} subscriber - The subscriber function.
@@ -107,7 +109,7 @@ class GStatem<GState extends State> {
 	 *
 	 * const selector = state => state.count;
 	 * const subscriber = state => {
-	 *      console.log("count is updated", state.count);
+	 *   console.log("count is updated", state.count);
 	 * };
 	 * subscribe(selector, subscriber);
 	 *
@@ -142,7 +144,7 @@ class GStatem<GState extends State> {
 	 *
 	 * const selector = state => state.count;
 	 * const subscriber = state => {
-	 *      console.log("count is updated", state.count);
+	 *   console.log("count is updated", state.count);
 	 * };
 	 * subscribe(selector, subscriber);
 	 *
@@ -154,6 +156,37 @@ class GStatem<GState extends State> {
 			const { unsubscribe } = subscriber;
 			unsubscribe();
 		}
+	}
+
+	/**
+	 * @template GState
+	 * Dispatch a piece of state, the relevant subscribe functions will be triggered.
+	 *
+	 * @param {GState|SelectState<GState>} piece - The piece the state or a callback to select and return the piece of the state.
+	 *
+	 * @returns {void}
+	 */
+	dispatch(piece: GState | SelectState<GState>): void {
+		this.set(piece, { isDispatch: true });
+	}
+
+	/**
+	 * @template GState, Piece
+	 * Subscribe a piece of state, when the selected piece is dispatched, the subscriber function is invoked.
+	 *
+	 * @param {Selector<GState, Piece>} selector - The selector function.
+	 * @param {Subscriber<GState>} subscriber - The subscriber function.
+	 * @param {EqualityFn<GState>} [equalityFn] - The equality function.
+	 *
+	 * @returns {[Piece, VoidFunction]} The subscribing piece and the unsubscribe function.
+	 */
+	select<Piece>(
+		selector: Selector<GState, Piece>,
+		subscriber: Subscriber<GState>,
+		equalityFn?: EqualityFn<GState>
+	): [Piece, VoidFunction] {
+		const unsubscribe = this.subscribe(selector, subscriber, equalityFn);
+		return [this.get(selector), unsubscribe];
 	}
 }
 

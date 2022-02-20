@@ -1,4 +1,4 @@
-import GStatem from "./";
+import GStatem, { Selector, Subscriber } from "./";
 
 type State = {
 	color?: string;
@@ -9,48 +9,59 @@ type State = {
 };
 
 describe("GStatem tests", () => {
-	const { get, set, subscribe, unsubscribe } = new GStatem<State>({
+	const { get, set, subscribe, unsubscribe, select } = new GStatem<State>({
 		state: {
 			color: "gray",
 			names: ["Kate", "Jin"]
 		}
 	});
 
+	const countSelector: Selector<State> = state => state.count;
+	const count2Selector: Selector<State> = state => state.count2;
+	const count3Selector: Selector<State> = state => state.count3;
+	const countSubscriber: Subscriber<State> = state => {
+		expect(typeof state.count).toBe("number");
+	};
+
 	it("Verify init values", () => {
 		expect(get(state => state.color)).toBe("gray");
 		expect(get(state => state.names).length).toBe(2);
 	});
 
-	it("Set value", () => {
+	it("Set piece", () => {
 		set({ count: 1 });
-		expect(get(({ count }) => count)).toBe(1);
+		expect(get(countSelector)).toBe(1);
 
 		set({ count: 2 });
-		expect(get(({ count }) => count)).toBe(2);
+		expect(get(countSelector)).toBe(2);
 	});
 
-	it("Subscribe a value, dispatch, and then unsubscribe.", () => {
-		const subscriber = state => {
-			expect(typeof state.count).toBe("number");
-		};
-		subscribe(({ count }) => count, subscriber);
+	it("Subscribe a piece, dispatch, and then unsubscribe.", () => {
+		subscribe(countSelector, countSubscriber);
 
 		set({ count: 3 }, { isDispatch: true });
 		set({ count: 3 }, { isDispatch: true });
 		set({ count: 4 }, { isDispatch: true });
 
-		expect(get(({ count }) => count)).toBe(4);
-		unsubscribe(subscriber);
+		expect(get(countSelector)).toBe(4);
+		unsubscribe(countSubscriber);
 
 		set(({ count }) => ({ count: count + 1 }), { isDispatch: true });
-		expect(get(({ count }) => count)).toBe(5);
+		expect(get(countSelector)).toBe(5);
 	});
 
-	it("Remove value", () => {
+	it("Select a piece and unsubscribe", () => {
+		const [count, unsubscribeCount] = select(countSelector, countSubscriber);
+		expect(typeof count).toBe("number");
+		expect(typeof unsubscribeCount).toBe("function");
+		unsubscribeCount();
+	});
+
+	it("Remove piece", () => {
 		set({ count2: 1 });
 		set({ count3: 1 });
-		expect(get(({ count2 }) => count2)).toBe(1);
-		expect(get(({ count3 }) => count3)).toBe(1);
+		expect(get(count2Selector)).toBe(1);
+		expect(get(count3Selector)).toBe(1);
 
 		set(state => {
 			delete state.count2;
@@ -58,13 +69,13 @@ describe("GStatem tests", () => {
 			return state;
 		});
 
-		expect(get(({ count2 }) => count2)).toBeUndefined();
-		expect(get(({ count3 }) => count3)).toBeUndefined();
+		expect(get(count2Selector)).toBeUndefined();
+		expect(get(count3Selector)).toBeUndefined();
 	});
 
 	it("Custom equalityFn", () => {
 		subscribe(
-			({ count }) => count,
+			countSelector,
 			({ count: nextCount }, { count: prevCount }) => {
 				expect(Math.abs(prevCount - nextCount)).toBeGreaterThanOrEqual(2);
 			},
@@ -84,17 +95,14 @@ describe("GStatem tests", () => {
 
 	it("Performance testing", () => {
 		const numOfSelectors = 100000;
-		const { set, subscribe } = new GStatem({ state: { count: 0 } });
+		const { dispatch, subscribe } = new GStatem({ state: { count: 0 } });
 
 		for (let i = 0; i < numOfSelectors; i++) {
-			subscribe(
-				({ count }) => count,
-				() => {}
-			);
+			subscribe(countSelector, () => {});
 		}
 
 		const t1 = performance.now();
-		set({ count: 9 }, { isDispatch: true });
+		dispatch({ count: 9 });
 		console.log(
 			`${numOfSelectors} selectors took ${performance.now() - t1} ms.`
 		);

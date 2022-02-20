@@ -1,4 +1,4 @@
-import GStatem, { SelectState, SetOptions, State } from "gstatem";
+import GStatem, { Init, SelectState, SetOptions, State } from "gstatem";
 import { OnAction, OnPageReload, StatemIds } from "../utils/Types";
 import { ON_ACTION, ON_PAGE_RELOAD } from "../utils/Constants";
 import { uuidv4 } from "../utils/Utils";
@@ -21,8 +21,8 @@ if (isConnectable) {
 }
 
 class DevTools<GState extends State> extends GStatem<GState> {
-	constructor(...props) {
-		super(...props);
+	constructor(config?: Init<GState>) {
+		super(config);
 		statemIds[this.id] = 1;
 		this.postAction(this.state);
 	}

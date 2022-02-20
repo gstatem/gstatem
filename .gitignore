@@ -9,3 +9,4 @@ lerna-debug.log
 .yarnrc
 *.log
 .extension_info_vars
+storybook-static/

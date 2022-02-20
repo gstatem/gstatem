@@ -1,0 +1,18 @@
+import { Meta, Story } from "@storybook/addon-docs";
+import { defaultDocParams } from "./lib/utils";
+import CodeView from "../react/base/components/CodeView";
+
+import CounterJsContent from "!raw-loader!../dist/react/base/components/Counter";
+import CounterTsContent from "!raw-loader!../react/base/components/Counter";
+
+<Meta title="Appendix/components" parameters={defaultDocParams()} />
+
+## Appendix components
+
+<Story name="Counter">
+	<CodeView
+		componentName="Counter"
+		jsContent={CounterJsContent}
+		tsContent={CounterTsContent}
+	/>
+</Story>
