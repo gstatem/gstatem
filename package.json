@@ -7,7 +7,7 @@
 		"clean": "lerna exec -- yarn clean",
 		"test": "jest",
 		"storybook": "yarn gen_sb_js && start-storybook -p 6006 -c storybook --ci",
-		"build-storybook": "yarn gen_sb_js && build-storybook -c storybook",
+		"build-storybook": "yarn && yarn gen_sb_js && build-storybook -c storybook",
 		"pub": "yarn build && lerna publish --bump=patch --yes && yarn clean",
 		"updep": "yarn add -D -W gstatem-devtools@latest gstatem@latest react-gstatem@latest",
 		"pack-extension": "yarn build && lerna run build-extension && ts-node ./packages/gstatem-devtools/pack-extension",
