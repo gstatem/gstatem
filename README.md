@@ -42,7 +42,7 @@ import { increaseCount, resetCount, useCount } from "./Store";
 const BasicUsage: FC = () => {
   const count = useCount();
   return (
-    <Counter value={count} onIncrement={increaseCount} onReset={resetCount} />
+    <Counter value={count} onIncrement={increaseCount} />
   );
 };
 
