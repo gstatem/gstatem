@@ -11,14 +11,17 @@ npm i gstatem
 yarn add gstatem
 ```
 
+### [Demos](https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page)
+
 ## Usage
 ### Create a store
 ```typescript jsx
-// Store.ts
+// Store.js
 import GStatem, { Subscriber, SetOptions } from "gstatem";
 
-const { get, set, select } = new GStatem<StateType>({
-	state: { count: 0 }
+const { get, set, select } = new GStatem({
+  /* initial state */
+  state: { count: 0 }
 });
 
 export const countSelector = state => state.count;
@@ -26,11 +29,11 @@ export const countSelector = state => state.count;
 export const getCount = get(countSelector);
 
 /* select count for non function component */
-export const selectCount = (subscribe: Subscriber<StateType>) =>
+export const selectCount = subscribe =>
   select<number>(countSelector, subscribe);
 
 /* update the store with callback */
-export const increaseCount = (options?: SetOptions) =>
+export const increaseCount = () =>
   set(state => ({ count: state.count + 1 }), options);
 ```
 
@@ -38,9 +41,10 @@ export const increaseCount = (options?: SetOptions) =>
 ```typescript jsx
 import {
   increaseCount,
-  selectCount,
-  getCount
-} from "./Store";
+  resetCount,
+  getCount,
+  selectCount
+} from "../lib/VanillaStore";
 
 /* select count */
 const [count, unsubCount] = selectCount(state =>
@@ -48,8 +52,12 @@ const [count, unsubCount] = selectCount(state =>
 );
 console.log(count); // count is 0
 
-increaseCount(); // count is 1
+increaseCount();
 console.log(getCount()); // count is 1
+
+/* reset count */
+resetCount();
+console.log(getCount()); // count is 0
 
 window.onbeforeunload = () => {
   /* unsubscribe count on page unload */

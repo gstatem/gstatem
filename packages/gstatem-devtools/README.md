@@ -11,41 +11,48 @@ npm i gstatem-devtools
 yarn add gstatem-tools
 ```
 
+### [Demos](https://gstatem.netlify.app/?path=/docs/react-function-component-with-devtools--page)
+
 ## Usage
 Every dispatched piece will be logged in the Chrome extension [GStatem-devtools](https://chrome.google.com/webstore/detail/gstatem-devtools/djohekcenmdagbolgaiiphdnmhgmpllk) if the devtools is installed.
 ### Create a store with Devtools
 ```typescript jsx
-// Store.ts
+// Store.js
 import { create } from "react-gstatem";
 import DevTools from "gstatem-devtools";
 
-export default create(
+const { useSelect, dispatch } = create(
   new DevTools({ 
-    state: { count: 0 } // init value 
+    /* initial state */
+    state: { count: 0 } 
   })
 );
+
+/* the count hook for function component */
+export const useCount = () => useSelect(state => state.count);
+
+/* update the store with callback */
+export const increaseCount = () => dispatch(state => ({ count: state.count + 1 }));
 ```
 
 ### Use in component
 ```typescript jsx
-import Store from "./Store";
-const { useSelect, dispatch } = Store;
+import React from "react";
+import Counter from "./Counter";
+import { useCount, increaseCount } from "./Store";
 
-const Counter = () => {
-  const count = useSelect(state => state.count);
-
+const BasicUsage = () => {
+  const count = useCount();
   return (
-    <Counter
-      value={count}
-      onIncrement={() =>
-        dispatch(state => ({ count: state.count + 1 }))
-      }
-      onDecrement={() =>
-        dispatch(state => ({ count: state.count - 1 }))
-      }
-    />
+    <Counter value={count} onIncrement={increaseCount} />
   );
-}
+};
 
-export default Counter;
+export default BasicUsage;
 ```
+
+Every dispatched piece will be logged in the Chrome extension [GStatem-devtools](https://chrome.google.com/webstore/detail/gstatem-devtools/djohekcenmdagbolgaiiphdnmhgmpllk) if the devtools is installed.
+
+<kbd>
+    <img src="../../storybook/base/assets/devtools.gif" alt="devtools" />
+</kbd>
