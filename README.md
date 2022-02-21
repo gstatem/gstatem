@@ -18,12 +18,13 @@ yarn add react-gstatem
 ## Basic usage of function component
 ### Create a store
 ```typescript jsx
-// Store.ts
+// Store.js
 import { create } from "react-gstatem";
 
-type StateType = { count: number };
-
-const { useSelect, dispatch } = create<StateType>({ state: { count: 0 } });
+const { useSelect, dispatch } = create({
+  /* initial state */
+  state: { count: 0 }
+});
 
 /* the count hook for function component */
 export const useCount = () => useSelect<number>(state => state.count);
@@ -34,11 +35,11 @@ export const increaseCount = () => dispatch(state => ({ count: state.count + 1 }
 
 ### <a name="useincomponent" />Use the store in component
 ```typescript jsx
-import React, { FC } from "react";
+import React from "react";
 import Counter from "./Counter";
 import { increaseCount, resetCount, useCount } from "./Store";
 
-const BasicUsage: FC = () => {
+const BasicUsage = () => {
   const count = useCount();
   return (
     <Counter value={count} onIncrement={increaseCount} />

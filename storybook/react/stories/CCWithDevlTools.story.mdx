@@ -9,10 +9,26 @@ import StateTsContent from "!raw-loader!./base/stores/CCStoreWithDevTools";
 import WithDevToolsJsContent from "!raw-loader!../../dist/react/stories/base/components/CCWithDevTools";
 import WithDevToolsTsContent from "!raw-loader!./base/components/CCWithDevTools";
 
+import DevToolsImage from "../../base/assets/devtools.gif";
+
 <Meta
 	title="React/Class component/With devtools"
 	parameters={defaultDocParams()}
 />
+
+## Installation
+
+### npm
+
+```shell
+npm i react-gstatem gstatem-devtools
+```
+
+### yarn
+
+```shell
+yarn add react-gstatem gstatem-devtools
+```
 
 ## Class component - with devtools
 
@@ -41,3 +57,7 @@ import WithDevToolsTsContent from "!raw-loader!./base/components/CCWithDevTools"
 	jsContent={WithDevToolsJsContent}
 	tsContent={WithDevToolsTsContent}
 />
+
+Every dispatched piece will be logged in the Chrome extension [GStatem-devtools](https://chrome.google.com/webstore/detail/gstatem-devtools/djohekcenmdagbolgaiiphdnmhgmpllk) if the devtools is installed.
+
+<img className="image-border" src={DevToolsImage} alt="devtools" />
