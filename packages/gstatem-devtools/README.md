@@ -14,7 +14,9 @@ yarn add gstatem-tools
 ### [Demos](https://gstatem.netlify.app/?path=/docs/react-function-component-with-devtools--page)
 
 ## Usage
-Every dispatched piece will be logged in the Chrome extension [GStatem-devtools](https://chrome.google.com/webstore/detail/gstatem-devtools/djohekcenmdagbolgaiiphdnmhgmpllk) if the devtools is installed.
+
+The `increaseCount` function can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
 ### Create a store with Devtools
 ```typescript jsx
 // Store.js
@@ -31,7 +33,7 @@ const { useSelect, dispatch } = create(
 /* the count hook for function component */
 export const useCount = () => useSelect(state => state.count);
 
-/* update the store with callback */
+/* increase the counter */
 export const increaseCount = () => dispatch(state => ({ count: state.count + 1 }));
 ```
 

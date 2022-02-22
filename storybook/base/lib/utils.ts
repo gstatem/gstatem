@@ -104,11 +104,15 @@ export const genCodeTokenLinks: FiddleCodeView = (_codeView, sourceBlock) => {
 				const { storybookPath } = filesInfo[filename] || {};
 				if (storybookPath) {
 					element.classList.add("code-view__token-jump");
-					element.addEventListener("click", () => {
-						parent.location.search = `path=${storybookPath}`;
-					});
+					element.addEventListener(
+						"click",
+						() => {
+							parent.location.search = `path=${storybookPath}`;
+						},
+						{ once: true }
+					);
 				}
 			}
 		});
-	}, 300);
+	}, 1000);
 };

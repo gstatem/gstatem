@@ -15,9 +15,9 @@ const { useSelect, dispatch } = create<StateType>(
 /* select count hook for function component */
 export const useCount = () => useSelect(state => state.count);
 
-/* update the store with callback */
+/* increase the counter */
 export const increaseCount = () =>
 	dispatch(state => ({ count: state.count + 1 }));
 
-/* update the store with static value */
+/* reset counter */
 export const resetCount = () => dispatch(initialState);

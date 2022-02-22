@@ -14,7 +14,11 @@ yarn add gstatem
 ### [Demos](https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page)
 
 ## Usage
+
 ### Create a store
+
+The exported functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
 ```typescript jsx
 // Store.js
 import GStatem, { Subscriber, SetOptions } from "gstatem";
