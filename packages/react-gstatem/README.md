@@ -15,6 +15,9 @@ yarn add react-gstatem
 
 ## Basic usage of function component
 ### Create a store
+
+The `increaseCount` function can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
 ```typescript jsx
 // Store.js
 import { create } from "react-gstatem";
@@ -27,7 +30,7 @@ const { useSelect, dispatch } = create({
 /* the count hook for function component */
 export const useCount = () => useSelect(state => state.count);
 
-/* update the store with callback */
+/* increase the counter */
 export const increaseCount = () => dispatch(state => ({ count: state.count + 1 }));
 ```
 

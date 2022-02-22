@@ -15,9 +15,9 @@ export const getCount = get(countSelector);
 export const selectCount = (subscribe: Subscriber<StateType>) =>
 	select<number>(countSelector, subscribe);
 
-/* increase count with dispatch */
+/* increase the counter */
 export const increaseCount = () =>
 	dispatch(state => ({ count: state.count + 1 }));
 
-/* update the store with static value */
+/* reset counter */
 export const resetCount = (options?: SetOptions) => set(initialState, options);
