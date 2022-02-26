@@ -5,4 +5,4 @@ export const REQUEST_PAGE_OPEN = "gstatem-request-devtool-page-open";
 export const ON_ACTION = "gstatem-on-action";
 export const ON_PAGE_RELOAD = "gstatem-on-devtool-page-reload";
 export const MARK_AS_READ = "gstatem-mark-as-read";
-export const MERGE_STEPS = "gstatem-merge-steps";
+export const MERGE_PIECES = "gstatem-merge-pieces";

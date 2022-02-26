@@ -46,17 +46,17 @@ body {
 	box-shadow: inset 0 -1px 0 0 grey;
 }
 
-.statem-select-container {
+.store-select-container {
 	flex-basis: 40%;
 	padding-left: 10px;
 	display: flex;
 }
 
-.statem-has-unread {
+.store-has-unread {
 	color: @red;
 }
 
-.statem-select {
+.store-select {
 	background-color: @darker;
 	color: white;
 	border: 1px solid gray;
@@ -66,7 +66,7 @@ body {
 	font-weight: 700;
 }
 
-.statem-select > option {
+.store-select > option {
 	font-size: 11px;
 	font-weight: 700;
 }
@@ -133,7 +133,7 @@ body {
 	background-color: @more-darker;
 }
 
-.step-container {
+.piece-container {
 	flex-basis: 40%;
 	overflow: hidden;
 	background-color: @dark;
@@ -141,14 +141,14 @@ body {
 	flex-direction: column;
 }
 
-.state-container {
+.store-container {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 	overflow: auto;
 }
 
-.active-step {
+.active-piece {
 	background-color: @more-lighter;
 }
 
@@ -182,7 +182,7 @@ body {
 	background-color: inherit !important;
 }
 
-.step-box {
+.piece-box {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -195,12 +195,12 @@ body {
 	position: relative;
 }
 
-.step-box > .step-box__body {
+.piece-box > .piece-box__body {
 	padding: 5px;
 	position: absolute;
 }
 
-.step-box > .step-box__background {
+.piece-box > .piece-box__background {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -208,7 +208,7 @@ body {
 	background-color: @brown;
 }
 
-@keyframes stepUnreadAnimation {
+@keyframes pieceUnreadAnimation {
 	from {
 		opacity: 100%;
 	}
@@ -217,27 +217,27 @@ body {
 	}
 }
 
-.step-box__is-unread > .step-box__background {
-	animation: stepUnreadAnimation 2s 1 alternate;
+.piece-box__is-unread > .piece-box__background {
+	animation: pieceUnreadAnimation 2s 1 alternate;
 }
 
-.step-box:focus {
+.piece-box:focus {
 	outline: none;
 }
 
-.step-timestamp {
+.piece-timestamp {
 	font-size: 10px;
 	padding: 4px;
 	border-radius: 4px;
 	background-color: @even-more-lighter;
 }
 
-.step-content {
+.piece-content {
 	padding-left: 5px;
 	font-size: 11px;
 }
 
-.merge-step-button {
+.merge-piece-button {
 	margin-left: auto;
 	border: 1px solid gray;
 	background-color: gray;

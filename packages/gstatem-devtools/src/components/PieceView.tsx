@@ -1,19 +1,19 @@
 import React, { FC, MouseEventHandler, MutableRefObject } from "react";
-import { getStepState } from "../utils/Utils";
-import { StepPayload } from "../utils/Types";
+import { getPiece } from "../utils/Utils";
+import { PiecePayload } from "../utils/Types";
 
-export type StepViewProps = {
+export type PieceViewProps = {
 	onMouseDown?: MouseEventHandler<HTMLDivElement>;
 	onMouseUp?: MouseEventHandler<HTMLDivElement>;
 	onMouseOver?: MouseEventHandler<HTMLDivElement>;
-	payload: StepPayload;
+	payload: PiecePayload;
 	timestamp?: number;
 	isFirstItem?: boolean;
 	extraCss?: string;
 	nodeRef?: MutableRefObject<HTMLDivElement>;
 };
 
-const StepView: FC<StepViewProps> = ({
+const PieceView: FC<PieceViewProps> = ({
 	onMouseDown,
 	onMouseUp,
 	onMouseOver,
@@ -46,28 +46,28 @@ const StepView: FC<StepViewProps> = ({
 			.padStart(2, "0")}.${diffMilliSeconds.toString().padStart(3, "0")}`;
 	}
 
-	const content = JSON.stringify(getStepState(payload));
+	const content = JSON.stringify(getPiece(payload));
 
 	return (
 		<div
 			ref={nodeRef}
-			className={`step-box${extraCss}`}
+			className={`piece-box${extraCss}`}
 			onMouseDown={onMouseDown}
 			onMouseUp={onMouseUp}
 			onMouseOver={onMouseOver}
 			title={content}
 			tabIndex={0}
 		>
-			<div className="step-box__background" />
-			<div className="step-box__body">
-				<span className="step-timestamp">{timeStr}</span>
-				<span className="step-content">{content}</span>
+			<div className="piece-box__background" />
+			<div className="piece-box__body">
+				<span className="piece-timestamp">{timeStr}</span>
+				<span className="piece-content">{content}</span>
 			</div>
 		</div>
 	);
 };
 
-StepView.defaultProps = {
+PieceView.defaultProps = {
 	onMouseDown: () => {},
 	onMouseUp: () => {},
 	onMouseOver: () => {},
@@ -75,4 +75,4 @@ StepView.defaultProps = {
 	extraCss: ""
 };
 
-export default StepView;
+export default PieceView;

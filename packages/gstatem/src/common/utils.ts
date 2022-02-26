@@ -1,15 +1,20 @@
 import { State, ValueOf } from "./types";
 
 export const deepCopy = <T extends State>(
-	inObj: T | ValueOf<T> | object
+	inObj: T | ValueOf<T> | object,
+	circularCache = new WeakMap()
 ): T | ValueOf<T> | object => {
 	if (!(inObj instanceof Object)) return inObj;
 
+	const existingOutObj = circularCache.get(inObj);
+	if (existingOutObj) return existingOutObj;
+
 	const outObj = Array.isArray(inObj) ? [] : {};
+	circularCache.set(inObj, outObj);
 
 	for (const key in inObj) {
 		const value = inObj[key];
-		outObj[key] = deepCopy<T>(value);
+		outObj[key] = deepCopy<T>(value, circularCache);
 	}
 
 	return outObj;

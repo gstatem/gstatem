@@ -3,7 +3,7 @@ import {
 	PAGE_OPEN,
 	GROUP_NAME,
 	MARK_AS_READ,
-	MERGE_STEPS,
+	MERGE_PIECES,
 	REQUEST_PAGE_OPEN,
 	ON_PAGE_RELOAD,
 	ON_ACTION
@@ -14,9 +14,9 @@ import {
 	TabState,
 	PageOpen,
 	OnPageReload,
-	Step
+	PieceInfo
 } from "../utils/Types";
-import { getStepState, setStepState } from "../utils/Utils";
+import { getPiece, setPiece } from "../utils/Utils";
 
 type TabStates = {
 	[tabId: number]: TabState;
@@ -69,7 +69,7 @@ class Background {
 		await this.waitUntilTabStatesInit();
 		let tabState = this.tabStates[tabId];
 		if (!tabState) {
-			tabState = { statemStepMap: {} };
+			tabState = { pieceInfoMap: {} };
 			this.tabStates[tabId] = tabState;
 		}
 		this.saveTabStates();
@@ -112,27 +112,27 @@ class Background {
 			case MARK_AS_READ:
 				this.markAsRead(message, tabState);
 				break;
-			case MERGE_STEPS:
-				this.mergeSteps(message, tabState);
+			case MERGE_PIECES:
+				this.mergePieces(message, tabState);
 				break;
 		}
 	};
 
-	markAsRead = ({ readSteps }: PageToBg, { statemStepMap }: TabState) => {
+	markAsRead = ({ readPieces }: PageToBg, { pieceInfoMap }: TabState) => {
 		let needSave = false;
-		for (const statemId in readSteps) {
-			const stepIds = readSteps[statemId];
-			const stepMap = statemStepMap[statemId];
-			if (!stepMap) {
+		for (const storeId in readPieces) {
+			const pieceIds = readPieces[storeId];
+			const pieceMap = pieceInfoMap[storeId];
+			if (!pieceMap) {
 				console.warn(
-					`[${statemId}] is not found in statemStepMap ${statemStepMap}`
+					`[${storeId}] is not found in pieceInfoMap ${pieceInfoMap}`
 				);
 				continue;
 			}
 
-			for (const stepId of stepIds) {
-				const step = stepMap[stepId];
-				step.isRead = true;
+			for (const pieceId of pieceIds) {
+				const piece = pieceMap[pieceId];
+				piece.isRead = true;
 				needSave = true;
 			}
 		}
@@ -142,27 +142,27 @@ class Background {
 		}
 	};
 
-	mergeSteps = (
-		{ mergeSteps: { statemId, sourceStepIds, targetStepId } }: PageToBg,
-		{ statemStepMap }: TabState
+	mergePieces = (
+		{ mergePieces: { storeId, sourcePieceIds, targetPieceId } }: PageToBg,
+		{ pieceInfoMap }: TabState
 	) => {
-		const stepMap = statemStepMap[statemId];
-		const stepsToBeMerged: Step[] = [];
-		const mergeStepStates = {};
-		for (const stepId of sourceStepIds) {
-			const step = stepMap[stepId];
-			stepsToBeMerged.push(step);
-			delete stepMap[stepId];
+		const pieceMap = pieceInfoMap[storeId];
+		const piecesToBeMerged: PieceInfo[] = [];
+		const mergePieces = {};
+		for (const pieceId of sourcePieceIds) {
+			const piece = pieceMap[pieceId];
+			piecesToBeMerged.push(piece);
+			delete pieceMap[pieceId];
 		}
-		stepsToBeMerged.sort((a, b) => a.timestamp - b.timestamp);
-		for (const { payload: stepPayloadToBeMerged } of stepsToBeMerged) {
-			Object.assign(mergeStepStates, getStepState(stepPayloadToBeMerged));
+		piecesToBeMerged.sort((a, b) => a.timestamp - b.timestamp);
+		for (const { payload: piecePayloadToBeMerged } of piecesToBeMerged) {
+			Object.assign(mergePieces, getPiece(piecePayloadToBeMerged));
 		}
 
-		const { payload: targetPayload } = stepMap[targetStepId];
-		const targetStepState = getStepState(targetPayload);
-		Object.assign(mergeStepStates, targetStepState);
-		setStepState(targetPayload, mergeStepStates);
+		const { payload: targetPayload } = pieceMap[targetPieceId];
+		const targetPiece = getPiece(targetPayload);
+		Object.assign(mergePieces, targetPiece);
+		setPiece(targetPayload, mergePieces);
 		this.saveTabStates();
 	};
 
@@ -187,9 +187,10 @@ class Background {
 		message: OnAction & OnPageReload,
 		{ tab: { id: tabId } }: chrome.runtime.MessageSender
 	) => {
+		console.log("==message", message);
 		const port = this.connections[tabId];
 		const tabState = await this.getTabState(tabId);
-		const { statemStepMap } = tabState;
+		const { pieceInfoMap } = tabState;
 		message.tabId = tabId;
 
 		const { name } = message;
@@ -203,20 +204,20 @@ class Background {
 					await this.removeTabState(tabId);
 					break;
 				case ON_ACTION: {
-					const { step }: OnAction = message;
+					const { piece }: OnAction = message;
 					const {
-						stepId,
-						payload: { statemId },
+						pieceId,
+						payload: { storeId },
 						action
-					} = step;
+					} = piece;
 
 					if (validActions[action]) {
-						let stepMap = statemStepMap[statemId];
-						if (!stepMap) {
-							stepMap = {};
-							statemStepMap[statemId] = stepMap;
+						let pieceMap = pieceInfoMap[storeId];
+						if (!pieceMap) {
+							pieceMap = {};
+							pieceInfoMap[storeId] = pieceMap;
 						}
-						stepMap[stepId] = step;
+						pieceMap[pieceId] = piece;
 						this.saveTabStates();
 					}
 				}

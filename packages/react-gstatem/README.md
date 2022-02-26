@@ -38,7 +38,7 @@ export const increaseCount = () => dispatch(state => ({ count: state.count + 1 }
 ```typescript jsx
 import React from "react";
 import Counter from "./Counter";
-import { increaseCount, resetCount, useCount } from "./Store";
+import { useCount, increaseCount } from "./Store";
 
 const BasicUsage = () => {
   const count = useCount();

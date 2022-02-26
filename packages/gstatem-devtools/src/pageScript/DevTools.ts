@@ -1,5 +1,5 @@
 import GStatem, { Init, SelectState, SetOptions, State } from "gstatem";
-import { OnAction, OnPageReload, StatemIds } from "../utils/Types";
+import { OnAction, OnPageReload, StoreIds } from "../utils/Types";
 import { ON_ACTION, ON_PAGE_RELOAD } from "../utils/Constants";
 import { uuidv4 } from "../utils/Utils";
 
@@ -7,13 +7,13 @@ import { uuidv4 } from "../utils/Utils";
 const isConnectable =
 	typeof window !== "undefined" && navigator.product !== "ReactNative";
 
-const statemIds: StatemIds = {};
+const storeIds: StoreIds = {};
 
 if (isConnectable) {
 	window.addEventListener("beforeunload", () => {
 		const message: OnPageReload = {
 			name: ON_PAGE_RELOAD,
-			statemIds,
+			storeIds: storeIds,
 			timestamp: new Date().getTime()
 		};
 		window.postMessage(message);
@@ -23,7 +23,7 @@ if (isConnectable) {
 class DevTools<GState extends State> extends GStatem<GState> {
 	constructor(config?: Init<GState>) {
 		super(config);
-		statemIds[this.id] = 1;
+		storeIds[this.id] = 1;
 		this.postAction(this.state);
 	}
 
@@ -36,13 +36,13 @@ class DevTools<GState extends State> extends GStatem<GState> {
 
 		const message: OnAction = {
 			name: ON_ACTION,
-			step: {
+			piece: {
 				action: "set",
 				payload: {
-					statemId: this.id,
+					storeId: this.id,
 					piece: actualPiece
 				},
-				stepId: uuidv4(),
+				pieceId: uuidv4(),
 				timestamp: new Date().getTime()
 			}
 		};
