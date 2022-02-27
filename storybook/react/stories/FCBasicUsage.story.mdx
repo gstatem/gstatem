@@ -2,6 +2,8 @@ import { Canvas, Meta } from "@storybook/addon-docs";
 import { defaultDocParams } from "../../base/lib/utils";
 import CodeView from "../base/components/CodeView";
 
+import Installation from "../../base/components/Installation.mdx";
+
 import FCBasicUsage from "./base/components/FCBasicUsage";
 import StoreJsContent from "!raw-loader!../../dist/react/stories/base/stores/FCStore";
 import StoreTsContent from "!raw-loader!./base/stores/FCStore";
@@ -14,19 +16,7 @@ import ComponentTsContent from "!raw-loader!./base/components/FCBasicUsage";
 	parameters={defaultDocParams()}
 />
 
-## Installation
-
-### npm
-
-```shell
-npm i react-gstatem
-```
-
-### yarn
-
-```shell
-yarn add react-gstatem
-```
+<Installation />
 
 ## Function component - basic usage
 

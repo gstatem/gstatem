@@ -2,6 +2,8 @@ import { Canvas, Meta } from "@storybook/addon-docs";
 import { defaultDocParams } from "../../base/lib/utils";
 import CodeView from "../base/components/CodeView";
 
+import Installation from "../../base/components/Installation.mdx";
+
 import FCWithDevTools from "./base/components/FCWithDevTools";
 import StoreJsContent from "!raw-loader!../../dist/react/stories/base/stores/FCStoreWithDevTools";
 import StoreTsContent from "!raw-loader!./base/stores/FCStoreWithDevTools";
@@ -16,19 +18,7 @@ import DevToolsImage from "../../base/assets/devtools.gif";
 	parameters={defaultDocParams()}
 />
 
-## Installation
-
-### npm
-
-```shell
-npm i react-gstatem gstatem-devtools
-```
-
-### yarn
-
-```shell
-yarn add react-gstatem gstatem-devtools
-```
+<Installation packages="react-gstatem gstatem-devtools" />
 
 ## Function component - with devtools
 

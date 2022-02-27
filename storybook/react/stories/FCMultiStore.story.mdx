@@ -2,6 +2,8 @@ import { Canvas, Meta } from "@storybook/addon-docs";
 import { defaultDocParams } from "../../base/lib/utils";
 import CodeView from "../base/components/CodeView";
 
+import Installation from "../../base/components/Installation.mdx";
+
 import FCMultiStores from "./base/components/FCMultiStores";
 import Store1JsContent from "!raw-loader!../../dist/react/stories/base/stores/FCMultiStore1";
 import Store1TsContent from "!raw-loader!./base/stores/FCMultiStore1";
@@ -17,19 +19,7 @@ import ComponentTsContent from "!raw-loader!./base/components/FCMultiStores";
 	parameters={defaultDocParams()}
 />
 
-## Installation
-
-### npm
-
-```shell
-npm i react-gstatem
-```
-
-### yarn
-
-```shell
-yarn add react-gstatem
-```
+<Installation />
 
 ## Function component - multi stores
 
