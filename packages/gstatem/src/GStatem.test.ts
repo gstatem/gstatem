@@ -120,7 +120,7 @@ describe("GStatem tests", () => {
 		const t1 = performance.now();
 		dispatch({ count: 9 });
 		console.log(
-			`single dispatch within ${numOfSelectors} selectors of single store took ${
+			`Single dispatch with ${numOfSelectors} selectors in single store took ${
 				performance.now() - t1
 			} ms.`
 		);
