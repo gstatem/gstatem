@@ -187,7 +187,6 @@ class Background {
 		message: OnAction & OnPageReload,
 		{ tab: { id: tabId } }: chrome.runtime.MessageSender
 	) => {
-		console.log("==message", message);
 		const port = this.connections[tabId];
 		const tabState = await this.getTabState(tabId);
 		const { pieceInfoMap } = tabState;
