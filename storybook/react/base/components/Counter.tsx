@@ -11,7 +11,7 @@ const Counter: FC<CounterProps> = ({ value, onIncrement, onReset }) => {
 		<div>
 			<span>Clicked: {value} times</span>{" "}
 			<button onClick={onIncrement}>+</button>{" "}
-			<button onClick={onReset}>Reset</button>
+			{onReset && <button onClick={onReset}>Reset</button>}
 		</div>
 	);
 };

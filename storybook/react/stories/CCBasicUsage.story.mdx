@@ -3,11 +3,11 @@ import { defaultDocParams } from "../../base/lib/utils";
 import CodeView from "../base/components/CodeView";
 
 import CCBasicUsage from "./base/components/CCBasicUsage";
-import StateJsContent from "!raw-loader!../../dist/react/stories/base/stores/CCStore";
-import StateTsContent from "!raw-loader!./base/stores/CCStore";
+import StoreJsContent from "!raw-loader!../../dist/react/stories/base/stores/CCStore";
+import StoreTsContent from "!raw-loader!./base/stores/CCStore";
 
-import BasicUsageJsContent from "!raw-loader!../../dist/react/stories/base/components/CCBasicUsage";
-import BasicUsageTsContent from "!raw-loader!./base/components/CCBasicUsage";
+import ComponentJsContent from "!raw-loader!../../dist/react/stories/base/components/CCBasicUsage";
+import ComponentTsContent from "!raw-loader!./base/components/CCBasicUsage";
 
 <Meta
 	title="React/Class component/Basic usage"
@@ -46,14 +46,14 @@ The exported functions can be used anywhere - in component, utils file, event li
 
 <CodeView
 	componentName="CCStore"
-	jsContent={StateJsContent}
-	tsContent={StateTsContent}
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
 />
 
 **Use the store in component**
 
 <CodeView
 	componentName="CCBasicUsage"
-	jsContent={BasicUsageJsContent}
-	tsContent={BasicUsageTsContent}
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
 />
