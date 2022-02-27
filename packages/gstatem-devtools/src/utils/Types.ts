@@ -1,24 +1,24 @@
 import { Action, State as GState } from "gstatem";
 
-export type StepPayload = {
-	statemId?: string;
+export type PiecePayload = {
+	storeId?: string;
 	piece?: GState;
 };
 
-export type Step = {
-	stepId?: string;
+export type PieceInfo = {
+	pieceId?: string;
 	action?: Action;
-	payload?: StepPayload;
+	payload?: PiecePayload;
 	timestamp?: number;
 	isRead?: boolean;
 };
 
-export type StatemIds = { [statemId: string]: 1 };
+export type StoreIds = { [statemId: string]: 1 };
 
 export type OnPageReload = {
 	name: string;
 	tabId?: number;
-	statemIds?: StatemIds;
+	storeIds?: StoreIds;
 	timestamp?: number;
 };
 
@@ -31,46 +31,43 @@ export type PageOpen = {
 export type OnAction = {
 	name: string;
 	tabId?: number;
-	step?: Step;
+	piece?: PieceInfo;
 };
 
 export type TabState = {
 	isPageOpened?: boolean;
-	statemStepMap?: {
-		[statemId: string]: {
-			[stepId: string]: Step;
+	pieceInfoMap?: {
+		[storeId: string]: {
+			[pieceId: string]: PieceInfo;
 		};
 	};
 };
 
-export type Statem = {
-	steps?: Step[];
-	stepsById?: {
-		[stepId: string]: Step;
+export type StoreInfo = {
+	piecesInfo?: PieceInfo[];
+	piecesById?: {
+		[pieceId: string]: PieceInfo;
 	};
-	/**
-	 * State of the statem.
-	 */
-	state?: GState;
+	store?: GState;
 };
 
-export type Statems = {
-	[statemId: string]: Statem;
+export type StoresInfo = {
+	[storeId: string]: StoreInfo;
 };
 
-export type ReadSteps = {
-	[statemId: string]: string[]; // stepIds
+export type ReadPieces = {
+	[storeId: string]: string[]; // pieceIds
 };
 
-export type MergeSteps = {
-	statemId: string;
-	sourceStepIds: string[];
-	targetStepId: string;
+export type MergePieces = {
+	storeId: string;
+	sourcePieceIds: string[];
+	targetPieceId: string;
 };
 
 export type PageToBg = {
 	name: string;
 	tabId?: number;
-	readSteps?: ReadSteps;
-	mergeSteps?: MergeSteps;
+	readPieces?: ReadPieces;
+	mergePieces?: MergePieces;
 };

@@ -9171,6 +9171,18 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   resolved "https://registry.npmmirror.com/graceful-fs/-/graceful-fs-4.2.9.tgz#041b05df45755e587a24942279b9d113146e1c96"
   integrity sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==
 
+gstatem-devtools@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/gstatem-devtools/-/gstatem-devtools-1.0.4.tgz#c01bffe4deedc9f24021cf2d4e2333491596e00b"
+  integrity sha512-MbHHivBzkNlfggaVChQEYcJMarbRYTcNJWAD/iaR/IAUmRhi5xEt2KOfQ8ABIxZWWPEaoZyBOF/pTvKLZV8/hQ==
+  dependencies:
+    gstatem "^1.0.4"
+
+gstatem@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/gstatem/-/gstatem-1.0.4.tgz#e126f67c2905026ff9e5d92b7869af5738c88163"
+  integrity sha512-GahiuGNgCA+JnmMP5e2nDEdgmGFxDsurcAq7EsHWtmv5NeIkYAg0gld5pyqDKXDBFhQ5572h6Uops5alw10LCQ==
+
 handle-thing@^2.0.0:
   version "2.0.1"
   resolved "https://registry.npmmirror.com/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"
@@ -13934,6 +13946,13 @@ react-fast-compare@^3.0.1, react-fast-compare@^3.2.0:
   version "3.2.0"
   resolved "https://registry.npmmirror.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
+
+react-gstatem@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-gstatem/-/react-gstatem-1.0.4.tgz#39517e8de64a12a5614860ea7de196e47ae97903"
+  integrity sha512-VtZ1vHEa9/LRE7jIV970U7O1pSsL4lN21cp/m+HHUg2riKz4hg6SjVJcVCodQ6DpUs69+dFJ7z5R2KjjiQJaUQ==
+  dependencies:
+    gstatem "^1.0.4"
 
 react-helmet-async@^1.0.7:
   version "1.2.2"

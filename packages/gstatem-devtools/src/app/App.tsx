@@ -7,69 +7,60 @@ import {
 	ON_ACTION,
 	ON_PAGE_RELOAD,
 	MARK_AS_READ,
-	MERGE_STEPS
+	MERGE_PIECES
 } from "../utils/Constants";
 import {
 	OnAction,
-	ReadSteps,
+	ReadPieces,
 	PageToBg,
-	Statems,
-	MergeSteps,
+	StoresInfo,
+	MergePieces,
 	PageOpen,
 	OnPageReload,
-	Step
+	PieceInfo
 } from "../utils/Types";
-import {
-	firstEntry,
-	getStepState,
-	accStepState,
-	setStepState
-} from "../utils/Utils";
+import { firstEntry, getPiece, accPiece, setPiece } from "../utils/Utils";
 import ReactJson from "react-json-view";
-import StepView from "../components/StepView";
+import PieceView from "../components/PieceView";
 import SwitchButtons from "../components/SwitchButtons";
-import StatemSelection from "../components/StatemSelection";
+import StoreSelection from "../components/StoreSelection";
 import { State as GState } from "gstatem";
 
-type StepNodeStatus = {
-	stepId?: string;
+type PieceNodeStatus = {
+	pieceId?: string;
 	isRead?: boolean;
 	isActive?: boolean;
-	statemId?: string;
+	storeId?: string;
 };
-type StepNodeRefs = Map<MutableRefObject<HTMLDivElement>, StepNodeStatus>;
-type StepNodes = Map<HTMLDivElement, StepNodeStatus>;
-type State = {
-	scrollLeftPanelToBottom?: boolean;
-};
+type PieceNodeRefs = Map<MutableRefObject<HTMLDivElement>, PieceNodeStatus>;
+type PieceNodes = Map<HTMLDivElement, PieceNodeStatus>;
 
 const switchButtonConfigs = [
-	{ desc: "State", value: "state" },
-	{ desc: "Step(s)", value: "step" }
+	{ desc: "Store", value: "store" },
+	{ desc: "Piece", value: "piece" }
 ];
 
 class App extends Component {
-	state: State = {};
 	leftSidePanelNodeRef: MutableRefObject<HTMLDivElement> = createRef();
 	bgConn;
-	statems: Statems = {};
-	activeStatemId;
+	storesInfo: StoresInfo = {};
+	activeStoreId;
 	tab;
-	selectedStepIndexStart;
-	selectedStepIndexEnd;
-	viewMode = "state";
+	selectedPieceIndexStart;
+	selectedPieceIndexEnd;
+	viewMode = "store";
 	observer: IntersectionObserver;
-	stepNodeRefs: StepNodeRefs = new Map();
-	stepNodes: StepNodes = new Map();
+	pieceNodeRefs: PieceNodeRefs = new Map();
+	pieceNodes: PieceNodes = new Map();
 	isMouseDownInLeftPanel = false;
-	selectedAccStepState: GState;
-	nextReadSteps: ReadSteps = {};
+	selectedAccPiece: GState;
+	nextReadPieces: ReadPieces = {};
 	markAsReadTimeout;
 	scrollLeftPanelToBottom = false;
 
 	constructor(props) {
 		super(props);
-		this.observer = new IntersectionObserver(this.onStepInViewport);
+		this.observer = new IntersectionObserver(this.onPieceInViewport);
 		this.init().then();
 	}
 
@@ -101,13 +92,13 @@ class App extends Component {
 		switch (name) {
 			case PAGE_OPEN: {
 				const {
-					tabState: { statemStepMap }
+					tabState: { pieceInfoMap }
 				}: PageOpen = message;
-				for (const statemId in statemStepMap) {
-					const stepMap = statemStepMap[statemId];
-					for (const stepId in stepMap) {
-						const step = stepMap[stepId];
-						this.handleStep({ step, isRender: false });
+				for (const storeId in pieceInfoMap) {
+					const pieceMap = pieceInfoMap[storeId];
+					for (const pieceId in pieceMap) {
+						const piece = pieceMap[pieceId];
+						this.handlePiece({ pieceInfo: piece, isRender: false });
 					}
 				}
 
@@ -118,23 +109,23 @@ class App extends Component {
 				break;
 			}
 			case ON_ACTION: {
-				const { step }: OnAction = message;
-				this.handleStep({ step });
+				const { piece }: OnAction = message;
+				this.handlePiece({ pieceInfo: piece });
 				break;
 			}
 			case ON_PAGE_RELOAD: {
-				const { statemIds }: OnPageReload = message;
-				if (statemIds) {
-					let hasActiveStatemId = false;
-					for (const statemId in statemIds) {
-						delete this.statems[statemId];
-						if (!hasActiveStatemId && statemId === this.activeStatemId) {
-							hasActiveStatemId = true;
+				const { storeIds }: OnPageReload = message;
+				if (storeIds) {
+					let hasActiveStoreId = false;
+					for (const storeId in storeIds) {
+						delete this.storesInfo[storeId];
+						if (!hasActiveStoreId && storeId === this.activeStoreId) {
+							hasActiveStoreId = true;
 						}
 					}
-					if (hasActiveStatemId) {
-						const [firstStatemId] = firstEntry(this.statems) || [];
-						this.activeStatemId = firstStatemId;
+					if (hasActiveStoreId) {
+						const [firstStoreId] = firstEntry(this.storesInfo) || [];
+						this.activeStoreId = firstStoreId;
 					}
 					this.setState({});
 				}
@@ -147,49 +138,49 @@ class App extends Component {
 		await this.init();
 	};
 
-	getStatem = statemId => {
-		let statem = this.statems[statemId];
-		if (!statem) {
-			statem = { steps: [], stepsById: {}, state: {} };
-			this.statems[statemId] = statem;
-			if (!this.activeStatemId) {
-				this.activeStatemId = statemId;
+	getStoreInfo = storeId => {
+		let storeInfo = this.storesInfo[storeId];
+		if (!storeInfo) {
+			storeInfo = { piecesInfo: [], piecesById: {}, store: {} };
+			this.storesInfo[storeId] = storeInfo;
+			if (!this.activeStoreId) {
+				this.activeStoreId = storeId;
 			}
 		}
-		return statem;
+		return storeInfo;
 	};
 
-	handleStep = ({
-		step,
+	handlePiece = ({
+		pieceInfo,
 		isRender = true
 	}: {
-		step: Step;
+		pieceInfo: PieceInfo;
 		isRender?: boolean;
 	}) => {
-		const { action, payload, stepId } = step;
+		const { action, payload, pieceId } = pieceInfo;
 		if (!action || !payload) return;
 
-		const { statemId } = payload;
+		const { storeId } = payload;
 
-		const statem = this.getStatem(statemId);
-		const { steps, stepsById, state } = statem;
+		const storeInfo = this.getStoreInfo(storeId);
+		const { piecesInfo, piecesById, store } = storeInfo;
 		switch (action) {
 			case "set": {
-				steps.push(step);
-				stepsById[stepId] = step;
-				steps.sort((a, b) => a.timestamp - b.timestamp);
+				piecesInfo.push(pieceInfo);
+				piecesById[pieceId] = pieceInfo;
+				piecesInfo.sort((a, b) => a.timestamp - b.timestamp);
 
-				const stepState = getStepState(payload);
-				Object.assign(state, stepState);
+				const piece = getPiece(payload);
+				Object.assign(store, piece);
 
-				const isActiveStatem = this.activeStatemId === statemId;
-				if (isActiveStatem) {
-					this.selectedStepIndexStart = steps.length - 1;
-					this.selectedStepIndexEnd = this.selectedStepIndexStart;
+				const isActiveStore = this.activeStoreId === storeId;
+				if (isActiveStore) {
+					this.selectedPieceIndexStart = piecesInfo.length - 1;
+					this.selectedPieceIndexEnd = this.selectedPieceIndexStart;
 				}
 
 				if (isRender) {
-					this.scrollLeftPanelToBottom = isActiveStatem;
+					this.scrollLeftPanelToBottom = isActiveStore;
 					this.setState({}, () => {
 						this.scrollLeftPanelToBottom = false;
 					});
@@ -199,18 +190,18 @@ class App extends Component {
 		}
 	};
 
-	activeStatem = () => {
-		return this.statems[this.activeStatemId] || {};
+	activeStoreInfo = () => {
+		return this.storesInfo[this.activeStoreId] || {};
 	};
 
-	onStepSelect =
+	onPieceSelect =
 		(index, isMouseDownSelect = false) =>
 		e => {
 			if (e.shiftKey || isMouseDownSelect) {
-				this.selectedStepIndexEnd = index;
+				this.selectedPieceIndexEnd = index;
 			} else {
-				this.selectedStepIndexStart = index;
-				this.selectedStepIndexEnd = this.selectedStepIndexStart;
+				this.selectedPieceIndexStart = index;
+				this.selectedPieceIndexEnd = this.selectedPieceIndexStart;
 			}
 			this.setState({});
 		};
@@ -234,8 +225,8 @@ class App extends Component {
 			e.preventDefault();
 		}
 
-		const { steps = [] } = this.activeStatem();
-		let nextIndex = this.selectedStepIndexEnd;
+		const { piecesInfo = [] } = this.activeStoreInfo();
+		let nextIndex = this.selectedPieceIndexEnd;
 		if (e.keyCode === 38) {
 			// up arrow
 			nextIndex--;
@@ -247,47 +238,47 @@ class App extends Component {
 			nextIndex = 0;
 		} else if (e.keyCode === 35) {
 			// end
-			nextIndex = steps.length - 1;
+			nextIndex = piecesInfo.length - 1;
 		} else {
 			return;
 		}
 
-		if (nextIndex < 0 || nextIndex > steps.length - 1) {
+		if (nextIndex < 0 || nextIndex > piecesInfo.length - 1) {
 			return;
 		}
 
-		this.onStepSelect(nextIndex)(e);
-		const stepsContainerNode = e.target;
-		const selectedStepNode =
-			stepsContainerNode.children[this.selectedStepIndexStart];
+		this.onPieceSelect(nextIndex)(e);
+		const piecesContainerNode = e.target;
+		const selectedPieceNode =
+			piecesContainerNode.children[this.selectedPieceIndexStart];
 
 		if (
 			isPreventDefault &&
-			selectedStepNode &&
-			(selectedStepNode.offsetTop <
-				stepsContainerNode.scrollTop + stepsContainerNode.offsetTop ||
-				selectedStepNode.offsetTop + selectedStepNode.offsetHeight >
-					stepsContainerNode.scrollTop +
-						stepsContainerNode.offsetTop +
-						stepsContainerNode.offsetHeight)
+			selectedPieceNode &&
+			(selectedPieceNode.offsetTop <
+				piecesContainerNode.scrollTop + piecesContainerNode.offsetTop ||
+				selectedPieceNode.offsetTop + selectedPieceNode.offsetHeight >
+					piecesContainerNode.scrollTop +
+						piecesContainerNode.offsetTop +
+						piecesContainerNode.offsetHeight)
 		) {
-			selectedStepNode.scrollIntoView({
+			selectedPieceNode.scrollIntoView({
 				behavior: "smooth"
 			});
 		}
 	};
 
-	onStatemChange = e => {
-		const nextActiveStatemId = e.target.value;
-		if (!nextActiveStatemId || this.activeStatemId === nextActiveStatemId) {
+	onStoreChange = e => {
+		const nextActiveStoreId = e.target.value;
+		if (!nextActiveStoreId || this.activeStoreId === nextActiveStoreId) {
 			return;
 		}
 
-		this.activeStatemId = nextActiveStatemId;
-		const statem = this.getStatem(this.activeStatemId);
-		const { steps } = statem;
-		this.selectedStepIndexStart = steps.length - 1;
-		this.selectedStepIndexEnd = this.selectedStepIndexStart;
+		this.activeStoreId = nextActiveStoreId;
+		const storeInfo = this.getStoreInfo(this.activeStoreId);
+		const { piecesInfo } = storeInfo;
+		this.selectedPieceIndexStart = piecesInfo.length - 1;
+		this.selectedPieceIndexEnd = this.selectedPieceIndexStart;
 		this.scrollLeftPanelToBottom = true;
 		this.setState({}, () => {
 			this.scrollLeftPanelToBottom = false;
@@ -316,23 +307,23 @@ class App extends Component {
 			this.leftSidePanelScrollToBottom();
 		}
 
-		this.stepNodes.clear();
-		this.stepNodeRefs.forEach((stepNodeStatus, stepNodeRef) => {
-			const stepNode = stepNodeRef.current;
-			if (stepNode instanceof HTMLDivElement) {
-				this.observer.observe(stepNode);
-				this.stepNodes.set(stepNode, stepNodeStatus);
+		this.pieceNodes.clear();
+		this.pieceNodeRefs.forEach((pieceNodeStatus, pieceNodeRef) => {
+			const pieceNode = pieceNodeRef.current;
+			if (pieceNode instanceof HTMLDivElement) {
+				this.observer.observe(pieceNode);
+				this.pieceNodes.set(pieceNode, pieceNodeStatus);
 			}
 		});
 	}
 
-	markAsRead = (statemId: string, stepId: string) => {
-		let readSteps = this.nextReadSteps[statemId];
-		if (!readSteps) {
-			readSteps = [];
-			this.nextReadSteps[statemId] = readSteps;
+	markAsRead = (storeId: string, pieceId: string) => {
+		let readPieces = this.nextReadPieces[storeId];
+		if (!readPieces) {
+			readPieces = [];
+			this.nextReadPieces[storeId] = readPieces;
 		}
-		readSteps.push(stepId);
+		readPieces.push(pieceId);
 
 		if (this.markAsReadTimeout) {
 			clearTimeout(this.markAsReadTimeout);
@@ -341,72 +332,72 @@ class App extends Component {
 			const message: PageToBg = {
 				name: MARK_AS_READ,
 				tabId: this.tab.id,
-				readSteps: this.nextReadSteps
+				readPieces: this.nextReadPieces
 			};
 			this.bgConn.postMessage(message);
-			this.nextReadSteps = {};
+			this.nextReadPieces = {};
 			this.markAsReadTimeout = undefined;
 			this.setState({});
 		}, 300);
 	};
 
-	onStepInViewport = entries => {
+	onPieceInViewport = entries => {
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {
-				const stepNode = entry.target;
-				const step = this.stepNodes.get(stepNode);
-				if (!step) return;
+				const pieceNode = entry.target;
+				const piece = this.pieceNodes.get(pieceNode);
+				if (!piece) return;
 
-				const { isRead, statemId, stepId } = step;
+				const { isRead, storeId, pieceId } = piece;
 				if (!isRead) {
-					stepNode.classList.add("step-box__is-unread");
-					const { stepsById } = this.statems[statemId];
-					const step = stepsById[stepId];
-					step.isRead = true;
-					this.markAsRead(statemId, stepId);
+					pieceNode.classList.add("piece-box__is-unread");
+					const { piecesById } = this.storesInfo[storeId];
+					const unreadPiece = piecesById[pieceId];
+					unreadPiece.isRead = true;
+					this.markAsRead(storeId, pieceId);
 				}
-				this.observer.unobserve(stepNode);
-				stepNode.addEventListener("animationend", () => {
-					stepNode.classList.remove("step-box__is-unread");
+				this.observer.unobserve(pieceNode);
+				pieceNode.addEventListener("animationend", () => {
+					pieceNode.classList.remove("piece-box__is-unread");
 				});
 			}
 		});
 	};
 
-	mergeSteps = () => {
-		if (this.selectedStepIndexStart === this.selectedStepIndexEnd) return;
+	mergePieces = () => {
+		if (this.selectedPieceIndexStart === this.selectedPieceIndexEnd) return;
 
-		let startIndex = this.selectedStepIndexStart;
-		let endIndex = this.selectedStepIndexEnd;
-		if (this.selectedStepIndexStart > this.selectedStepIndexEnd) {
-			startIndex = this.selectedStepIndexEnd;
-			endIndex = this.selectedStepIndexStart;
+		let startIndex = this.selectedPieceIndexStart;
+		let endIndex = this.selectedPieceIndexEnd;
+		if (this.selectedPieceIndexStart > this.selectedPieceIndexEnd) {
+			startIndex = this.selectedPieceIndexEnd;
+			endIndex = this.selectedPieceIndexStart;
 		}
 
-		const { steps, stepsById } = this.activeStatem();
-		const { payload, stepId: targetStepId } = steps[endIndex];
-		setStepState(payload, this.selectedAccStepState);
-		const stepIdsToBeMerged = [];
+		const { piecesInfo, piecesById } = this.activeStoreInfo();
+		const { payload, pieceId: targetPieceId } = piecesInfo[endIndex];
+		setPiece(payload, this.selectedAccPiece);
+		const pieceIdsToBeMerged = [];
 		for (let i = startIndex; i < endIndex; i++) {
-			const { stepId } = steps[i];
-			delete stepsById[stepId];
-			stepIdsToBeMerged.push(stepId);
+			const { pieceId } = piecesInfo[i];
+			delete piecesById[pieceId];
+			pieceIdsToBeMerged.push(pieceId);
 		}
-		steps.splice(startIndex, endIndex - startIndex);
+		piecesInfo.splice(startIndex, endIndex - startIndex);
 
-		this.selectedStepIndexStart = startIndex;
-		this.selectedStepIndexEnd = startIndex;
+		this.selectedPieceIndexStart = startIndex;
+		this.selectedPieceIndexEnd = startIndex;
 
-		const mergeSteps: MergeSteps = {
-			statemId: this.activeStatemId,
-			sourceStepIds: stepIdsToBeMerged,
-			targetStepId
+		const mergePieces: MergePieces = {
+			storeId: this.activeStoreId,
+			sourcePieceIds: pieceIdsToBeMerged,
+			targetPieceId: targetPieceId
 		};
 
 		const message: PageToBg = {
-			name: MERGE_STEPS,
+			name: MERGE_PIECES,
 			tabId: this.tab.id,
-			mergeSteps
+			mergePieces: mergePieces
 		};
 		this.bgConn.postMessage(message);
 
@@ -414,93 +405,94 @@ class App extends Component {
 	};
 
 	render() {
-		const { steps = [] } = this.activeStatem();
-		const stepNodes = [];
-		const curState = {};
-		this.stepNodeRefs.clear();
+		const { piecesInfo = [] } = this.activeStoreInfo();
+		const pieceNodes = [];
+		const curStore = {};
+		this.pieceNodeRefs.clear();
 
 		let lastTimestamp = 0;
-		this.selectedAccStepState = {};
-		for (let i = 0; i < steps.length; i++) {
-			const step = steps[i];
-			const { payload, timestamp, isRead, stepId } = step;
-			const { statemId } = payload;
+		this.selectedAccPiece = {};
+		for (let i = 0; i < piecesInfo.length; i++) {
+			const piece = piecesInfo[i];
+			const { payload, timestamp, isRead, pieceId } = piece;
+			const { storeId } = payload;
 			const diffTimestamp = timestamp - lastTimestamp;
 			lastTimestamp = timestamp;
 
 			let isActive = false;
-			if (this.selectedStepIndexStart === this.selectedStepIndexEnd) {
-				isActive = this.selectedStepIndexStart === i;
-			} else if (this.selectedStepIndexStart < this.selectedStepIndexEnd) {
+			if (this.selectedPieceIndexStart === this.selectedPieceIndexEnd) {
+				isActive = this.selectedPieceIndexStart === i;
+			} else if (this.selectedPieceIndexStart < this.selectedPieceIndexEnd) {
 				isActive =
-					i >= this.selectedStepIndexStart && i <= this.selectedStepIndexEnd;
-			} else if (this.selectedStepIndexStart > this.selectedStepIndexEnd) {
+					i >= this.selectedPieceIndexStart && i <= this.selectedPieceIndexEnd;
+			} else if (this.selectedPieceIndexStart > this.selectedPieceIndexEnd) {
 				isActive =
-					i >= this.selectedStepIndexEnd && i <= this.selectedStepIndexStart;
+					i >= this.selectedPieceIndexEnd && i <= this.selectedPieceIndexStart;
 			}
 
 			if (isActive) {
-				Object.assign(this.selectedAccStepState, getStepState(payload));
+				Object.assign(this.selectedAccPiece, getPiece(payload));
 			}
 
-			const stepNodeRef = createRef<HTMLDivElement>();
-			this.stepNodeRefs.set(stepNodeRef, {
+			const pieceNodeRef = createRef<HTMLDivElement>();
+			this.pieceNodeRefs.set(pieceNodeRef, {
 				isActive,
 				isRead,
-				statemId,
-				stepId
+				storeId: storeId,
+				pieceId
 			});
 
-			stepNodes.push(
-				<StepView
-					nodeRef={stepNodeRef}
-					key={`${statemId}_${i}`}
+			pieceNodes.push(
+				<PieceView
+					nodeRef={pieceNodeRef}
+					key={`${storeId}_${i}`}
 					isFirstItem={i === 0}
 					payload={payload}
 					timestamp={diffTimestamp}
-					onMouseDown={this.onStepSelect(i)}
+					onMouseDown={this.onPieceSelect(i)}
 					onMouseOver={e => {
 						if (this.isMouseDownInLeftPanel) {
-							this.onStepSelect(i, true)(e);
+							this.onPieceSelect(i, true)(e);
 						}
 					}}
-					extraCss={isActive ? " active-step" : ""}
+					extraCss={isActive ? " active-piece" : ""}
 				/>
 			);
 
 			if (
-				i <= Math.max(this.selectedStepIndexStart, this.selectedStepIndexEnd)
+				i <= Math.max(this.selectedPieceIndexStart, this.selectedPieceIndexEnd)
 			) {
-				accStepState(payload, curState);
+				accPiece(payload, curStore);
 			}
 		}
 
-		let displayJsonContent = curState;
+		let displayJsonContent = curStore;
 		if (
-			this.viewMode === "step" &&
-			(this.selectedStepIndexStart >= 0 || this.selectedStepIndexEnd >= 0)
+			this.viewMode === "piece" &&
+			(this.selectedPieceIndexStart >= 0 || this.selectedPieceIndexEnd >= 0)
 		) {
-			displayJsonContent = this.selectedAccStepState;
+			displayJsonContent = this.selectedAccPiece;
 		}
 
 		return (
 			<div className="wrapper">
 				<div className="header">
-					<StatemSelection
-						statems={this.statems}
-						onChange={this.onStatemChange}
+					<StoreSelection
+						stores={this.storesInfo}
+						onChange={this.onStoreChange}
 					/>
 					<div className="header-title">GStatem dev tools</div>
 				</div>
 				<div className="main-body">
-					<div className="step-container">
+					<div className="piece-container">
 						<div className="left-side-panel-header">
 							<div className="left-side-panel-header__body">
-								Steps
-								{this.selectedStepIndexStart !== this.selectedStepIndexEnd && (
+								Piece(s)
+								{this.selectedPieceIndexStart !==
+									this.selectedPieceIndexEnd && (
 									<button
-										className="merge-step-button"
-										onClick={this.mergeSteps}
+										className="merge-piece-button"
+										onClick={this.mergePieces}
 									>
 										Merge
 									</button>
@@ -518,15 +510,15 @@ class App extends Component {
 							}}
 							className="left-side-panel"
 						>
-							{stepNodes}
+							{pieceNodes}
 						</div>
 					</div>
-					<div className="state-container">
+					<div className="store-container">
 						<div className="body-container-header">
 							<SwitchButtons
 								name="view-mode"
 								options={switchButtonConfigs}
-								value="state"
+								value="store"
 								onChange={this.onViewModeChange}
 							/>
 						</div>

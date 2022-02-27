@@ -79,7 +79,7 @@ class Middleware<GState extends State> extends GStatem<GState> {
 	};
 }
 
-describe("ReactGStatem test", () => {
+describe("ReactGStatem tests", () => {
 	it("renders Counter component", () => {
 		render(<CounterFCTest />);
 		screen.getByText("Clicked: 0 times");
@@ -111,7 +111,7 @@ describe("ReactGStatem test", () => {
 		screen.getByText("Clicked: 0 times");
 	});
 
-	it("Performance testing", () => {
+	it("Tests in multiple components", () => {
 		const numOfComponents = 10;
 		const numOfSelectorForEach = 100;
 		const counterTests = [];
@@ -130,18 +130,11 @@ describe("ReactGStatem test", () => {
 		}
 		render(<>{counterTests}</>);
 
-		const t1 = performance.now();
 		const incrementButton = screen.getAllByRole("button", { name: `+` })[0];
 		fireEvent.click(incrementButton);
-		console.log(
-			`${numOfComponents} components with ${numOfSelectorForEach} selectors each, took ${
-				performance.now() - t1
-			} ms.`
-		);
-
 		const resetButton = screen.getAllByRole("button", { name: "Reset" })[0];
 		fireEvent.click(resetButton);
-		screen.getAllByText("Clicked: 0 times");
+		expect(screen.getAllByText("Clicked: 0 times")[0]).toBeDefined();
 	});
 
 	it("Class component", () => {

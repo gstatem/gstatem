@@ -2,12 +2,14 @@ import { Canvas, Meta } from "@storybook/addon-docs";
 import { defaultDocParams } from "../../base/lib/utils";
 import CodeView from "../base/components/CodeView";
 
-import FCWithDevTools from "./base/components/FCWithDevTools";
-import StateJsContent from "!raw-loader!../../dist/react/stories/base/stores/FCStoreWithDevTools";
-import StateTsContent from "!raw-loader!./base/stores/FCStoreWithDevTools";
+import Installation from "../../base/components/Installation.mdx";
 
-import WithDevToolsJsContent from "!raw-loader!../../dist/react/stories/base/components/FCWithDevTools";
-import WithDevToolsTsContent from "!raw-loader!./base/components/FCWithDevTools";
+import FCWithDevTools from "./base/components/FCWithDevTools";
+import StoreJsContent from "!raw-loader!../../dist/react/stories/base/stores/FCStoreWithDevTools";
+import StoreTsContent from "!raw-loader!./base/stores/FCStoreWithDevTools";
+
+import ComponentJsContent from "!raw-loader!../../dist/react/stories/base/components/FCWithDevTools";
+import ComponentTsContent from "!raw-loader!./base/components/FCWithDevTools";
 
 import DevToolsImage from "../../base/assets/devtools.gif";
 
@@ -16,19 +18,7 @@ import DevToolsImage from "../../base/assets/devtools.gif";
 	parameters={defaultDocParams()}
 />
 
-## Installation
-
-### npm
-
-```shell
-npm i react-gstatem gstatem-devtools
-```
-
-### yarn
-
-```shell
-yarn add react-gstatem gstatem-devtools
-```
+<Installation packages="react-gstatem gstatem-devtools" />
 
 ## Function component - with devtools
 
@@ -48,16 +38,16 @@ The `increaseCount` and `resetCount` functions can be used anywhere - in compone
 
 <CodeView
 	componentName="FCStoreWithDevTools"
-	jsContent={StateJsContent}
-	tsContent={StateTsContent}
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
 />
 
 **Use the store in component**
 
 <CodeView
 	componentName="FCWithDevTools"
-	jsContent={WithDevToolsJsContent}
-	tsContent={WithDevToolsTsContent}
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
 />
 
 Every dispatched piece will be logged in the Chrome extension [GStatem-devtools](https://chrome.google.com/webstore/detail/gstatem-devtools/djohekcenmdagbolgaiiphdnmhgmpllk) if the devtools is installed.

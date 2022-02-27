@@ -1,4 +1,4 @@
-import GStatem, { Selector, Subscriber } from "./";
+import GStatem, { deepCopy, Selector, Subscriber } from "./";
 
 type State = {
 	color?: string;
@@ -7,6 +7,22 @@ type State = {
 	count2?: number;
 	count3?: number;
 };
+
+describe("Utils tests", () => {
+	const circularObj = {
+		ab: 12,
+		cd: 34,
+		ef: undefined
+	};
+	circularObj.ef = {
+		gh: circularObj
+	};
+
+	const circularObjCopy = deepCopy(circularObj);
+	expect(circularObjCopy.ab).toBe(12);
+	expect(circularObjCopy.cd).toBe(34);
+	expect(circularObjCopy.ef.gh).toBe(circularObjCopy);
+});
 
 describe("GStatem tests", () => {
 	const { get, set, subscribe, unsubscribe, select } = new GStatem<State>({
@@ -104,7 +120,9 @@ describe("GStatem tests", () => {
 		const t1 = performance.now();
 		dispatch({ count: 9 });
 		console.log(
-			`${numOfSelectors} selectors took ${performance.now() - t1} ms.`
+			`Single dispatch with ${numOfSelectors} selectors in single store took ${
+				performance.now() - t1
+			} ms.`
 		);
 	});
 });

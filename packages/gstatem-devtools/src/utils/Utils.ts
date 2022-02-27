@@ -1,4 +1,4 @@
-import { StepPayload } from "./Types";
+import { PiecePayload } from "./Types";
 import { State as GState } from "gstatem";
 
 export const firstEntry = <T>(obj = {}): [key: string, value: T] => {
@@ -8,22 +8,16 @@ export const firstEntry = <T>(obj = {}): [key: string, value: T] => {
 	}
 };
 
-export const getStepState = ({ piece }: StepPayload): GState => {
+export const getPiece = ({ piece }: PiecePayload): GState => {
 	return piece;
 };
 
-export const accStepState = (
-	{ piece }: StepPayload,
-	curState: object
-): void => {
-	Object.assign(curState, piece);
+export const accPiece = ({ piece }: PiecePayload, store: object): void => {
+	Object.assign(store, piece);
 };
 
-export const setStepState = (
-	{ piece }: StepPayload,
-	newStepState: GState
-): void => {
-	Object.assign(piece, newStepState);
+export const setPiece = ({ piece }: PiecePayload, nextPiece: GState): void => {
+	Object.assign(piece, nextPiece);
 };
 
 export const uuidv4 = (): string => {
