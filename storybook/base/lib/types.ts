@@ -25,3 +25,16 @@ export type AppendixComponent = {
 export type AppendixComponents = {
 	[componentName: string]: AppendixComponent;
 };
+
+export type FileInfo = {
+	fileBasename: string;
+	filename: string;
+	extName: string;
+	relativeFilePath: string;
+	fullFilePath: string;
+	storybookPath?: string;
+};
+
+export type FilesInfo = {
+	[fileBasename: string]: FileInfo;
+};

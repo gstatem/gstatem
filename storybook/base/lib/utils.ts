@@ -1,5 +1,4 @@
-import { FiddleCodeView, PrettifySource } from "./types";
-import { FilesInfo } from "../../gen_js";
+import { FiddleCodeView, FilesInfo, PrettifySource } from "./types";
 
 const filesInfo: FilesInfo = require("../../dist/files-info.json");
 
