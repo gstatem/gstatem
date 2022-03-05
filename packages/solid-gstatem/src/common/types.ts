@@ -15,15 +15,15 @@ export interface SolidGStatem<GState extends State> {
 	 * Subscribe state piece with selector function, when the selected piece is dispatched by {@link dispatch}, the subscriber function is invoked and the component that wraps the useSelect is re-rendered.
 	 *
 	 * @param {Selector<GState, Piece>} selector - The selector function.
-	 * @param {EqualityFn<GState>} [equalityFn] - The equality function.
+	 * @param {UseSelectOptions<GState, Piece>} [options] - Options.
 	 *
-	 * @returns {Piece} The subscribing piece.
+	 * @returns {Accessor<Piece>} The piece signal.
 	 *
 	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page}
 	 */
 	useSelect: <Piece>(
 		selector: Selector<GState, Piece>,
-		equalityFn?: UseSelectOptions<GState, Piece>
+		options?: UseSelectOptions<GState, Piece>
 	) => Accessor<Piece>;
 
 	/**

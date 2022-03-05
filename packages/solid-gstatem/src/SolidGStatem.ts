@@ -1,15 +1,30 @@
 import GStatem, { EqualityFn, Init, State } from "gstatem";
 import { SolidGStatem, UseSelectOptions } from "./common/types";
-import { createSignal, onCleanup, Accessor } from "solid-js";
+import { Accessor } from "solid-js";
+import { Signal, SignalOptions } from "solid-js/types/reactive/signal";
 
 export const init = <GState extends State>(
+	{
+		createSignal,
+		onCleanup
+	}: {
+		createSignal: <T>(value: T, options?: SignalOptions<T>) => Signal<T>;
+		onCleanup: (fn: () => void) => () => void;
+	},
 	statem: GStatem<GState>
 ): SolidGStatem<GState> => ({
 	useSelect: <Piece>(
 		selector,
-		{ equals, stateEqualityFn }: UseSelectOptions<GState, Piece> = {}
+		{
+			stateEqualityFn,
+			equals,
+			...restOptions
+		}: UseSelectOptions<GState, Piece> = {}
 	): Accessor<Piece> => {
-		const [value, setValue] = createSignal<Piece>(statem.get(selector));
+		const [value, setValue] = createSignal<Piece>(statem.get(selector), {
+			equals,
+			...restOptions
+		});
 
 		let equalityFn: EqualityFn<GState> = stateEqualityFn;
 		if (!(stateEqualityFn instanceof Function) && equals instanceof Function) {
@@ -47,6 +62,7 @@ export const newStatem = <GState extends State>(config?: Init<GState>) =>
  *
  * Create a store.
  *
+ * @param {object} solid - The solid store.
  * @param {Init<GState>} [config] - Init config.
  *
  * @returns {SolidGStatem<GState>} Returns the store.
@@ -54,6 +70,7 @@ export const newStatem = <GState extends State>(config?: Init<GState>) =>
  * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page}
  */
 export const create = <GState extends State>(
+	solid,
 	config?: Init<GState> | GStatem<GState>
 ): SolidGStatem<GState> => {
 	let statem;
@@ -63,5 +80,5 @@ export const create = <GState extends State>(
 		statem = newStatem<GState>(config);
 	}
 
-	return init(statem);
+	return init(solid, statem);
 };
