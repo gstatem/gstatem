@@ -5,3 +5,4 @@ src
 *.log
 
 tsconfig.json
+jest.*

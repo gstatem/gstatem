@@ -1,12 +1,12 @@
 {
 	"name": "solid-gstatem",
 	"description": "A light weight global state management library for Solid JS",
-	"version": "1.0.0-alpha.2",
+	"version": "1.0.0-alpha.3",
 	"author": "shuieryin",
 	"main": "dist/index.js",
 	"scripts": {
-		"check-types": "tsc --project ./ -outDir dist",
-		"babel": "babel --config-file ../../babel.config.json dist -d dist --verbose",
+		"check-types": "ts-node check-types",
+		"babel": "babel --config-file ./babel.config.json dist -d dist --verbose",
 		"build": "yarn clean && yarn check-types && yarn babel",
 		"clean": "rimraf dist node_modules package-lock.json"
 	},

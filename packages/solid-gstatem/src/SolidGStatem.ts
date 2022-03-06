@@ -1,16 +1,9 @@
 import GStatem, { EqualityFn, Init, State } from "gstatem";
-import { SolidGStatem, UseSelectOptions } from "./common/types";
+import { Solid, SolidGStatem, UseSelectOptions } from "./common/types";
 import { Accessor } from "solid-js";
-import { Signal, SignalOptions } from "solid-js/types/reactive/signal";
 
 export const init = <GState extends State>(
-	{
-		createSignal,
-		onCleanup
-	}: {
-		createSignal: <T>(value: T, options?: SignalOptions<T>) => Signal<T>;
-		onCleanup: (fn: () => void) => () => void;
-	},
+	{ createSignal, onCleanup }: Solid,
 	statem: GStatem<GState>
 ): SolidGStatem<GState> => ({
 	useSelect: <Piece>(
@@ -70,7 +63,7 @@ export const newStatem = <GState extends State>(config?: Init<GState>) =>
  * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page}
  */
 export const create = <GState extends State>(
-	solid,
+	solid: Solid,
 	config?: Init<GState> | GStatem<GState>
 ): SolidGStatem<GState> => {
 	let statem;
@@ -78,6 +71,11 @@ export const create = <GState extends State>(
 		statem = config;
 	} else {
 		statem = newStatem<GState>(config);
+	}
+
+	const { createSignal, onCleanup } = solid;
+	if (!(createSignal instanceof Function) || !(onCleanup instanceof Function)) {
+		throw new TypeError("Invalid solid instance");
 	}
 
 	return init(solid, statem);

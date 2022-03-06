@@ -1,19 +1,19 @@
-import { Component, JSX } from "solid-js";
+import { Accessor, Component, JSX } from "solid-js";
 
-type CounterProps = {
-	value: number;
+type SolidCounterProps = {
+	value: Accessor<number>;
 	onIncrement: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent>;
 	onReset?: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent>;
 };
 
-const SolidCounter: Component<CounterProps> = ({
+const SolidCounter: Component<SolidCounterProps> = ({
 	value,
 	onIncrement,
 	onReset
 }) => {
 	return (
 		<div>
-			<span>Clicked: {value} times</span>{" "}
+			<span>Clicked: {value()} times</span>{" "}
 			<button onClick={onIncrement}>+</button>{" "}
 			{onReset && <button onClick={onReset}>Reset</button>}
 		</div>

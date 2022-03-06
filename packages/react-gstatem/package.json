@@ -5,7 +5,7 @@
 	"author": "shuieryin",
 	"main": "dist/index.js",
 	"scripts": {
-		"check-types": "tsc --project ./ -outDir dist",
+		"check-types": "tsc --project ./ --outDir dist",
 		"babel": "babel --config-file ../../babel.config.json dist -d dist --verbose",
 		"build": "yarn clean && yarn check-types && yarn babel",
 		"clean": "rimraf dist node_modules package-lock.json"

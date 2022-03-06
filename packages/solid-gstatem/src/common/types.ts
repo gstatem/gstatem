@@ -1,12 +1,18 @@
+/* eslint-disable no-unused-vars */
 import { EqualityFn, Selector, SelectState, State, Subscriber } from "gstatem";
 import { Accessor } from "solid-js";
-import { SignalOptions } from "solid-js/types/reactive/signal";
+import { Signal, SignalOptions } from "solid-js/types/reactive/signal";
 
 export type UseSelectOptions<
 	GState extends State,
 	Piece
 > = SignalOptions<Piece> & {
 	stateEqualityFn?: EqualityFn<GState>;
+};
+
+export type Solid = {
+	createSignal: <T>(value: T, options?: SignalOptions<T>) => Signal<T>;
+	onCleanup: (fn: () => void) => () => void;
 };
 
 export interface SolidGStatem<GState extends State> {

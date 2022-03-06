@@ -14,26 +14,28 @@ type CounterTestProps<T extends State> = {
 	customHooks?: VoidFunction;
 };
 
-const initialConfig = { state: { count: 0 } };
+const initialState = { count: 0 };
+const initialConfig = { state: initialState };
 const countSelector = state => state.count;
 const { useSelect, dispatch, get, set, select, subscribe, unsubscribe } =
 	create<StateProps>(initialConfig);
 
+const useCount = equalityFn => useSelect<number>(countSelector, equalityFn);
 const increaseCount = () => dispatch(state => ({ count: state.count + 1 }));
-const reset = () => dispatch({ count: 0 });
+const resetCount = () => dispatch(initialState);
 
 const CounterFCTest: FC<CounterTestProps<StateProps>> = ({
 	equalityFn,
 	customHooks
 }) => {
-	const count = useSelect(state => state.count, equalityFn);
+	const count = useCount(equalityFn);
 
 	if (customHooks instanceof Function) {
 		customHooks();
 	}
 
 	return (
-		<CounterFC value={count} onIncrement={increaseCount} onReset={reset} />
+		<CounterFC value={count} onIncrement={increaseCount} onReset={resetCount} />
 	);
 };
 
@@ -82,11 +84,12 @@ class Middleware<GState extends State> extends GStatem<GState> {
 describe("ReactGStatem tests", () => {
 	it("renders Counter component", () => {
 		render(<CounterFCTest />);
-		screen.getByText("Clicked: 0 times");
+		expect(screen.getByText("Clicked: 0 times")).toBeDefined();
 
 		const incrementButton = screen.getByRole("button", { name: "+" });
 		fireEvent.click(incrementButton);
-		screen.getByText("Clicked: 1 times");
+		expect(screen.getByText("Clicked: 1 times")).toBeDefined();
+		expect(get(countSelector)).toBe(1);
 
 		set({ count: 5 });
 		expect(get(countSelector)).toBe(5);
@@ -100,15 +103,15 @@ describe("ReactGStatem tests", () => {
 				}
 			/>
 		);
-		screen.getByText("Clicked: 5 times");
+		expect(screen.getByText("Clicked: 5 times")).toBeDefined();
 
 		const incrementButton = screen.getByRole("button", { name: "+" });
 		fireEvent.click(incrementButton);
-		screen.getByText("Clicked: 5 times"); // +1 to count will not trigger re-render.
+		expect(screen.getByText("Clicked: 5 times")).toBeDefined(); // +1 to count will not trigger re-render.
 
 		const resetButton = screen.getByRole("button", { name: "Reset" });
 		fireEvent.click(resetButton);
-		screen.getByText("Clicked: 0 times");
+		expect(screen.getByText("Clicked: 0 times")).toBeDefined();
 	});
 
 	it("Tests in multiple components", () => {
@@ -139,13 +142,13 @@ describe("ReactGStatem tests", () => {
 
 	it("Class component", () => {
 		render(<CounterCC />);
-		screen.getByText("Count: 0");
+		expect(screen.getByText("Count: 0")).toBeDefined();
 
 		const increaseCountButton = screen.getByRole("button", {
 			name: "Increase count"
 		});
 		fireEvent.click(increaseCountButton);
-		screen.getByText("Count: 1");
+		expect(screen.getByText("Count: 1")).toBeDefined();
 	});
 
 	it("Pure subscribe and unsubscribe", () => {

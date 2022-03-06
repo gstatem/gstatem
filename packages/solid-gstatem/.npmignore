@@ -5,3 +5,6 @@ src
 *.log
 
 tsconfig.json
+jest.*
+babel.*
+check-types.*

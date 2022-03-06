@@ -1,4 +1,4 @@
-const solidFiles = ["**/solid/**/*.{js,jsx,ts,tsx}"];
+const solidFiles = ["**/{solid,solid-gstatem}/**/*.{js,jsx,ts,tsx}"];
 
 module.exports = {
 	parserOptions: {
@@ -36,7 +36,6 @@ module.exports = {
 			],
 			plugins: ["@typescript-eslint"],
 			rules: {
-				"@typescript-eslint/no-unused-vars": "off",
 				"@typescript-eslint/ban-ts-comment": "off",
 				"@typescript-eslint/no-empty-function": "off",
 				"@typescript-eslint/no-var-requires": "off"

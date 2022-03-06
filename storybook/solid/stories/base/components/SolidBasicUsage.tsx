@@ -9,7 +9,7 @@ const SolidBasicUsage: Component = () => {
 
 	return (
 		<SolidCounter
-			value={count()}
+			value={count}
 			onIncrement={increaseCount}
 			onReset={resetCount}
 		/>
