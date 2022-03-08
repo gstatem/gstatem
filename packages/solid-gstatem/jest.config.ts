@@ -14,3 +14,5 @@ module.exports = {
 		}
 	}
 };
+
+export {}; // resolve TS2451: Cannot redeclare block-scoped variable 'path'.

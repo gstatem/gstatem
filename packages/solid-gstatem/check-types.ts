@@ -1,5 +1,4 @@
 const { execSync } = require("child_process");
-// @ts-ignore
 const path = require("path");
 const fs = require("fs");
 const rimraf = require("rimraf");
@@ -27,3 +26,5 @@ const cmdStr = `tsc --project ${path.join(
 console.log(cmdStr);
 execSync(cmdStr);
 rimraf.sync(tsConfigPath);
+
+export {}; // resolve TS2451: Cannot redeclare block-scoped variable 'path'.
