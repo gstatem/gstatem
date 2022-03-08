@@ -35,7 +35,7 @@ jobs:
         run: |
           npm i -g yarn
           yarn
-          git commit -am "Commit yarn.lock changes"
+          git diff-index --quiet HEAD || git commit -am "Commit yarn.lock changes"
           ls -la
           npm -v
           yarn -v
