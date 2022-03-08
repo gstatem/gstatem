@@ -11,7 +11,7 @@ npm i solid-gstatem
 yarn add solid-gstatem
 ```
 
-### [Demos](https://gstatem.netlify.app/)
+### [Demos](https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page)
 
 ## Basic usage of function component
 
