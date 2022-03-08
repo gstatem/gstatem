@@ -6,4 +6,4 @@ GStatem is a small, simple and fast state-management tool which supports React J
 |---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | [React JS](packages/react-gstatem)                                                          | [Solid JS](packages/solid-gstatem)                                                          | [Vanilla JS](packages/gstatem)                                                        |
 
-### [Demos](https://gstatem.netlify.app/)~~~~
+### [Demos](https://gstatem.netlify.app/)
