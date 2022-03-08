@@ -10,3 +10,4 @@ webpack.*
 
 tsconfig.json
 rollup.config.js
+pack-extension.*

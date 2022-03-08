@@ -7,8 +7,10 @@ import {
 } from "../lib/utils";
 import { FiddleCodeView, RawFileContent } from "../lib/types";
 import { uuidv4 } from "gstatem";
-import { SwitchButtons, SwitchButtonOption } from "gstatem-devtools";
 import useCodeBlock from "../../react/base/hooks/useCodeBlock";
+import SwitchButtons, {
+	SwitchButtonOption
+} from "../../../packages/gstatem-devtools/src/components/SwitchButtons";
 
 type Lang = "jsx" | "tsx";
 
@@ -53,15 +55,13 @@ const CodeView: FC<CodeViewProps> = ({
 
 	useCodeBlock(viewRef, onCodeBlockMount);
 
-	let content, fileExt;
+	let content;
 	switch (lang) {
 		case "jsx":
 			content = jsContent;
-			fileExt = "js";
 			break;
 		case "tsx":
 			content = tsContent;
-			fileExt = "tsx";
 			break;
 	}
 
@@ -70,9 +70,7 @@ const CodeView: FC<CodeViewProps> = ({
 			{isDisplayTopRight && (
 				<div className="code-view__top-right">
 					{componentName && (
-						<div className="code-view__component-name">
-							{componentName}.{fileExt}
-						</div>
+						<div className="code-view__component-name">{componentName}</div>
 					)}
 					{isEnableSwitchLang && (
 						<SwitchButtons

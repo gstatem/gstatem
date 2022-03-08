@@ -6,7 +6,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"check-types": "tsc --project ./src --declaration --outDir dist",
-		"build-package": "babel --config-file ../../babel.config.json dist -d dist --verbose && copyfiles --up 1 ./src/components/**/*.less dist",
+		"build-package": "babel --config-file ../../babel.config.json dist -d dist --verbose",
 		"build": "rimraf dist && yarn check-types && yarn build-package && rollup -c && rimraf dist/background dist/pageScript/pageScript*",
 		"build-extension": "rimraf dist extension/dist && webpack --config webpack.prod.ts --progress",
 		"pack-extension": "ts-node ./pack-extension",

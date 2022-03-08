@@ -77,7 +77,7 @@ describe("SolidGStatem tests", () => {
 		expect(() => create({ onCleanup: () => {} })).toThrow(TypeError);
 	});
 
-	it("renders Counter component", () => {
+	it("renders counter component", () => {
 		render(() => <CounterTest />);
 		expect(screen.getByText("Clicked: 0 times")).toBeDefined();
 

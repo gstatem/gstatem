@@ -3,12 +3,12 @@ GStatem is a small, simple and fast state-management tool.
 ## Installation
 ### npm
 ```shell
-npm i react-gstatem
+npm i solid-gstatem
 ```
 
 ### yarn
 ```shell
-yarn add react-gstatem
+yarn add solid-gstatem
 ```
 
 ### [Demos](https://gstatem.netlify.app/)
@@ -39,7 +39,6 @@ export const increaseCount = () =>
 
 **Use the store in component**
 ```typescript jsx
-import React from "react";
 import Counter from "./Counter";
 import { useCount, increaseCount } from "./Store";
 

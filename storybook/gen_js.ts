@@ -27,7 +27,7 @@ const projectConfigs: ProjectConfigs = [
 ];
 const parentDir = path.resolve(path.join(__dirname, ".."));
 const outputDir = path.resolve(path.join(__dirname, "./dist"));
-const eslintConfigPath = path.join(parentDir, ".eslintrc");
+const eslintConfigPath = path.join(parentDir, ".eslintrc.js");
 const resourceDirs = ["base", "react", "solid", "vanilla"];
 const blankLineKey = "//_blank-line";
 const appendixComponentsInfo: AppendixComponents = require("./base/lib/appendix-components.json");

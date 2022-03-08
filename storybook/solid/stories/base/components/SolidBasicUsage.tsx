@@ -1,11 +1,9 @@
-import { createSignal, Component } from "solid-js";
+import { Component } from "solid-js";
 import SolidCounter from "../../../base/components/SolidCounter";
+import { increaseCount, resetCount, useCount } from "../stores/Store";
 
 const SolidBasicUsage: Component = () => {
-	const [count, setCount] = createSignal(0);
-
-	const increaseCount = () => setCount(count() + 1);
-	const resetCount = () => setCount(0);
+	const count = useCount();
 
 	return (
 		<SolidCounter
