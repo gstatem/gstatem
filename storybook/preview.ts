@@ -35,6 +35,7 @@ export const parameters = {
 					"Class component",
 					["Basic usage", "With devtools", "Multiple stores"]
 				],
+				"Solid",
 				"Vanilla",
 				"Appendix"
 			]

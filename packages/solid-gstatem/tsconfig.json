@@ -1,0 +1,30 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"isolatedModules": false,
+		"esModuleInterop": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"target": "ESNext",
+		"skipLibCheck": true,
+		"moduleResolution": "Node",
+		"module": "ESNext",
+		"allowSyntheticDefaultImports": true,
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"allowJs": true,
+		"lib": [
+			"ESNext",
+			"DOM"
+		]
+	},
+	"ts-node": {
+		"compilerOptions": {
+			"module": "CommonJS"
+		}
+	},
+	"exclude": [
+		"./node_modules",
+		"./dist"
+	]
+}

@@ -1,0 +1,35 @@
+import { Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../base/lib/utils";
+import CodeView from "../../base/components/CodeView";
+
+import Installation from "../../base/components/Installation.mdx";
+
+import StoreJsContent from "!raw-loader!../../dist/solid/stories/base/stores/Store";
+import StoreTsContent from "!raw-loader!./base/stores/Store";
+
+import ComponentJsContent from "!raw-loader!../../../storybook/dist/solid/stories/base/components/SolidBasicUsage";
+import ComponentTsContent from "!raw-loader!./base/components/SolidBasicUsage";
+
+<Meta title="Solid/Basic usage" parameters={defaultDocParams()} />
+
+<Installation packages="solid-gstatem" />
+
+## Solid - basic usage
+
+**Create a store**
+
+The `increaseCount` and `resetCount` functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+<CodeView
+	componentName="Store"
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="SolidBasicUsage"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
+/>

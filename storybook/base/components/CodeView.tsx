@@ -4,11 +4,13 @@ import {
 	appendTopRight,
 	genCodeTokenLinks,
 	prettifySource
-} from "../../../base/lib/utils";
-import { FiddleCodeView, RawFileContent } from "../../../base/lib/types";
+} from "../lib/utils";
+import { FiddleCodeView, RawFileContent } from "../lib/types";
 import { uuidv4 } from "gstatem";
-import { SwitchButtons, SwitchButtonOption } from "gstatem-devtools";
-import useCodeBlock from "../hooks/useCodeBlock";
+import useCodeBlock from "../../react/base/hooks/useCodeBlock";
+import SwitchButtons, {
+	SwitchButtonOption
+} from "../../../packages/gstatem-devtools/src/components/SwitchButtons";
 
 type Lang = "jsx" | "tsx";
 
@@ -44,7 +46,10 @@ const CodeView: FC<CodeViewProps> = ({
 
 	const isEnableSwitchLang =
 		(typeof enableSwitchLang === "boolean" && enableSwitchLang) ||
-		(typeof enableSwitchLang !== "boolean" && jsContent !== tsContent);
+		(typeof enableSwitchLang !== "boolean" &&
+			jsContent &&
+			tsContent &&
+			jsContent !== tsContent);
 
 	const isDisplayTopRight = isEnableSwitchLang || componentName;
 

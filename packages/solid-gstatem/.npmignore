@@ -6,3 +6,5 @@ src
 
 tsconfig.json
 jest.*
+babel.*
+check-types.*

@@ -1,4 +1,12 @@
-import { AppendixComponents } from "./base/lib/types";
+import { AppendixComponents, FileInfo, FilesInfo } from "./base/lib/types";
+import { TsConfigJson } from "type-fest";
+
+type ProjectConfig = {
+	dir: string;
+	tsConfig?: TsConfigJson;
+};
+
+type ProjectConfigs = ProjectConfig[];
 
 const fs = require("fs");
 const path = require("path");
@@ -6,10 +14,21 @@ const { exec } = require("child_process");
 const rimraf = require("rimraf");
 
 const workDir = path.resolve(__dirname);
+const projectConfigs: ProjectConfigs = [
+	{
+		dir: "."
+	},
+	{
+		dir: "solid",
+		tsConfig: {
+			extends: "../../../packages/solid-gstatem/tsconfig.json"
+		}
+	}
+];
 const parentDir = path.resolve(path.join(__dirname, ".."));
 const outputDir = path.resolve(path.join(__dirname, "./dist"));
-const eslintConfigPath = path.join(parentDir, ".eslintrc");
-const resourceDirs = ["base", "react", "vanilla"];
+const eslintConfigPath = path.join(parentDir, ".eslintrc.js");
+const resourceDirs = ["base", "react", "solid", "vanilla"];
 const blankLineKey = "//_blank-line";
 const appendixComponentsInfo: AppendixComponents = require("./base/lib/appendix-components.json");
 
@@ -29,19 +48,6 @@ export type ReplaceInFilesPayload = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	replaceValue: string | ((substring: string, ...args: any[]) => string);
 	extensions?: GenSbJsExtension[];
-};
-
-export type FileInfo = {
-	fileBasename: string;
-	filename: string;
-	extName: string;
-	relativeFilePath: string;
-	fullFilePath: string;
-	storybookPath?: string;
-};
-
-export type FilesInfo = {
-	[fileBasename: string]: FileInfo;
 };
 
 export type ReplaceInFiles = (payload: ReplaceInFilesPayload) => FilesInfo;
@@ -135,7 +141,7 @@ const replaceInFiles: ReplaceInFiles = ({
 };
 
 (async () => {
-	console.log("Start Generating files...\n");
+	console.log("Start generating files...\n");
 	rimraf.sync(outputDir);
 	fs.mkdirSync(outputDir, { recursive: true });
 
@@ -151,9 +157,17 @@ const replaceInFiles: ReplaceInFiles = ({
 	});
 	console.log(`Generated files info to [${filesInfoFilePath}].\n`);
 
-	const toJsCmd = `tsc -p ${workDir}`;
-	console.log(toJsCmd);
-	await cmd(toJsCmd);
+	for (const { dir, tsConfig } of projectConfigs) {
+		const toJsCmd = `tsc -p ${path.join(workDir, dir)}`;
+		console.log(toJsCmd);
+		await cmd(toJsCmd);
+		if (tsConfig) {
+			fs.writeFileSync(
+				path.join(outputDir, dir, "tsconfig.json"),
+				JSON.stringify(tsConfig)
+			);
+		}
+	}
 
 	replaceInFiles({
 		dirs: [...resourceDirs, "dist"],
@@ -162,7 +176,14 @@ const replaceInFiles: ReplaceInFiles = ({
 		extensions: ["js", "jsx", "ts", "tsx"]
 	});
 
-	const prettierCmd = `eslint -c ${eslintConfigPath} --rule "{'react/prop-types': 0}" --ext js,jsx --fix ${outputDir}`;
+	const inlineRules = {
+		"react/prop-types": "off",
+		"no-unused-vars": "off"
+	};
+
+	const prettierCmd = `eslint -c ${eslintConfigPath} --rule "${JSON.stringify(
+		inlineRules
+	)}" --ext js,jsx --fix ${outputDir}`;
 	console.log(prettierCmd);
 	await cmd(prettierCmd);
 })();

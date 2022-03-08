@@ -1,0 +1,7 @@
+{
+	"extends": "../../packages/solid-gstatem/tsconfig.json",
+	"compilerOptions": {
+		"outDir": "../dist/solid"
+	},
+	"include": ["."]
+}

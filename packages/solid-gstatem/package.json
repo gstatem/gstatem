@@ -1,18 +1,17 @@
 {
-	"name": "react-gstatem",
-	"description": "A light weight global state management library for React",
-	"version": "1.0.5",
+	"name": "solid-gstatem",
+	"description": "A light weight global state management library for Solid JS",
+	"version": "1.0.0-alpha.3",
 	"author": "shuieryin",
 	"main": "dist/index.js",
 	"scripts": {
-		"check-types": "tsc --project ./ --outDir dist",
-		"babel": "babel --config-file ../../babel.config.json dist -d dist --verbose",
+		"check-types": "ts-node check-types",
+		"babel": "babel --config-file ./babel.config.json dist -d dist --verbose",
 		"build": "yarn clean && yarn check-types && yarn babel",
 		"clean": "rimraf dist node_modules package-lock.json"
 	},
 	"peerDependencies": {
-		"react": ">=16.14.0",
-		"react-dom": ">=16.14.0"
+		"solid-js": ">=1.3.9"
 	},
 	"dependencies": {
 		"gstatem": "^1.0.5"
@@ -22,16 +21,14 @@
 		"type": "git",
 		"url": "https://github.com/gstatem/gstatem.git"
 	},
-	"homepage": "https://github.com/gstatem/gstatem/tree/main/packages/react-gstatem",
+	"homepage": "https://github.com/gstatem/gstatem/tree/main/packages/solid-gstatem",
 	"bugs": {
 		"url": "https://github.com/gstatem/gstatem/issues"
 	},
 	"keywords": [
-		"react",
+		"solid",
 		"state",
 		"management",
-		"redux",
-		"zustand",
 		"store",
 		"statem",
 		"gstatem"

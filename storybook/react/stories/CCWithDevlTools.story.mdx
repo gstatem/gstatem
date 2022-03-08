@@ -1,8 +1,9 @@
 import { Canvas, Meta } from "@storybook/addon-docs";
 import { defaultDocParams } from "../../base/lib/utils";
-import CodeView from "../base/components/CodeView";
+import CodeView from "../../base/components/CodeView";
 
 import Installation from "../../base/components/Installation.mdx";
+import Devtools from "../../base/components/Devtools.mdx";
 
 import CCWithDevTools from "./base/components/CCWithDevTools";
 import StoreJsContent from "!raw-loader!../../dist/react/stories/base/stores/CCStoreWithDevTools";
@@ -10,8 +11,6 @@ import StoreTsContent from "!raw-loader!./base/stores/CCStoreWithDevTools";
 
 import ComponentJsContent from "!raw-loader!../../dist/react/stories/base/components/CCWithDevTools";
 import ComponentTsContent from "!raw-loader!./base/components/CCWithDevTools";
-
-import DevToolsImage from "../../base/assets/devtools.gif";
 
 <Meta
 	title="React/Class component/With devtools"
@@ -50,6 +49,4 @@ The exported functions can be used anywhere - in component, utils file, event li
 	tsContent={ComponentTsContent}
 />
 
-Every dispatched piece will be logged in the Chrome extension [GStatem-devtools](https://chrome.google.com/webstore/detail/gstatem-devtools/djohekcenmdagbolgaiiphdnmhgmpllk) if the devtools is installed.
-
-<img className="image-border" src={DevToolsImage} alt="devtools" />
+<Devtools />
