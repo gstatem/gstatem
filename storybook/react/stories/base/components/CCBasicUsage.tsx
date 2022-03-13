@@ -18,7 +18,7 @@ class CCBasicUsage extends Component<object, StateType> {
 			/* subscriber */
 			state => this.setState({ count: state.count })
 		);
-		/* store the unsubscribe function of the selected piece */
+		/* put the unsubscribe function of the selected piece for on component unmount */
 		this.unsubscribes.push(unsubCount);
 
 		/* initialize component state with the selected piece */
