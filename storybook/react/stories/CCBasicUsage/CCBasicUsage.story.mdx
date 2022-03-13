@@ -1,15 +1,15 @@
 import { Canvas, Meta } from "@storybook/addon-docs";
-import { defaultDocParams } from "../../base/lib/utils";
-import CodeView from "../../base/components/CodeView";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
 
-import Installation from "../../base/components/Installation.mdx";
+import Installation from "../../../base/components/Installation.mdx";
 
-import CCBasicUsage from "./base/components/CCBasicUsage";
-import StoreJsContent from "!raw-loader!../../dist/react/stories/base/stores/CCStore";
-import StoreTsContent from "!raw-loader!./base/stores/CCStore";
+import CCBasicUsage from "./CCBasicUsage";
+import StoreJsContent from "!raw-loader!../../../dist/react/stories/CCBasicUsage/CCStore";
+import StoreTsContent from "!raw-loader!./CCStore";
 
-import ComponentJsContent from "!raw-loader!../../dist/react/stories/base/components/CCBasicUsage";
-import ComponentTsContent from "!raw-loader!./base/components/CCBasicUsage";
+import ComponentJsContent from "!raw-loader!../../../dist/react/stories/CCBasicUsage/CCBasicUsage";
+import ComponentTsContent from "!raw-loader!./CCBasicUsage";
 
 <Meta
 	title="React/Class component/Basic usage"

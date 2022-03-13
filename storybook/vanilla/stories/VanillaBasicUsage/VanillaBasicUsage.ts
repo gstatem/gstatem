@@ -3,7 +3,7 @@ import {
 	resetCount,
 	getCount,
 	selectCount
-} from "../lib/VanillaStore";
+} from "./VanillaStore";
 
 /* select count */
 const [count, unsubCount] = selectCount(state =>

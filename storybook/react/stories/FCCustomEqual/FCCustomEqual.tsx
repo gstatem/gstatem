@@ -1,10 +1,10 @@
 import React, { FC } from "react";
-import Counter from "../../../base/components/Counter";
+import Counter from "../../base/components/Counter";
 import {
 	useCount,
 	increaseCount,
 	doubleIncreaseCount
-} from "../stores/FCStoreCustomEqual";
+} from "./FCStoreCustomEqual";
 
 const FCCustomEqual: FC = () => {
 	const count = useCount();

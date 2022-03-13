@@ -1,10 +1,6 @@
 import React, { FC } from "react";
-import Counter from "../../../base/components/Counter";
-import {
-	increaseCount,
-	resetCount,
-	useCount
-} from "../stores/FCStoreWithDevTools";
+import Counter from "../../base/components/Counter";
+import { increaseCount, resetCount, useCount } from "./FCStoreWithDevTools";
 
 const FCWithDevTools: FC = () => {
 	const count = useCount();

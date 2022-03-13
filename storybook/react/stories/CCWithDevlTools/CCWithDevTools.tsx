@@ -4,8 +4,8 @@ import {
 	increaseCount,
 	resetCount,
 	selectCount
-} from "../stores/CCStoreWithDevTools";
-import Counter from "../../../base/components/Counter";
+} from "./CCStoreWithDevTools";
+import Counter from "../../base/components/Counter";
 
 class CCWithDevTools extends Component<object, StateType> {
 	unsubscribes = [];

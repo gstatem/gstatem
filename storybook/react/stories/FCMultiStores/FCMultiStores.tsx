@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import Counter from "../../../base/components/Counter";
-import { useCount1, increaseCount1 } from "../stores/FCMultiStore1";
-import { useCount2, increaseCount2 } from "../stores/FCMultiStore2";
+import Counter from "../../base/components/Counter";
+import { useCount1, increaseCount1 } from "./FCMultiStore1";
+import { useCount2, increaseCount2 } from "./FCMultiStore2";
 
 const FCMultiStores: FC = () => {
 	const count1 = useCount1();

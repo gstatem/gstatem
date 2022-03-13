@@ -1,14 +1,14 @@
 import { Meta } from "@storybook/addon-docs";
-import { defaultDocParams } from "../../base/lib/utils";
-import CodeView from "../../base/components/CodeView";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
 
-import Installation from "../../base/components/Installation.mdx";
+import Installation from "../../../base/components/Installation.mdx";
 
-import StoreJsContent from "!raw-loader!../../dist/solid/stories/base/stores/Store";
-import StoreTsContent from "!raw-loader!./base/stores/Store";
+import StoreJsContent from "!raw-loader!../../../dist/solid/stories/SolidBasicUsage/SolidStore";
+import StoreTsContent from "!raw-loader!./SolidStore";
 
-import ComponentJsContent from "!raw-loader!../../../storybook/dist/solid/stories/base/components/SolidBasicUsage";
-import ComponentTsContent from "!raw-loader!./base/components/SolidBasicUsage";
+import ComponentJsContent from "!raw-loader!../../../dist/solid/stories/SolidBasicUsage/SolidBasicUsage";
+import ComponentTsContent from "!raw-loader!./SolidBasicUsage";
 
 <Meta title="Solid/Basic usage" parameters={defaultDocParams()} />
 

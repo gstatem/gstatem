@@ -1,15 +1,15 @@
 import { Canvas, Meta } from "@storybook/addon-docs";
-import { defaultDocParams } from "../../base/lib/utils";
-import CodeView from "../../base/components/CodeView";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
 
-import Installation from "../../base/components/Installation.mdx";
+import Installation from "../../../base/components/Installation.mdx";
 
-import FCSilentMode from "./base/components/FCSilentMode";
-import StoreJsContent from "!raw-loader!../../dist/react/stories/base/stores/FCStoreSilentMode";
-import StoreTsContent from "!raw-loader!./base/stores/FCStoreSilentMode";
+import FCSilentMode from "./FCSilentMode";
+import StoreJsContent from "!raw-loader!../../../dist/react/stories/FCSilentMode/FCStoreSilentMode";
+import StoreTsContent from "!raw-loader!./FCStoreSilentMode";
 
-import ComponentJsContent from "!raw-loader!../../dist/react/stories/base/components/FCSilentMode";
-import ComponentTsContent from "!raw-loader!./base/components/FCSilentMode";
+import ComponentJsContent from "!raw-loader!../../../dist/react/stories/FCSilentMode/FCSilentMode";
+import ComponentTsContent from "!raw-loader!./FCSilentMode";
 
 <Meta
 	title="React/Function component/Silent mode"
@@ -22,7 +22,7 @@ import ComponentTsContent from "!raw-loader!./base/components/FCSilentMode";
 
 **Rendered view**
 
-The `+` button won't trigger component re-render.
+The `+` button will NOT trigger component re-render.
 
 <Canvas className="custom-docs-story">
 	<FCSilentMode />

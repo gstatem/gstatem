@@ -1,16 +1,16 @@
 import { Canvas, Meta } from "@storybook/addon-docs";
-import { defaultDocParams } from "../../base/lib/utils";
-import CodeView from "../../base/components/CodeView";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
 
-import Installation from "../../base/components/Installation.mdx";
-import Devtools from "../../base/components/Devtools.mdx";
+import Installation from "../../../base/components/Installation.mdx";
+import Devtools from "../../../base/components/Devtools.mdx";
 
-import FCWithDevTools from "./base/components/FCWithDevTools";
-import StoreJsContent from "!raw-loader!../../dist/react/stories/base/stores/FCStoreWithDevTools";
-import StoreTsContent from "!raw-loader!./base/stores/FCStoreWithDevTools";
+import FCWithDevTools from "./FCWithDevTools";
+import StoreJsContent from "!raw-loader!../../../dist/react/stories/FCWithDevTools/FCStoreWithDevTools";
+import StoreTsContent from "!raw-loader!./FCStoreWithDevTools";
 
-import ComponentJsContent from "!raw-loader!../../dist/react/stories/base/components/FCWithDevTools";
-import ComponentTsContent from "!raw-loader!./base/components/FCWithDevTools";
+import ComponentJsContent from "!raw-loader!../../../dist/react/stories/FCWithDevTools/FCWithDevTools";
+import ComponentTsContent from "!raw-loader!./FCWithDevTools";
 
 <Meta
 	title="React/Function component/With devtools"

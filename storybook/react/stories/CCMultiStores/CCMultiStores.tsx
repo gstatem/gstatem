@@ -1,15 +1,7 @@
 import React, { Component } from "react";
-import Counter from "../../../base/components/Counter";
-import {
-	State1Type,
-	selectCount1,
-	increaseCount1
-} from "../stores/CCMultiStore1";
-import {
-	State2Type,
-	increaseCount2,
-	selectCount2
-} from "../stores/CCMultiStore2";
+import Counter from "../../base/components/Counter";
+import { State1Type, selectCount1, increaseCount1 } from "./CCMultiStore1";
+import { State2Type, increaseCount2, selectCount2 } from "./CCMultiStore2";
 
 class CCBasicUsage extends Component<object, State1Type & State2Type> {
 	unsubscribes = [];
