@@ -33,7 +33,10 @@ class Background {
 
 	constructor() {
 		chrome.runtime.onConnect.addListener(this.onConnect);
-		chrome.runtime.onMessage.addListener(this.onMessage);
+		chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+			this.onMessage(message, sender).then();
+			sendResponse({ status: "ok" });
+		});
 		chrome.tabs.onRemoved.addListener(this.onClose);
 		(async () => {
 			await this.initTabStates();

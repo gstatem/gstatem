@@ -42,7 +42,7 @@ const switchButtonConfigs = [
 
 class App extends Component {
 	leftSidePanelNodeRef: MutableRefObject<HTMLDivElement> = createRef();
-	bgConn;
+	bgConn: chrome.runtime.Port;
 	storesInfo: StoresInfo = {};
 	activeStoreId;
 	tab;
