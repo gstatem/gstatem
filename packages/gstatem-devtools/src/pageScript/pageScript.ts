@@ -10,7 +10,11 @@ const listener = e => {
 	const { name } = message;
 
 	if (name?.startsWith(GROUP_NAME)) {
-		chrome.runtime.sendMessage(message);
+		chrome.runtime.sendMessage(message, response => {
+			if (response?.status !== "ok") {
+				console.error(response);
+			}
+		});
 	}
 };
 

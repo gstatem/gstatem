@@ -13,7 +13,7 @@ module.exports = {
 		},
 
 		{
-			test: /.*\/(?!solid)\/.*\.tsx?$/,
+			test: /^((?!solid).)*\.tsx?$/,
 			use: "ts-loader",
 			exclude: /node_modules/
 		},

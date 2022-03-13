@@ -1,0 +1,37 @@
+import { Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import StoreJsContent from "!raw-loader!../../../dist/solid/stories/SolidSilentMode/SolidStoreSilentMode";
+import StoreTsContent from "!raw-loader!./SolidStoreSilentMode";
+
+import ComponentJsContent from "!raw-loader!../../../dist/solid/stories/SolidSilentMode/SolidSilentMode";
+import ComponentTsContent from "!raw-loader!./SolidSilentMode";
+
+<Meta title="Solid/Silent mode" parameters={defaultDocParams()} />
+
+<Installation packages="solid-gstatem" />
+
+## Solid - Silent mode
+
+**Create a store**
+
+The exported functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+Please use `get` and `set` functions with care as they won't trigger component re-render.
+
+<CodeView
+	componentName="SolidStoreSilentMode"
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="SolidSilentMode"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
+/>

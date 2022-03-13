@@ -1,0 +1,35 @@
+import { Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import StateJsContent from "!raw-loader!../../../dist/vanilla/stories/VanillaBasicUsage/VanillaStore";
+import StateTsContent from "!raw-loader!./VanillaStore";
+
+import BasicUsageJsContent from "!raw-loader!../../../dist/vanilla/stories/VanillaBasicUsage/VanillaBasicUsage";
+import BasicUsageTsContent from "!raw-loader!./VanillaBasicUsage";
+
+<Meta title="Vanilla/Basic usage" parameters={defaultDocParams()} />
+
+<Installation packages="gstatem" />
+
+## Vanilla - basic usage
+
+**Create a store**
+
+The exported functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+<CodeView
+	componentName="VanillaStore"
+	jsContent={StateJsContent}
+	tsContent={StateTsContent}
+/>
+
+**Use the store in pure javascript**
+
+<CodeView
+	componentName="VanillaBasicUsage"
+	jsContent={BasicUsageJsContent}
+	tsContent={BasicUsageTsContent}
+/>

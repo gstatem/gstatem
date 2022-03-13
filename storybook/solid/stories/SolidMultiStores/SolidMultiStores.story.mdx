@@ -1,0 +1,46 @@
+import { Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import Store1JsContent from "!raw-loader!../../../dist/solid/stories/SolidMultiStores/SolidMultiStore1";
+import Store1TsContent from "!raw-loader!./SolidMultiStore1";
+
+import Store2JsContent from "!raw-loader!../../../dist/solid/stories/SolidMultiStores/SolidMultiStore2";
+import Store2TsContent from "!raw-loader!./SolidMultiStore2";
+
+import ComponentJsContent from "!raw-loader!../../../dist/solid/stories/SolidMultiStores/SolidMultiStores";
+import ComponentTsContent from "!raw-loader!./SolidMultiStores";
+
+<Meta title="Solid/Multiple stores" parameters={defaultDocParams()} />
+
+<Installation packages="solid-gstatem" />
+
+## Solid - Multiple stores
+
+The `increaseCount*` functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+**Create store 1**
+
+<CodeView
+	componentName="SolidMultiStore1"
+	jsContent={Store1JsContent}
+	tsContent={Store1TsContent}
+/>
+
+**Create store 2**
+
+<CodeView
+	componentName="SolidMultiStore2"
+	jsContent={Store2JsContent}
+	tsContent={Store2TsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="SolidMultiStores"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
+/>

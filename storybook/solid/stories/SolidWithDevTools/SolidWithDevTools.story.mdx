@@ -1,0 +1,35 @@
+import { Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import StoreJsContent from "!raw-loader!../../../dist/solid/stories/SolidWithDevTools/SolidStoreWithDevTools";
+import StoreTsContent from "!raw-loader!./SolidStoreWithDevTools";
+
+import ComponentJsContent from "!raw-loader!../../../dist/solid/stories/SolidWithDevTools/SolidWithDevTools";
+import ComponentTsContent from "!raw-loader!./SolidWithDevTools";
+
+<Meta title="Solid/With DevTools" parameters={defaultDocParams()} />
+
+<Installation packages="solid-gstatem gstatem-devtools" />
+
+## Solid - With DevTools
+
+**Create a store**
+
+The `increaseCount` and `resetCount` functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+<CodeView
+	componentName="SolidStoreWithDevTools"
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="SolidWithDevTools"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
+/>

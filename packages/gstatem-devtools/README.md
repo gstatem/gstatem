@@ -1,4 +1,4 @@
-The devtools helpers for [gstatem](https://www.npmjs.com/package/gstatem) and [react-gstatem](https://www.npmjs.com/package/react-gstatem).
+The DevTools helpers for [gstatem](https://www.npmjs.com/package/gstatem) and [react-gstatem](https://www.npmjs.com/package/react-gstatem).
 
 ## Installation
 ### npm
@@ -53,8 +53,8 @@ const BasicUsage = () => {
 export default BasicUsage;
 ```
 
-Every dispatched piece will be logged in the Chrome extension [GStatem-devtools](https://chrome.google.com/webstore/detail/gstatem-devtools/djohekcenmdagbolgaiiphdnmhgmpllk) if the devtools is installed.
+Every dispatched piece will be logged in the Chrome extension [GStatem-DevTools](https://chrome.google.com/webstore/detail/gstatem-devtools/djohekcenmdagbolgaiiphdnmhgmpllk) if the devtools is installed.
 
 <kbd>
-    <img src="../../storybook/base/assets/devtools.gif" alt="devtools" />
+    <img src="../../storybook/base/assets/devtools.gif" alt="DevTools" />
 </kbd>

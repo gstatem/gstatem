@@ -10,6 +10,6 @@
 		"moduleResolution": "Node",
 		"jsx": "react"
 	},
-	"include": ["./src", "./storybook"],
+	"include": ["./packages", "./storybook"],
 	"exclude": ["./node_modules", "./dist"]
 }

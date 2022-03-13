@@ -1,0 +1,51 @@
+import { Canvas, Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import CCCustomEqual from "./CCCustomEqual";
+import StoreJsContent from "!raw-loader!../../../dist/react/stories/CCCustomEqual/CCStoreCustomEqual";
+import StoreTsContent from "!raw-loader!./CCStoreCustomEqual";
+
+import ComponentJsContent from "!raw-loader!../../../dist/react/stories/CCCustomEqual/CCCustomEqual";
+import ComponentTsContent from "!raw-loader!./CCCustomEqual";
+
+<Meta
+	title="React/Class component/Custom equal"
+	parameters={defaultDocParams()}
+/>
+
+<Installation />
+
+## Class component - Custom equal
+
+**Rendered view**
+
+The component will NOT be re-rendered if the diff between current count and next count is less or equal to 1.
+
+<Canvas className="custom-docs-story">
+	<CCCustomEqual />
+</Canvas>
+
+### Recipes
+
+---
+
+**Create a store**
+
+The `increaseCount` and `resetCount` functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+<CodeView
+	componentName="CCStoreCustomEqual"
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="CCCustomEqual"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
+/>

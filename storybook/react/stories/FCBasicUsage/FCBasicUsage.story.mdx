@@ -1,0 +1,49 @@
+import { Canvas, Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import FCBasicUsage from "./FCBasicUsage";
+import StoreJsContent from "!raw-loader!../../../dist/react/stories/FCBasicUsage/FCStore";
+import StoreTsContent from "!raw-loader!./FCStore";
+
+import ComponentJsContent from "!raw-loader!../../../dist/react/stories/FCBasicUsage/FCBasicUsage";
+import ComponentTsContent from "!raw-loader!./FCBasicUsage";
+
+<Meta
+	title="React/Function component/Basic usage"
+	parameters={defaultDocParams()}
+/>
+
+<Installation />
+
+## Function component - Basic usage
+
+**Rendered view**
+
+<Canvas className="custom-docs-story">
+	<FCBasicUsage />
+</Canvas>
+
+### Recipes
+
+---
+
+**Create a store**
+
+The `increaseCount` and `resetCount` functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+<CodeView
+	componentName="FCStore"
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="FCBasicUsage"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
+/>

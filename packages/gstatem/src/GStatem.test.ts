@@ -25,12 +25,13 @@ describe("Utils tests", () => {
 });
 
 describe("GStatem tests", () => {
-	const { get, set, subscribe, unsubscribe, select } = new GStatem<State>({
-		state: {
-			color: "gray",
-			names: ["Kate", "Jin"]
-		}
-	});
+	const { get, set, subscribe, unsubscribe, select, dispatch } =
+		new GStatem<State>({
+			state: {
+				color: "gray",
+				names: ["Kate", "Jin"]
+			}
+		});
 
 	const countSelector: Selector<State> = state => state.count;
 	const count2Selector: Selector<State> = state => state.count2;
@@ -89,6 +90,26 @@ describe("GStatem tests", () => {
 		expect(get(count3Selector)).toBeUndefined();
 	});
 
+	it("Replace state", () => {
+		let state;
+		state = get(state => state);
+		expect(Object.keys(state).length).toBe(3);
+
+		subscribe(count3Selector, ({ count3 }) => {
+			expect(count3).toBe(1);
+		});
+
+		// replace state with dispatch
+		dispatch({ count2: 1, count3: 1 }, { isReplace: true, isForce: true });
+		state = get(state => state);
+		expect(Object.keys(state).length).toBe(2);
+
+		// replace state with set
+		set({ count: 0 }, { isReplace: true });
+		state = get(state => state);
+		expect(Object.keys(state).length).toBe(1);
+	});
+
 	it("Custom equalityFn", () => {
 		subscribe(
 			countSelector,
@@ -100,13 +121,6 @@ describe("GStatem tests", () => {
 		);
 
 		set(({ count }) => ({ count: count + 2 }), { isDispatch: true });
-	});
-
-	it("Replace state", () => {
-		set({ count3: 0 }, { isReplace: true });
-		const state = get(state => state);
-		expect(Object.keys(state).length).toBe(1);
-		expect(state.count3).toBe(0);
 	});
 
 	it("Performance testing", () => {

@@ -1,4 +1,12 @@
-import { EqualityFn, Selector, SelectState, State, Subscriber } from "gstatem";
+import {
+	DispatchOptions,
+	EqualityFn,
+	Selector,
+	SelectState,
+	SetOptions,
+	State,
+	Subscriber
+} from "gstatem";
 
 export interface ReactGStatem<GState extends State> {
 	/**
@@ -32,7 +40,10 @@ export interface ReactGStatem<GState extends State> {
 	 *
 	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/react-function-component-basic-usage--page}
 	 */
-	dispatch: (piece: GState | SelectState<GState>) => void;
+	dispatch: (
+		piece: GState | SelectState<GState>,
+		options?: DispatchOptions
+	) => void;
 
 	/**
 	 * @see {@link GStatem#get}
@@ -44,7 +55,7 @@ export interface ReactGStatem<GState extends State> {
 	 * @see {@link GStatem#set}
 	 * Set a piece of state without triggering the subscribe function.
 	 */
-	set: (piece: GState | SelectState<GState>) => void;
+	set: (piece: GState | SelectState<GState>, options?: SetOptions) => void;
 
 	/**
 	 * @see {@link GStatem#subscribe}

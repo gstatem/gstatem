@@ -1,0 +1,52 @@
+import { Canvas, Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+import Devtools from "../../../base/components/Devtools.mdx";
+
+import CCWithDevTools from "./CCWithDevTools";
+import StoreJsContent from "!raw-loader!../../../dist/react/stories/CCWithDevlTools/CCStoreWithDevTools";
+import StoreTsContent from "!raw-loader!./CCStoreWithDevTools";
+
+import ComponentJsContent from "!raw-loader!../../../dist/react/stories/CCWithDevlTools/CCWithDevTools";
+import ComponentTsContent from "!raw-loader!./CCWithDevTools";
+
+<Meta
+	title="React/Class component/With DevTools"
+	parameters={defaultDocParams()}
+/>
+
+<Installation packages="react-gstatem gstatem-devtools" />
+
+## Class component - With DevTools
+
+**Rendered view**
+
+<Canvas className="custom-docs-story">
+	<CCWithDevTools />
+</Canvas>
+
+### Recipes
+
+---
+
+**Create a store**
+
+The exported functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+<CodeView
+	componentName="CCStoreWithDevTools"
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="CCWithDevTools"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
+/>
+
+<Devtools />

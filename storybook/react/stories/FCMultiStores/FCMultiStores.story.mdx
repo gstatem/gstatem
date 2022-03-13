@@ -1,0 +1,60 @@
+import { Canvas, Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import FCMultiStores from "./FCMultiStores";
+import Store1JsContent from "!raw-loader!../../../dist/react/stories/FCMultiStores/FCMultiStore1";
+import Store1TsContent from "!raw-loader!./FCMultiStore1";
+
+import Store2JsContent from "!raw-loader!../../../dist/react/stories/FCMultiStores/FCMultiStore2";
+import Store2TsContent from "!raw-loader!./FCMultiStore2";
+
+import ComponentJsContent from "!raw-loader!../../../dist/react/stories/FCMultiStores/FCMultiStores";
+import ComponentTsContent from "!raw-loader!./FCMultiStores";
+
+<Meta
+	title="React/Function component/Multiple stores"
+	parameters={defaultDocParams()}
+/>
+
+<Installation />
+
+## Function component - Multiple stores
+
+**Rendered view**
+
+<Canvas className="custom-docs-story">
+	<FCMultiStores />
+</Canvas>
+
+### Recipes
+
+---
+
+The `increaseCount*` functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+**Create store 1**
+
+<CodeView
+	componentName="FCMultiStore1"
+	jsContent={Store1JsContent}
+	tsContent={Store1TsContent}
+/>
+
+**Create store 2**
+
+<CodeView
+	componentName="FCMultiStore2"
+	jsContent={Store2JsContent}
+	tsContent={Store2TsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="FCMultiStores"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
+/>

@@ -15,6 +15,14 @@ const lightTheme = create({
 	base: "light"
 });
 
+const exampleOrder = [
+	"Basic usage",
+	"With DevTools",
+	"Multiple stores",
+	"Silent mode",
+	"Custom equal"
+];
+
 export const parameters = {
 	darkMode: {
 		current: "dark",
@@ -29,13 +37,9 @@ export const parameters = {
 		storySort: {
 			order: [
 				"React",
-				[
-					"Function component",
-					["Basic usage", "With devtools", "Multiple stores"],
-					"Class component",
-					["Basic usage", "With devtools", "Multiple stores"]
-				],
+				["Function component", exampleOrder, "Class component", exampleOrder],
 				"Solid",
+				exampleOrder,
 				"Vanilla",
 				"Appendix"
 			]
