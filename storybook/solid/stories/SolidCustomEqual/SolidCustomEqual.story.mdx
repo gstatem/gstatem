@@ -4,24 +4,24 @@ import CodeView from "../../../base/components/CodeView";
 
 import Installation from "../../../base/components/Installation.mdx";
 
-import StoreJsContent from "!raw-loader!../../../dist/solid/stories/SolidWithDevTools/SolidStoreWithDevTools";
-import StoreTsContent from "!raw-loader!./SolidStoreWithDevTools";
+import StoreJsContent from "!raw-loader!../../../dist/solid/stories/SolidCustomEqual/SolidStoreCustomEqual";
+import StoreTsContent from "!raw-loader!./SolidStoreCustomEqual";
 
-import ComponentJsContent from "!raw-loader!../../../dist/solid/stories/SolidWithDevTools/SolidWithDevTools";
-import ComponentTsContent from "!raw-loader!./SolidWithDevTools";
+import ComponentJsContent from "!raw-loader!../../../dist/solid/stories/SolidCustomEqual/SolidCustomEqual";
+import ComponentTsContent from "!raw-loader!./SolidCustomEqual";
 
-<Meta title="Solid/With DevTools" parameters={defaultDocParams()} />
+<Meta title="Solid/Custom equal" parameters={defaultDocParams()} />
 
-<Installation packages="solid-gstatem gstatem-devtools" />
+<Installation packages="solid-gstatem" />
 
-## Solid - With DevTools
+## Solid - Custom equal
 
 **Create a store**
 
 The `increaseCount` and `resetCount` functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
 
 <CodeView
-	componentName="SolidStoreWithDevTools"
+	componentName="SolidStoreCustomEqual"
 	jsContent={StoreJsContent}
 	tsContent={StoreTsContent}
 />
@@ -29,7 +29,7 @@ The `increaseCount` and `resetCount` functions can be used anywhere - in compone
 **Use the store in component**
 
 <CodeView
-	componentName="SolidWithDevTools"
+	componentName="SolidCustomEqual"
 	jsContent={ComponentJsContent}
 	tsContent={ComponentTsContent}
 />
