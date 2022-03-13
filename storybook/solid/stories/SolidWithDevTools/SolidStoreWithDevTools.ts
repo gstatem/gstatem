@@ -1,19 +1,19 @@
-import { create } from "react-gstatem";
+import * as solid from "solid-js";
+import { create } from "solid-gstatem";
 import DevTools from "gstatem-devtools";
 
-export type StateType = { count: number };
+type StateType = { count: number };
 
 const initialState = { count: 0 };
 const { useSelect, dispatch } = create<StateType>(
+	solid,
 	new DevTools({
-		/* optional, will be displayed as store id in DevTools */
-		id: "fc-store-with-devtools",
 		state: initialState
 	})
 );
 
-/* select count hook for function component */
-export const useCount = () => useSelect(state => state.count);
+/* the count hook for function component */
+export const useCount = () => useSelect<number>(state => state.count);
 
 /* increase the counter */
 export const increaseCount = () =>

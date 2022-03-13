@@ -6,7 +6,7 @@ export type StateType = { count: number };
 const initialState = { count: 0 };
 const { select, dispatch } = create<StateType>(
 	new DevTools({
-		/* optional, will be displayed as store id in devtools */
+		/* optional, will be displayed as store id in DevTools */
 		id: "cc-store-with-devtools",
 		state: initialState
 	})
