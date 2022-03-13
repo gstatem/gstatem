@@ -1,5 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { EqualityFn, Selector, SelectState, State, Subscriber } from "gstatem";
+import {
+	DispatchOptions,
+	EqualityFn,
+	Selector,
+	SelectState,
+	SetOptions,
+	State,
+	Subscriber
+} from "gstatem";
 import { Accessor } from "solid-js";
 import { Signal, SignalOptions } from "solid-js/types/reactive/signal";
 
@@ -38,7 +46,10 @@ export interface SolidGStatem<GState extends State> {
 	 *
 	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page}
 	 */
-	dispatch: (piece: GState | SelectState<GState>) => void;
+	dispatch: (
+		piece: GState | SelectState<GState>,
+		options?: DispatchOptions
+	) => void;
 
 	/**
 	 * @see {@link GStatem#select}
@@ -59,7 +70,7 @@ export interface SolidGStatem<GState extends State> {
 	 * @see {@link GStatem#set}
 	 * Set a piece of state without triggering the subscribe function.
 	 */
-	set: (piece: GState | SelectState<GState>) => void;
+	set: (piece: GState | SelectState<GState>, options?: SetOptions) => void;
 
 	/**
 	 * @see {@link GStatem#subscribe}

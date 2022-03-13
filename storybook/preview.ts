@@ -17,7 +17,7 @@ const lightTheme = create({
 
 const exampleOrder = [
 	"Basic usage",
-	"With devtools",
+	"With DevTools",
 	"Multiple stores",
 	"Silent mode",
 	"Custom equal"

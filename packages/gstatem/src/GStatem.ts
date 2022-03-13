@@ -6,7 +6,8 @@ import {
 	SelectState,
 	SetOptions,
 	Subscribers,
-	EqualityFn
+	EqualityFn,
+	DispatchOptions
 } from "./common/types";
 import { deepCopy, uuidv4 } from "./common/utils";
 
@@ -56,18 +57,20 @@ class GStatem<GState extends State> {
 	 */
 	set(
 		piece: GState | SelectState<GState>,
-		{ isDispatch = false, isReplace = false }: SetOptions = {}
+		{ isDispatch = false, isReplace = false, isForce = false }: SetOptions = {}
 	): void {
 		if (piece instanceof Function) {
 			piece = piece(this.state) as GState;
 		}
-		if (piece === this.state) return;
+		if (!isForce && piece === this.state) return;
 
 		const nextState = isReplace ? piece : { ...this.state, ...piece };
 		if (isDispatch) {
 			this.subscribers.forEach(({ selector, equalityFn }, subscribe) => {
 				let isEqual;
-				if (equalityFn instanceof Function) {
+				if (isForce === true) {
+					isEqual = false;
+				} else if (equalityFn instanceof Function) {
 					isEqual = equalityFn(this.state, nextState);
 				} else {
 					isEqual = selector(this.state) === selector(nextState);
@@ -129,13 +132,17 @@ class GStatem<GState extends State> {
 	 * Dispatch a piece of state, the relevant subscribe functions will be triggered.
 	 *
 	 * @param {GState|SelectState<GState>} piece - The piece the state or a callback to select and return the piece of the state.
+	 * @param {Omit<SetOptions, "isDispatch">} [options] - Dispatch options.
 	 *
 	 * @returns {void}
 	 *
 	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page}
 	 */
-	dispatch(piece: GState | SelectState<GState>): void {
-		this.set(piece, { isDispatch: true });
+	dispatch(
+		piece: GState | SelectState<GState>,
+		options?: DispatchOptions
+	): void {
+		this.set(piece, { ...options, isDispatch: true });
 	}
 
 	/**

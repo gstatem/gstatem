@@ -9,8 +9,18 @@ export type Subscriber<T extends State> = (nextState: T, state: T) => void;
 export type EqualityFn<T extends State> = (state: T, nextState: T) => boolean;
 
 export type SetOptions = {
+	/**
+	 * Triggers all relevant subscribers within the piece
+	 */
 	isDispatch?: boolean;
+	/**
+	 * Replace the state with the piece
+	 */
 	isReplace?: boolean;
+	/**
+	 * Force call subscribers irrespective of equalityFn
+	 */
+	isForce?: boolean;
 };
 export type SubscriberPayload<T extends State, Piece> = {
 	selector?: Selector<T, Piece>;
@@ -29,3 +39,5 @@ export type Init<T extends State> = {
 	id?: string;
 	state?: T;
 };
+
+export type DispatchOptions = Omit<SetOptions, "isDispatch">;
