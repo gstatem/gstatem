@@ -1,0 +1,53 @@
+import { Canvas, Meta } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import CCSilentMode from "./CCSilentMode";
+import StoreJsContent from "!raw-loader!../../../dist/react/stories/CCSilentMode/CCStoreSilentMode";
+import StoreTsContent from "!raw-loader!./CCStoreSilentMode";
+
+import ComponentJsContent from "!raw-loader!../../../dist/react/stories/CCSilentMode/CCSilentMode";
+import ComponentTsContent from "!raw-loader!./CCSilentMode";
+
+<Meta
+	title="React/Class component/Silent mode"
+	parameters={defaultDocParams()}
+/>
+
+<Installation />
+
+## Function component - silent mode
+
+**Rendered view**
+
+The `+` button will NOT trigger component re-render.
+
+<Canvas className="custom-docs-story">
+	<CCSilentMode />
+</Canvas>
+
+### Recipes
+
+---
+
+**Create a store**
+
+The exported functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+Please use `get` and `set` functions with care as they won't trigger component re-render.
+
+<CodeView
+	componentName="FCSilentMode"
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	componentName="FCSilentMode"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
+/>
