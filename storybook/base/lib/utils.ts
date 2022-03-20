@@ -1,6 +1,7 @@
 import { FiddleCodeView, FilesInfo, PrettifySource } from "./types";
 
-const filesInfo: FilesInfo = require("../../dist/files-info.json");
+const filesInfoFn: () => FilesInfo = () =>
+	require("../../dist/files-info.json");
 
 export const defaultDocParams = () => ({
 	viewMode: "docs",
@@ -94,10 +95,15 @@ export const appendTopRight: FiddleCodeView = (codeView, sourceBlock) => {
 };
 
 export const genCodeTokenLinks: FiddleCodeView = (_codeView, sourceBlock) => {
+	const filesInfo = filesInfoFn();
 	setTimeout(() => {
 		const codeBody = sourceBlock.getElementsByTagName("code")[0];
 		observeUntil(codeBody, () => {
-			const elements = sourceBlock.getElementsByClassName("token class-name");
+			const elements = [
+				...sourceBlock.getElementsByClassName("token class-name"),
+				...sourceBlock.getElementsByClassName("token tag")
+			];
+
 			for (const element of elements) {
 				const { innerHTML: filename } = element;
 				const { storybookPath } = filesInfo[filename] || {};
@@ -106,7 +112,7 @@ export const genCodeTokenLinks: FiddleCodeView = (_codeView, sourceBlock) => {
 					element.addEventListener(
 						"click",
 						() => {
-							parent.location.search = `path=${storybookPath}`;
+							parent.location.href = `${parent.location.origin}/?path=${storybookPath}`;
 						},
 						{ once: true }
 					);

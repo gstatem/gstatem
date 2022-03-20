@@ -1,8 +1,11 @@
 {
 	"Counter": {
-		"path": "/docs/appendix-components--counter"
+		"path": "/docs/appendix-components--page#counter"
 	},
 	"SolidCounter": {
-		"path": "/docs/appendix-components--solid-counter"
+		"path": "/docs/appendix-components--page#solidcounter"
+	},
+	"VueCounter": {
+		"path": "/docs/appendix-components--page#vuecounter"
 	}
 }

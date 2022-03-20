@@ -1,19 +1,36 @@
-const path = require("path");
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+
 const { rules, plugins } = require("../webpack.shared");
 
-console.log(
-	'path.join(__dirname, "solid", "tsconfig.json")',
-	path.join(__dirname, "solid", "tsconfig.json")
-);
-
 module.exports = baseConfig => {
-	baseConfig.config.module.rules = [
-		...baseConfig.config.module.rules,
-		...rules
-	];
+	let {
+		module: { rules: baseRules },
+		plugins: basePlugins
+	} = baseConfig.config;
+	// init rules
+	if (!Array.isArray(baseRules)) {
+		baseRules = [];
+		baseConfig.config.module = baseRules;
+	}
+	// init plugins
+	if (!Array.isArray(basePlugins)) {
+		basePlugins = [];
+		baseConfig.plugins = basePlugins;
+	}
 
-	const [miniCssPlugin] = plugins;
-	baseConfig.config.plugins = [...baseConfig.config.plugins, miniCssPlugin];
+	// add rules
+	for (const rule of rules) {
+		baseRules.push(rule);
+	}
+
+	// add plugins
+	for (const plugin of plugins) {
+		if (plugin instanceof CleanWebpackPlugin) {
+			continue;
+		}
+
+		basePlugins.push(plugin);
+	}
 
 	return baseConfig.config;
 };

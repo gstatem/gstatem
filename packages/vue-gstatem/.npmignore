@@ -1,0 +1,11 @@
+# ignore all stories.js in src
+src
+
+# ignore all .log files
+*.log
+
+tsconfig.json
+jest.*
+babel.*
+check-types.*
+vite.*

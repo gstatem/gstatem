@@ -1,57 +1,14 @@
-import { AppendixComponents, FileInfo, FilesInfo } from "./base/lib/types";
-import { TsConfigJson } from "type-fest";
+import {
+	AppendixComponents,
+	CopyFiles,
+	FileInfo,
+	FilesInfo,
+	ProjectConfigs,
+	ReplaceInFiles,
+	WalkPath
+} from "./base/lib/types";
 
-type ProjectConfig = {
-	dir: string;
-	tsConfig?: TsConfigJson;
-};
-
-type ProjectConfigs = ProjectConfig[];
-
-const fs = require("fs");
-const path = require("path");
 const { exec } = require("child_process");
-const rimraf = require("rimraf");
-
-const workDir = path.resolve(__dirname);
-const projectConfigs: ProjectConfigs = [
-	{
-		dir: "."
-	},
-	{
-		dir: "solid",
-		tsConfig: {
-			extends: "../../../packages/solid-gstatem/tsconfig.json"
-		}
-	}
-];
-const parentDir = path.resolve(path.join(__dirname, ".."));
-const outputDir = path.resolve(path.join(__dirname, "./dist"));
-const eslintConfigPath = path.join(parentDir, ".eslintrc.js");
-const resourceDirs = ["base", "react", "solid", "vanilla"];
-const blankLineKey = "//_blank-line";
-const appendixComponentsInfo: AppendixComponents = require("./base/lib/appendix-components.json");
-
-type WalkPath<T> = (
-	baseDir: T,
-	callback: (filePath: string) => void,
-	options: {
-		extensions?: string[];
-	}
-) => void;
-
-export type GenSbJsExtension = "js" | "jsx" | "ts" | "tsx";
-
-export type ReplaceInFilesPayload = {
-	dirs: string[];
-	searchValue: string | RegExp;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	replaceValue: string | ((substring: string, ...args: any[]) => string);
-	extensions?: GenSbJsExtension[];
-};
-
-export type ReplaceInFiles = (payload: ReplaceInFilesPayload) => FilesInfo;
-
 const cmd = (cmdStr: string) =>
 	new Promise<void>(resolve => {
 		exec(cmdStr, (error, stdout, stderr) => {
@@ -65,6 +22,10 @@ const cmd = (cmdStr: string) =>
 			resolve();
 		});
 	});
+
+const fs = require("fs");
+const path = require("path");
+const rimraf = require("rimraf");
 
 const walkPath: WalkPath<string> = (baseDir, callback, options = {}) => {
 	const { extensions } = options;
@@ -93,6 +54,99 @@ const walkPaths: WalkPath<string[]> = (baseDirs, callback, options) => {
 	}
 };
 
+const copyfiles: CopyFiles = ({
+	workDir = "./",
+	dir,
+	outDir,
+	ext,
+	outExt,
+	callback
+}) => {
+	const baseDir = path.join(workDir, dir);
+	walkPath(
+		baseDir,
+		filePath => {
+			const relativePath = filePath.replace(baseDir, "");
+			let curOutPath = path.join(workDir, outDir, relativePath);
+			const extName = path.extname(curOutPath);
+			curOutPath = curOutPath.replace(extName, `.${outExt}`);
+
+			const curOutDir = path.dirname(curOutPath);
+			fs.mkdirSync(curOutDir, { recursive: true });
+
+			fs.writeFileSync(
+				curOutPath,
+				fs.readFileSync(filePath, { encoding: "utf-8" }),
+				{ encoding: "utf-8" }
+			);
+
+			if (callback instanceof Function) {
+				const filename = path.basename(filePath);
+				callback({
+					filename,
+					fileBasename: filename.replace(extName, ""),
+					extName,
+					relativeFilePath: path.join("./", curOutPath.replace(baseDir, "")),
+					fullFilePath: curOutPath
+				});
+			}
+		},
+		{
+			extensions: [ext]
+		}
+	);
+};
+
+const workDir = path.resolve(__dirname);
+const projectConfigs: ProjectConfigs = [
+	{
+		dir: "."
+	},
+	{
+		dir: "solid",
+		tsConfig: {
+			extends: "../../../packages/solid-gstatem/tsconfig.json"
+		}
+	},
+	{
+		dir: "vue",
+		tsConfig: {
+			extends: "../../../packages/vue-gstatem/tsconfig.json"
+		},
+		afterDone: () => {
+			const filesInfo: FilesInfo = {};
+			copyfiles({
+				workDir,
+				dir: "./vue",
+				outDir: "./dist/vue",
+				ext: "vue",
+				outExt: "txt",
+				callback: fileInfo => {
+					const { filename, fileBasename } = fileInfo;
+					const { path: storybookPath } =
+						appendixComponentsInfo[fileBasename] ||
+						appendixComponentsInfo[filename] ||
+						{};
+
+					if (storybookPath) {
+						fileInfo.storybookPath = storybookPath;
+					}
+
+					filesInfo[fileBasename] = fileInfo;
+					filesInfo[filename] = fileInfo;
+				}
+			});
+			return filesInfo;
+		}
+	}
+];
+const parentDir = path.resolve(path.join(__dirname, ".."));
+const outputDir = path.resolve(path.join(__dirname, "./dist"));
+const eslintConfigPath = path.join(parentDir, ".eslintrc.js");
+const resourceDirs = ["base", "react", "solid", "vue", "vanilla"];
+const blankLineKey = "//_blank-line";
+const appendixComponentsInfo: AppendixComponents = require("./base/lib/appendix-components.json");
+
 const replaceInFiles: ReplaceInFiles = ({
 	dirs,
 	searchValue,
@@ -110,7 +164,7 @@ const replaceInFiles: ReplaceInFiles = ({
 				filename,
 				fileBasename,
 				extName,
-				relativeFilePath: path.join(".", filePath.replace(__dirname, "")),
+				relativeFilePath: path.join("./", filePath.replace(__dirname, "")),
 				fullFilePath: filePath
 			};
 			const { path: storybookPath } =
@@ -151,12 +205,6 @@ const replaceInFiles: ReplaceInFiles = ({
 		replaceValue: `\n${blankLineKey}\n`
 	});
 
-	const filesInfoFilePath = path.join(outputDir, "files-info.json");
-	fs.writeFileSync(filesInfoFilePath, JSON.stringify(filesInfo), {
-		encoding: "utf-8"
-	});
-	console.log(`Generated files info to [${filesInfoFilePath}].\n`);
-
 	for (const { dir, tsConfig } of projectConfigs) {
 		const toJsCmd = `tsc -p ${path.join(workDir, dir)}`;
 		console.log(toJsCmd);
@@ -186,4 +234,17 @@ const replaceInFiles: ReplaceInFiles = ({
 	)}" --ext js,jsx --fix ${outputDir}`;
 	console.log(prettierCmd);
 	await cmd(prettierCmd);
+
+	for (const { afterDone } of projectConfigs) {
+		if (afterDone instanceof Function) {
+			const curFilesInfo = afterDone();
+			Object.assign(filesInfo, curFilesInfo);
+		}
+	}
+
+	const filesInfoFilePath = path.join(outputDir, "files-info.json");
+	fs.writeFileSync(filesInfoFilePath, JSON.stringify(filesInfo), {
+		encoding: "utf-8"
+	});
+	console.log(`Generated files info to [${filesInfoFilePath}].\n`);
 })();

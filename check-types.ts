@@ -3,7 +3,8 @@ const path = require("path");
 const fs = require("fs");
 const rimraf = require("rimraf");
 
-const tsConfigPath = path.join(__dirname, "src", "tsconfig.json");
+const workDir = process.cwd();
+const tsConfigPath = path.join(workDir, "src", "tsconfig.json");
 const tsConfig = {
 	extends: "../tsconfig.json",
 	exclude: ["**/*.test.ts", "**/*.test.tsx"]
@@ -16,13 +17,10 @@ fs.writeFileSync(tsConfigPath, JSON.stringify(tsConfig), {
 
 let outDir = process.argv[2];
 if (!outDir) {
-	outDir = path.join(__dirname, "dist");
+	outDir = path.join(workDir, "dist");
 }
 
-const cmdStr = `tsc --project ${path.join(
-	__dirname,
-	"src"
-)} --outDir ${outDir}`;
+const cmdStr = `tsc --project ${path.join(workDir, "src")} --outDir ${outDir}`;
 console.log(cmdStr);
 execSync(cmdStr);
 rimraf.sync(tsConfigPath);

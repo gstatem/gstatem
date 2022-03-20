@@ -1,3 +1,5 @@
+import { TsConfigJson } from "type-fest";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RawFileContent = string | any;
 
@@ -38,3 +40,40 @@ export type FileInfo = {
 export type FilesInfo = {
 	[fileBasename: string]: FileInfo;
 };
+
+export type ProjectConfig = {
+	dir: string;
+	tsConfig?: TsConfigJson;
+	afterDone?: () => FilesInfo;
+};
+
+export type ProjectConfigs = ProjectConfig[];
+
+export type WalkPath<T> = (
+	baseDir: T,
+	callback: (filePath: string) => void,
+	options: {
+		extensions?: string[];
+	}
+) => void;
+
+export type GenSbJsExtension = "js" | "jsx" | "ts" | "tsx";
+
+export type ReplaceInFilesPayload = {
+	dirs: string[];
+	searchValue: string | RegExp;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	replaceValue: string | ((substring: string, ...args: any[]) => string);
+	extensions?: GenSbJsExtension[];
+};
+
+export type ReplaceInFiles = (payload: ReplaceInFilesPayload) => FilesInfo;
+
+export type CopyFiles = (config: {
+	workDir?: string;
+	dir: string;
+	outDir: string;
+	ext: string;
+	outExt: string;
+	callback?: (config: FileInfo) => void;
+}) => void;

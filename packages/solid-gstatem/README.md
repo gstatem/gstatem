@@ -13,7 +13,7 @@ yarn add solid-gstatem
 
 ### [Demos](https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page)
 
-## Basic usage of function component
+## Basic usage
 
 **Create a store**
 

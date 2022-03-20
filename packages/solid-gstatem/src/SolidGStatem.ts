@@ -66,16 +66,16 @@ export const create = <GState extends State>(
 	solid: Solid,
 	config?: Init<GState> | GStatem<GState>
 ): SolidGStatem<GState> => {
+	const { createSignal, onCleanup } = solid || {};
+	if (!(createSignal instanceof Function) || !(onCleanup instanceof Function)) {
+		throw new TypeError("Invalid solid instance");
+	}
+
 	let statem;
 	if (config instanceof GStatem) {
 		statem = config;
 	} else {
 		statem = newStatem<GState>(config);
-	}
-
-	const { createSignal, onCleanup } = solid;
-	if (!(createSignal instanceof Function) || !(onCleanup instanceof Function)) {
-		throw new TypeError("Invalid solid instance");
 	}
 
 	return init(solid, statem);

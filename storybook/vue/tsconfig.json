@@ -1,0 +1,7 @@
+{
+	"extends": "../../packages/vue-gstatem/tsconfig.json",
+	"compilerOptions": {
+		"outDir": "../dist/vue"
+	},
+	"include": ["."]
+}

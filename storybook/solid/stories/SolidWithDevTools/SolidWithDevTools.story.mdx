@@ -3,6 +3,7 @@ import { defaultDocParams } from "../../../base/lib/utils";
 import CodeView from "../../../base/components/CodeView";
 
 import Installation from "../../../base/components/Installation.mdx";
+import Devtools from "../../../base/components/Devtools.mdx";
 
 import StoreJsContent from "!raw-loader!../../../dist/solid/stories/SolidWithDevTools/SolidStoreWithDevTools";
 import StoreTsContent from "!raw-loader!./SolidStoreWithDevTools";
@@ -33,3 +34,5 @@ The `increaseCount` and `resetCount` functions can be used anywhere - in compone
 	jsContent={ComponentJsContent}
 	tsContent={ComponentTsContent}
 />
+
+<Devtools />
