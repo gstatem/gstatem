@@ -11,7 +11,7 @@ npm i vue-gstatem
 yarn add vue-gstatem
 ```
 
-### [Demos](https://gstatem.netlify.app/?path=/docs/vue-basic-usage--page)
+### [Demos](https://gstatem.netlify.app/?path=/docs/vue-basic-usage--basic-usage)
 
 ## Basic usage
 
