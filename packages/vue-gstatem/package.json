@@ -1,7 +1,7 @@
 {
 	"name": "vue-gstatem",
 	"description": "A light weight global state management library for Vue JS",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"author": "shuieryin",
 	"main": "dist/index.js",
 	"scripts": {
@@ -14,7 +14,7 @@
 		"vue": ">=3.2.31"
 	},
 	"dependencies": {
-		"gstatem": "^1.0.7"
+		"gstatem": "^1.0.8"
 	},
 	"license": "MIT",
 	"repository": {
