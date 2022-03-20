@@ -1,7 +1,7 @@
 {
 	"name": "solid-gstatem",
 	"description": "A light weight global state management library for Solid JS",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"author": "shuieryin",
 	"main": "dist/index.js",
 	"scripts": {
@@ -14,7 +14,7 @@
 		"solid-js": ">=1.3.9"
 	},
 	"dependencies": {
-		"gstatem": "^1.0.8"
+		"gstatem": "^1.0.9"
 	},
 	"license": "MIT",
 	"repository": {
