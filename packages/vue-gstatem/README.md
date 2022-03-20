@@ -11,7 +11,7 @@ npm i vue-gstatem
 yarn add vue-gstatem
 ```
 
-### [Demos](https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page)
+### [Demos](https://gstatem.netlify.app/?path=/docs/vue-basic-usage--page)
 
 ## Basic usage
 
@@ -37,7 +37,7 @@ export const increaseCount = () =>
 ```
 
 **Use the store in component**
-```typescript vue3
+```html
 <template>
   <VueCounter
     :value="count"
@@ -46,7 +46,7 @@ export const increaseCount = () =>
 </template>
 
 <script setup lang="ts">
-import VueCounter from "../../base/components/VueCounter.vue";
+import VueCounter from "./VueCounter.vue";
 import { useCount, increaseCount } from "./VueStore";
 
 const count = useCount();
