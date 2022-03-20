@@ -1,0 +1,53 @@
+import { Meta, Canvas, Story } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+import Devtools from "../../../base/components/Devtools.mdx";
+
+import VueWithDevTools from "./VueWithDevTools.vue";
+import StoreJsContent from "!raw-loader!../../../dist/vue/stories/VueWithDevTools/VueStoreWithDevTools";
+import StoreTsContent from "!raw-loader!./VueStoreWithDevTools";
+
+import ComponentContent from "!raw-loader!../../../dist/vue/stories/VueWithDevTools/VueWithDevTools.txt";
+
+<Meta title="Vue/With DevTools" parameters={defaultDocParams()} />
+
+<Installation packages="vue-gstatem" />
+
+## Vue - With DevTools
+
+**Rendered view**
+
+<Canvas className="custom-docs-story">
+	<Story name="With DevTools">
+		{{
+			components: { VueWithDevTools },
+			template: "<VueWithDevTools />"
+		}}
+	</Story>
+</Canvas>
+
+### Recipes
+
+---
+
+**Create a store**
+
+The `increaseCount` and `resetCount` functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+<CodeView
+	componentName="VueStoreWithDevTools"
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	lang="vue"
+	componentName="VueWithDevTools.vue"
+	vueContent={ComponentContent}
+/>
+
+<Devtools />

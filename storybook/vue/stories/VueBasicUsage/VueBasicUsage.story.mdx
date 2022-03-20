@@ -1,0 +1,50 @@
+import { Meta, Canvas, Story } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+import CodeView from "../../../base/components/CodeView";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import VueBasicUsage from "./VueBasicUsage.vue";
+import StoreJsContent from "!raw-loader!../../../dist/vue/stories/VueBasicUsage/VueStore";
+import StoreTsContent from "!raw-loader!./VueStore";
+
+import ComponentContent from "!raw-loader!../../../dist/vue/stories/VueBasicUsage/VueBasicUsage.txt";
+
+<Meta title="Vue/Basic usage" parameters={defaultDocParams()} />
+
+<Installation packages="vue-gstatem" />
+
+## Vue - Basic usage
+
+**Rendered view**
+
+<Canvas className="custom-docs-story">
+	<Story name="Basic usage">
+		{{
+			components: { VueBasicUsage },
+			template: "<VueBasicUsage />"
+		}}
+	</Story>
+</Canvas>
+
+### Recipes
+
+---
+
+**Create a store**
+
+The `increaseCount` and `resetCount` functions can be used anywhere - in component, utils file, event listener, setTimeout, setInterval and promise callbacks.
+
+<CodeView
+	componentName="VueStore"
+	jsContent={StoreJsContent}
+	tsContent={StoreTsContent}
+/>
+
+**Use the store in component**
+
+<CodeView
+	lang="vue"
+	componentName="VueBasicUsage.vue"
+	vueContent={ComponentContent}
+/>

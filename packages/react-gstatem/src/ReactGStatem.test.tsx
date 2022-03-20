@@ -3,10 +3,10 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import { create, EqualityFn, State } from "./";
 import CounterFC from "../../../storybook/react/base/components/Counter";
-import GStatem, { Init, SelectState, SetOptions } from "gstatem";
+import GStatem, { Init, Selector, SelectState, SetOptions } from "gstatem";
 
 type StateProps = {
-	count?: number;
+	count: number;
 };
 
 type CounterTestProps<T extends State> = {
@@ -16,11 +16,12 @@ type CounterTestProps<T extends State> = {
 
 const initialState = { count: 0 };
 const initialConfig = { state: initialState };
-const countSelector = state => state.count;
+const countSelector: Selector<StateProps, number> = state => state.count;
 const { useSelect, dispatch, get, set, select, subscribe, unsubscribe } =
 	create<StateProps>(initialConfig);
 
-const useCount = equalityFn => useSelect<number>(countSelector, equalityFn);
+const useCount = (equalityFn: EqualityFn<StateProps>) =>
+	useSelect<number>(countSelector, equalityFn);
 const increaseCount = () => dispatch(state => ({ count: state.count + 1 }));
 const resetCount = () => dispatch(initialState);
 

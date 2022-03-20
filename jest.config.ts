@@ -35,6 +35,7 @@ module.exports = {
 	projects: [
 		"<rootDir>/packages/gstatem",
 		"<rootDir>/packages/react-gstatem",
-		"<rootDir>/packages/solid-gstatem"
+		"<rootDir>/packages/solid-gstatem",
+		"<rootDir>/packages/vue-gstatem"
 	]
 };

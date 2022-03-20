@@ -3,6 +3,11 @@
 	"compilerOptions": {
 		"declaration": true
 	},
-	"include": ["./src"],
-	"exclude": ["./node_modules", "./dist" , "**/*.test.ts", "**/*.test.tsx"]
+	"include": [
+		"./src"
+	],
+	"exclude": [
+		"./node_modules",
+		"./dist"
+	]
 }

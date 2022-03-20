@@ -13,7 +13,7 @@ module.exports = {
 		},
 
 		{
-			test: /^((?!solid).)*\.tsx?$/,
+			test: /^((?!(solid|vue)).)*\.tsx?$/,
 			use: "ts-loader",
 			exclude: /node_modules/
 		},

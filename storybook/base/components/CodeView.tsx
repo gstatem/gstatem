@@ -12,7 +12,7 @@ import SwitchButtons, {
 	SwitchButtonOption
 } from "../../../packages/gstatem-devtools/src/components/SwitchButtons";
 
-type Lang = "jsx" | "tsx";
+type Lang = "jsx" | "tsx" | "vue";
 
 type CodeViewProps = {
 	id?: string;
@@ -21,6 +21,7 @@ type CodeViewProps = {
 	componentName?: string;
 	jsContent?: RawFileContent;
 	tsContent?: RawFileContent;
+	vueContent?: RawFileContent;
 };
 
 const switchButtonOptions: SwitchButtonOption[] = [
@@ -39,12 +40,13 @@ const CodeView: FC<CodeViewProps> = ({
 	enableSwitchLang,
 	componentName,
 	jsContent,
-	tsContent
+	tsContent,
+	vueContent
 }) => {
 	const viewRef = useRef<HTMLDivElement>();
 	const [lang, setLang] = useState<Lang>(langProp);
 
-	const isEnableSwitchLang =
+	let isEnableSwitchLang =
 		(typeof enableSwitchLang === "boolean" && enableSwitchLang) ||
 		(typeof enableSwitchLang !== "boolean" &&
 			jsContent &&
@@ -55,13 +57,20 @@ const CodeView: FC<CodeViewProps> = ({
 
 	useCodeBlock(viewRef, onCodeBlockMount);
 
-	let content;
+	let content, language;
 	switch (lang) {
 		case "jsx":
 			content = jsContent;
+			language = "jsx";
 			break;
 		case "tsx":
 			content = tsContent;
+			language = "tsx";
+			break;
+		case "vue":
+			content = vueContent;
+			language = "html";
+			isEnableSwitchLang = false;
 			break;
 	}
 
@@ -73,6 +82,7 @@ const CodeView: FC<CodeViewProps> = ({
 						<div className="code-view__component-name">{componentName}</div>
 					)}
 					{isEnableSwitchLang && (
+						// @ts-ignore
 						<SwitchButtons
 							name={`code-lang-${id}`}
 							options={switchButtonOptions}
@@ -82,7 +92,14 @@ const CodeView: FC<CodeViewProps> = ({
 					)}
 				</div>
 			)}
-			<Source dark={true} language={lang} code={prettifySource({ content })} />
+			{content && (
+				// @ts-ignore
+				<Source
+					dark={true}
+					language={language}
+					code={prettifySource({ content })}
+				/>
+			)}
 		</div>
 	);
 };

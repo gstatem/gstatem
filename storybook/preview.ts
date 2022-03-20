@@ -40,6 +40,7 @@ export const parameters = {
 				["Function component", exampleOrder, "Class component", exampleOrder],
 				"Solid",
 				exampleOrder,
+				"Vue",
 				"Vanilla",
 				"Appendix"
 			]

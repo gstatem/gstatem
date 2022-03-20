@@ -3,11 +3,17 @@ import { fireEvent, render, screen } from "solid-testing-library";
 import { create } from "./";
 import SolidCounter from "../../../storybook/solid/base/components/SolidCounter";
 import { UseSelectOptions } from "solid-gstatem/dist/common/types";
-import GStatem, { Init, SelectState, SetOptions, State } from "gstatem";
+import GStatem, {
+	Init,
+	Selector,
+	SelectState,
+	SetOptions,
+	State
+} from "gstatem";
 import { Component } from "solid-js";
 
 type StateProps = {
-	count?: number;
+	count: number;
 };
 
 type Options = UseSelectOptions<StateProps, number>;
@@ -18,7 +24,7 @@ type CounterTestProps = {
 
 const initialState = { count: 0 };
 const initialConfig = { state: initialState };
-const countSelector = state => state.count;
+const countSelector: Selector<StateProps, number> = state => state.count;
 
 // select, subscribe, unsubscribe
 const { useSelect, dispatch, get } = create<StateProps>(solid, initialConfig);

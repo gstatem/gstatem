@@ -1,4 +1,5 @@
 const solidFiles = ["**/{solid,solid-gstatem}/**/*.{js,jsx,ts,tsx}"];
+const vueFiles = ["**/{vue,vue-gstatem}/**/*.{js,jsx,ts,tsx,vue}"];
 
 module.exports = {
 	parserOptions: {
@@ -27,7 +28,7 @@ module.exports = {
 	overrides: [
 		{
 			files: ["**/*.{js,jsx,ts,tsx}"],
-			excludedFiles: solidFiles,
+			excludedFiles: [...solidFiles, ...vueFiles],
 			parser: "@typescript-eslint/parser",
 			extends: [
 				"plugin:react/recommended",
@@ -69,6 +70,32 @@ module.exports = {
 				"solid/no-destructure": "off",
 				"solid/jsx-no-undef": "error",
 				"solid/prefer-show": "off"
+			}
+		},
+		{
+			files: vueFiles,
+			parser: "vue-eslint-parser",
+			parserOptions: {
+				parser: "@typescript-eslint/parser",
+				extraFileExtensions: [".vue"],
+				project: [
+					"./packages/vue-gstatem/tsconfig.json",
+					"./storybook/vue/tsconfig.json",
+					"./storybook/dist/vue/tsconfig.json"
+				]
+			},
+			plugins: ["vue"],
+			extends: ["plugin:vue/vue3-strongly-recommended"],
+			rules: {
+				"vue/script-setup-uses-vars": "error",
+				"vue/html-indent": "off",
+				"vue/multi-word-component-names": "off",
+				"vue/singleline-html-element-content-newline": "off",
+				"vue/max-attributes-per-line": "off",
+				"vue/attribute-hyphenation": "off"
+			},
+			env: {
+				"vue/setup-compiler-macros": true
 			}
 		}
 	],
