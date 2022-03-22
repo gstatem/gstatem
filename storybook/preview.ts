@@ -41,6 +41,7 @@ export const parameters = {
 				"Solid",
 				exampleOrder,
 				"Vue",
+				exampleOrder,
 				"Vanilla",
 				"Appendix"
 			]
