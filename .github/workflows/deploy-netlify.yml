@@ -1,0 +1,14 @@
+name: Deploy netlify
+
+on:
+  workflow_dispatch:
+    branches: [main]
+
+jobs:
+  publish-packages:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Deploy netlify
+        run: curl -X POST -d '{}' $NETLIFY_BUILD_HOOK
+        env:
+          NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
