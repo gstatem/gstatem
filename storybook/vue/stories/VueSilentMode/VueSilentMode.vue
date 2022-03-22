@@ -1,6 +1,5 @@
 <template>
 	<button @click="this.$forceUpdate">force update</button>
-	<!--suppress RequiredAttributes -->
 	<VueCounter :value="getCount()" :onIncrement="increaseCount" />
 </template>
 
