@@ -4,17 +4,18 @@ import CodeView from "../../../base/components/CodeView";
 
 import Installation from "../../../base/components/Installation.mdx";
 
-import VueSilentMode from "./VueSilentMode";
+import VueJSXSilentMode from "./VueJSXSilentMode";
 import StoreJsContent from "!raw-loader!../../../dist/vue/stories/VueSilentMode/VueStoreSilentMode";
-import StoreTsContent from "!raw-loader!./VueStoreSilentMode";
+import StoreTsContent from "!raw-loader!../VueSilentMode/VueStoreSilentMode";
 
-import ComponentContent from "!raw-loader!../../../dist/vue/stories/VueSilentMode/VueSilentMode.txt";
+import ComponentJsContent from "!raw-loader!../../../dist/vue/stories/VueJSXSilentMode/VueJSXSilentMode";
+import ComponentTsContent from "!raw-loader!./VueJSXSilentMode";
 
-<Meta title="Vue/Template/Silent mode" parameters={defaultDocParams()} />
+<Meta title="Vue/JSX/Silent mode" parameters={defaultDocParams()} />
 
 <Installation packages="vue-gstatem" />
 
-## Vue - Silent mode
+## Vue JSX - Silent mode
 
 **Rendered view**
 
@@ -23,8 +24,8 @@ The `+` button will NOT trigger component re-render.
 <Canvas className="custom-docs-story">
 	<Story name="Silent mode">
 		{{
-			components: { VueSilentMode },
-			template: "<VueSilentMode />"
+			components: { VueJSXSilentMode },
+			template: "<VueJSXSilentMode />"
 		}}
 	</Story>
 </Canvas>
@@ -48,7 +49,7 @@ Please use `get` and `set` functions with care as they won't trigger component r
 **Use the store in component**
 
 <CodeView
-	componentName="VueSilentMode"
-	lang="vue"
-	vueContent={ComponentContent}
+	componentName="VueJSXSilentMode"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
 />

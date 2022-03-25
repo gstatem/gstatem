@@ -4,17 +4,18 @@ import CodeView from "../../../base/components/CodeView";
 
 import Installation from "../../../base/components/Installation.mdx";
 
-import VueCustomEqual from "./VueCustomEqual";
+import VueJSXCustomEqual from "./VueJSXCustomEqual";
 import StoreJsContent from "!raw-loader!../../../dist/vue/stories/VueCustomEqual/VueStoreCustomEqual";
-import StoreTsContent from "!raw-loader!./VueStoreCustomEqual";
+import StoreTsContent from "!raw-loader!../VueCustomEqual/VueStoreCustomEqual";
 
-import ComponentContent from "!raw-loader!../../../dist/vue/stories/VueCustomEqual/VueCustomEqual.txt";
+import ComponentJsContent from "!raw-loader!../../../dist/vue/stories/VueJSXCustomEqual/VueJSXCustomEqual";
+import ComponentTsContent from "!raw-loader!./VueJSXCustomEqual";
 
-<Meta title="Vue/Template/Custom equal" parameters={defaultDocParams()} />
+<Meta title="Vue/JSX/Custom equal" parameters={defaultDocParams()} />
 
 <Installation packages="vue-gstatem" />
 
-## Vue - Custom equal
+## Vue JSX - Custom equal
 
 **Rendered view**
 
@@ -23,8 +24,8 @@ The component will NOT be re-rendered if the diff between current count and next
 <Canvas className="custom-docs-story">
 	<Story name="Custom equal">
 		{{
-			components: { VueCustomEqual },
-			template: "<VueCustomEqual />"
+			components: { VueJSXCustomEqual },
+			template: "<VueJSXCustomEqual />"
 		}}
 	</Story>
 </Canvas>
@@ -46,7 +47,7 @@ The `increaseCount` and `resetCount` functions can be used anywhere - in compone
 **Use the store in component**
 
 <CodeView
-	componentName="VueCustomEqual"
-	lang="vue"
-	vueContent={ComponentContent}
+	componentName="VueJSXCustomEqual"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
 />

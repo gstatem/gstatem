@@ -1,6 +1,6 @@
 import { Configuration } from "webpack/types";
 
-const babelConfig = require("./babel.config.json");
+const babelConfig = require("./babel.config");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin").default;
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");

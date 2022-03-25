@@ -5,13 +5,14 @@ import CodeView from "../../../base/components/CodeView";
 import Installation from "../../../base/components/Installation.mdx";
 import Devtools from "../../../base/components/Devtools.mdx";
 
-import VueWithDevTools from "./VueWithDevTools.vue";
+import VueJSXWithDevTools from "./VueJSXWithDevTools.tsx";
 import StoreJsContent from "!raw-loader!../../../dist/vue/stories/VueWithDevTools/VueStoreWithDevTools";
-import StoreTsContent from "!raw-loader!./VueStoreWithDevTools";
+import StoreTsContent from "!raw-loader!../VueWithDevTools/VueStoreWithDevTools";
 
-import ComponentContent from "!raw-loader!../../../dist/vue/stories/VueWithDevTools/VueWithDevTools.txt";
+import ComponentJsContent from "!raw-loader!../../../dist/vue/stories/VueJSXWithDevTools/VueJSXWithDevTools";
+import ComponentTsContent from "!raw-loader!./VueJSXWithDevTools";
 
-<Meta title="Vue/Template/With DevTools" parameters={defaultDocParams()} />
+<Meta title="Vue/JSX/With DevTools" parameters={defaultDocParams()} />
 
 <Installation packages="vue-gstatem" />
 
@@ -22,8 +23,8 @@ import ComponentContent from "!raw-loader!../../../dist/vue/stories/VueWithDevTo
 <Canvas className="custom-docs-story">
 	<Story name="With DevTools">
 		{{
-			components: { VueWithDevTools },
-			template: "<VueWithDevTools />"
+			components: { VueJSXWithDevTools },
+			template: "<VueJSXWithDevTools />"
 		}}
 	</Story>
 </Canvas>
@@ -45,9 +46,9 @@ The `increaseCount` and `resetCount` functions can be used anywhere - in compone
 **Use the store in component**
 
 <CodeView
-	lang="vue"
-	componentName="VueWithDevTools.vue"
-	vueContent={ComponentContent}
+	componentName="VueJSXWithDevTools"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
 />
 
 <Devtools />

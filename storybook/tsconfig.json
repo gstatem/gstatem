@@ -4,6 +4,7 @@
 		"jsx": "preserve",
 		"pretty": true,
 		"removeComments": false,
+		"declaration": false,
 		"preserveValueImports": true,
 		"preserveSymlinks": true,
 		"outDir": "./dist"
