@@ -3,12 +3,8 @@ const vueFiles = ["**/{vue,vue-gstatem}/**/*.{js,jsx,ts,tsx,vue}"];
 
 module.exports = {
 	parserOptions: {
-		ecmaVersion: 6,
-		sourceType: "module",
-		ecmaFeatures: {
-			jsx: true,
-			modules: true
-		}
+		ecmaVersion: "latest",
+		sourceType: "module"
 	},
 	parser: "@babel/eslint-parser",
 	rules: {
@@ -17,7 +13,7 @@ module.exports = {
 	},
 	ignorePatterns: ["packages/*/dist/**/*"],
 	extends: ["eslint:recommended", "plugin:prettier/recommended"],
-	plugins: ["import", "jsx-a11y", "react"],
+	plugins: ["import"],
 	env: {
 		browser: true,
 		node: true,
@@ -30,16 +26,27 @@ module.exports = {
 			files: ["**/*.{js,jsx,ts,tsx}"],
 			excludedFiles: [...solidFiles, ...vueFiles],
 			parser: "@typescript-eslint/parser",
+			parserOptions: {
+				ecmaFeatures: {
+					jsx: true,
+					modules: true
+				}
+			},
 			extends: [
 				"plugin:react/recommended",
 				"plugin:@typescript-eslint/eslint-recommended",
 				"plugin:@typescript-eslint/recommended"
 			],
-			plugins: ["@typescript-eslint"],
+			plugins: ["@typescript-eslint", "jsx-a11y", "react"],
 			rules: {
 				"@typescript-eslint/ban-ts-comment": "off",
 				"@typescript-eslint/no-empty-function": "off",
 				"@typescript-eslint/no-var-requires": "off"
+			},
+			settings: {
+				react: {
+					version: "detect"
+				}
 			}
 		},
 		{
@@ -98,10 +105,5 @@ module.exports = {
 				"vue/setup-compiler-macros": true
 			}
 		}
-	],
-	settings: {
-		react: {
-			version: "detect"
-		}
-	}
+	]
 };

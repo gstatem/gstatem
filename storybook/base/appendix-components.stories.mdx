@@ -10,6 +10,9 @@ import SolidCounterTsContent from "!raw-loader!../solid/base/components/SolidCou
 
 import VueCounterContent from "!raw-loader!../dist/vue/base/components/VueCounter.txt";
 
+import VueJSXCounterJsContent from "!raw-loader!../dist/vue/base/components/VueJSXCounter";
+import VueJSXCounterTsContent from "!raw-loader!../vue/base/components/VueJSXCounter";
+
 <Meta title="Appendix/components" parameters={defaultDocParams()} />
 
 ## Appendix components
@@ -38,4 +41,12 @@ import VueCounterContent from "!raw-loader!../dist/vue/base/components/VueCounte
 	lang="vue"
 	componentName="VueCounter"
 	vueContent={VueCounterContent}
+/>
+
+#### VueJSXCounter
+
+<CodeView
+	componentName="VueJSXCounter"
+	jsContent={VueJSXCounterJsContent}
+	tsContent={VueJSXCounterTsContent}
 />

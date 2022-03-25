@@ -4,25 +4,26 @@ import CodeView from "../../../base/components/CodeView";
 
 import Installation from "../../../base/components/Installation.mdx";
 
-import VueBasicUsage from "./VueBasicUsage.vue";
+import VueJSXBasicUsage from "./VueJSXBasicUsage.tsx";
 import StoreJsContent from "!raw-loader!../../../dist/vue/stories/VueBasicUsage/VueStore";
-import StoreTsContent from "!raw-loader!./VueStore";
+import StoreTsContent from "!raw-loader!../VueBasicUsage/VueStore";
 
-import ComponentContent from "!raw-loader!../../../dist/vue/stories/VueBasicUsage/VueBasicUsage.txt";
+import ComponentJsContent from "!raw-loader!../../../dist/vue/stories/VueJSXBasicUsage/VueJSXBasicUsage";
+import ComponentTsContent from "!raw-loader!./VueJSXBasicUsage";
 
-<Meta title="Vue/Template/Basic usage" parameters={defaultDocParams()} />
+<Meta title="Vue/JSX/Basic usage" parameters={defaultDocParams()} />
 
 <Installation packages="vue-gstatem" />
 
-## Vue - Basic usage
+## Vue JSX - Basic usage
 
 **Rendered view**
 
 <Canvas className="custom-docs-story">
 	<Story name="Basic usage">
 		{{
-			components: { VueBasicUsage },
-			template: "<VueBasicUsage />"
+			components: { VueJSXBasicUsage },
+			template: "<VueJSXBasicUsage />"
 		}}
 	</Story>
 </Canvas>
@@ -44,7 +45,7 @@ The `increaseCount` and `resetCount` functions can be used anywhere - in compone
 **Use the store in component**
 
 <CodeView
-	lang="vue"
-	componentName="VueBasicUsage.vue"
-	vueContent={ComponentContent}
+	componentName="VueJSXBasicUsage"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
 />

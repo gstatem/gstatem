@@ -1,15 +1,23 @@
 {
 	"compilerOptions": {
-		"sourceMap": false,
-		"isolatedModules": false,
-		"esModuleInterop": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
 		"target": "ESNext",
-		"skipLibCheck": true,
+		"module": "ESNext",
 		"moduleResolution": "Node",
 		"jsx": "preserve",
-		"declaration": true
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"sourceMap": false,
+		"isolatedModules": false,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"skipLibCheck": true,
+		"allowJs": true,
+		"noImplicitThis": true,
+		"declaration": true,
+		"lib": [
+			"ESNext",
+			"DOM"
+		]
 	},
 	"exclude": [
 		"./node_modules",

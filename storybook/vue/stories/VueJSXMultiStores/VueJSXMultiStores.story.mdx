@@ -4,28 +4,29 @@ import CodeView from "../../../base/components/CodeView";
 
 import Installation from "../../../base/components/Installation.mdx";
 
-import VueMultiStores from "./VueMultiStores.vue";
+import VueJSXMultiStores from "./VueJSXMultiStores.tsx";
 import Store1JsContent from "!raw-loader!../../../dist/vue/stories/VueMultiStores/VueMultiStore1";
-import Store1TsContent from "!raw-loader!./VueMultiStore1";
+import Store1TsContent from "!raw-loader!../VueMultiStores/VueMultiStore1";
 
 import Store2JsContent from "!raw-loader!../../../dist/vue/stories/VueMultiStores/VueMultiStore2";
-import Store2TsContent from "!raw-loader!./VueMultiStore2";
+import Store2TsContent from "!raw-loader!../VueMultiStores/VueMultiStore2";
 
-import ComponentContent from "!raw-loader!../../../dist/vue/stories/VueMultiStores/VueMultiStores.txt";
+import ComponentJsContent from "!raw-loader!../../../dist/vue/stories/VueJSXMultiStores/VueJSXMultiStores";
+import ComponentTsContent from "!raw-loader!./VueJSXMultiStores";
 
-<Meta title="Vue/Template/Multiple stores" parameters={defaultDocParams()} />
+<Meta title="Vue/JSX/Multiple stores" parameters={defaultDocParams()} />
 
 <Installation packages="vue-gstatem" />
 
-## Vue - Multiple stores
+## Vue JSX - Multiple stores
 
 **Rendered view**
 
 <Canvas className="custom-docs-story">
 	<Story name="Multiple stores">
 		{{
-			components: { VueMultiStores },
-			template: "<VueMultiStores />"
+			components: { VueJSXMultiStores },
+			template: "<VueJSXMultiStores />"
 		}}
 	</Story>
 </Canvas>
@@ -55,7 +56,7 @@ The `increaseCount*` functions can be used anywhere - in component, utils file, 
 **Use the store in component**
 
 <CodeView
-	componentName="VueMultiStores"
-	lang="vue"
-	vueContent={ComponentContent}
+	componentName="VueJSXMultiStores"
+	jsContent={ComponentJsContent}
+	tsContent={ComponentTsContent}
 />
