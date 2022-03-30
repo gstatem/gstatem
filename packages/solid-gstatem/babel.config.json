@@ -2,7 +2,13 @@
 	"presets": [
 		"@babel/preset-typescript",
 		"@babel/preset-env",
-		"solid"
+		"solid",
+		[
+			"minify",
+			{
+				"builtIns": false
+			}
+		]
 	],
 	"plugins": [
 		[

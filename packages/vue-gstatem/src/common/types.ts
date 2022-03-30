@@ -20,9 +20,9 @@ export interface VueGStatem<GState extends State> {
 	 * @param {Selector<GState, Piece>} selector - The selector function.
 	 * @param {EqualityFn<GState>} [equalityFn] - The equality function.
 	 *
-	 * @returns {Ref<UnwrapRef<Piece>>} The piece signal.
+	 * @returns {Ref<UnwrapRef<Piece>>} The subscribing piece ref.
 	 *
-	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vue-basic-usage--page}
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vue-template-basic-usage--basic-usage}
 	 */
 	useSelect: <Piece>(
 		selector: Selector<GState, Piece>,
@@ -33,7 +33,7 @@ export interface VueGStatem<GState extends State> {
 	 * @see {@link GStatem#dispatch}
 	 * Dispatch a piece of state, the relevant subscribe functions and the components will be triggered.
 	 *
-	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vue-basic-usage--page}
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vue-template-basic-usage--basic-usage}
 	 */
 	dispatch: (
 		piece: GState | SelectState<GState>,

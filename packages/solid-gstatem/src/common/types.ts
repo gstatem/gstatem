@@ -31,7 +31,7 @@ export interface SolidGStatem<GState extends State> {
 	 * @param {Selector<GState, Piece>} selector - The selector function.
 	 * @param {UseSelectOptions<GState, Piece>} [options] - Options.
 	 *
-	 * @returns {Accessor<Piece>} The piece signal.
+	 * @returns {Accessor<Piece>} The subscribing piece signal.
 	 *
 	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page}
 	 */

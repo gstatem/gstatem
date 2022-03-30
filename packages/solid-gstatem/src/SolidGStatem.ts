@@ -55,7 +55,7 @@ export const newStatem = <GState extends State>(config?: Init<GState>) =>
  *
  * Create a store.
  *
- * @param {object} solid - The solid store.
+ * @param {Solid} solid - The solid instance.
  * @param {Init<GState>} [config] - Init config.
  *
  * @returns {SolidGStatem<GState>} Returns the store.
