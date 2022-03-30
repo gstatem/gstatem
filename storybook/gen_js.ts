@@ -138,12 +138,18 @@ const projectConfigs: ProjectConfigs = [
 			});
 			return filesInfo;
 		}
+	},
+	{
+		dir: "svelte",
+		tsConfig: {
+			extends: "../../../packages/svelte-gstatem/tsconfig.json"
+		}
 	}
 ];
 const parentDir = path.resolve(path.join(__dirname, ".."));
 const outputDir = path.resolve(path.join(__dirname, "./dist"));
 const eslintConfigPath = path.join(parentDir, ".eslintrc.js");
-const resourceDirs = ["base", "react", "solid", "vue", "vanilla"];
+const resourceDirs = ["base", "react", "solid", "vue", "svelte", "vanilla"];
 const blankLineKey = "//_blank-line";
 const appendixComponentsInfo: AppendixComponents = require("./base/lib/appendix-components.json");
 

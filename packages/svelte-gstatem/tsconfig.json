@@ -1,0 +1,13 @@
+{
+	"extends": "@tsconfig/svelte/tsconfig.json",
+	"compilerOptions": {
+		"isolatedModules": false,
+		"importsNotUsedAsValues": "remove",
+		"declaration": true,
+		"sourceMap": false
+	},
+	"exclude": [
+		"./node_modules",
+		"./dist"
+	]
+}

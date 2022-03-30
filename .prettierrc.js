@@ -3,5 +3,14 @@ module.exports = {
 	trailingComma: "none",
 	bracketSpacing: true,
 	arrowParens: "avoid",
-	useTabs: true
+	useTabs: true,
+	overrides: [
+		{
+			files: "*.svelte",
+			options: {
+				semi: false,
+				bracketSameLine: true
+			}
+		}
+	]
 };

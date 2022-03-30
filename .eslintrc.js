@@ -104,6 +104,18 @@ module.exports = {
 			env: {
 				"vue/setup-compiler-macros": true
 			}
+		},
+		{
+			files: ["**/*.svelte"],
+			parser: "@typescript-eslint/parser",
+			processor: "svelte3/svelte3",
+			plugins: ["svelte3", "@typescript-eslint", "es"],
+			settings: {
+				"svelte3/typescript": true
+			},
+			rules: {
+				semi: ["error", "never"]
+			}
 		}
 	]
 };

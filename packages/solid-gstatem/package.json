@@ -29,6 +29,7 @@
 		"react",
 		"solid",
 		"vue",
+		"svelte",
 		"state",
 		"management",
 		"redux",

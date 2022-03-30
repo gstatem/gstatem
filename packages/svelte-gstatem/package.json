@@ -1,7 +1,7 @@
 {
-	"name": "vue-gstatem",
-	"description": "A light weight global state management library for Vue JS",
-	"version": "1.0.3",
+	"name": "svelte-gstatem",
+	"description": "A light weight global state management library for Svelte JS",
+	"version": "1.0.0-alpha.1",
 	"author": "shuieryin",
 	"main": "dist/index.js",
 	"scripts": {
@@ -11,7 +11,7 @@
 		"clean": "rimraf dist node_modules package-lock.json"
 	},
 	"peerDependencies": {
-		"vue": ">=3.2.31"
+		"svelte": ">=3.0.0"
 	},
 	"dependencies": {
 		"gstatem": "^1.0.10"
@@ -21,7 +21,7 @@
 		"type": "git",
 		"url": "https://github.com/gstatem/gstatem.git"
 	},
-	"homepage": "https://github.com/gstatem/gstatem/tree/main/packages/vue-gstatem",
+	"homepage": "https://github.com/gstatem/gstatem/tree/main/packages/svelte-gstatem",
 	"bugs": {
 		"url": "https://github.com/gstatem/gstatem/issues"
 	},

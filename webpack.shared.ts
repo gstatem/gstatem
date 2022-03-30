@@ -19,6 +19,18 @@ module.exports = {
 		},
 
 		{
+			test: /\.svelte$/,
+			use: "svelte-loader"
+		},
+
+		{
+			test: /node_modules\/svelte\/.*\.mjs$/,
+			resolve: {
+				fullySpecified: false
+			}
+		},
+
+		{
 			test: /\.jsx?$/,
 			exclude: /node_modules/,
 			use: [

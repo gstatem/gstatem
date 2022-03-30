@@ -1,0 +1,23 @@
+import { Meta, Canvas, Story } from "@storybook/addon-docs";
+import { defaultDocParams } from "../../../base/lib/utils";
+
+import Installation from "../../../base/components/Installation.mdx";
+
+import SvelteBasicUsage from "./SvelteBasicUsage.svelte";
+
+<Meta title="Svelte/Basic usage" parameters={defaultDocParams()} />
+
+<Installation packages="svelte-gstatem" />
+
+## Svelte - Basic usage
+
+**Rendered view**
+
+<Canvas className="custom-docs-story">
+	<Story name="Basic usage">
+		{{
+			components: { SvelteBasicUsage },
+			template: "<SvelteBasicUsage />"
+		}}
+	</Story>
+</Canvas>

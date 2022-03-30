@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import {
+import type {
 	DispatchOptions,
 	EqualityFn,
 	Selector,
@@ -8,43 +7,33 @@ import {
 	State,
 	Subscriber
 } from "gstatem";
-import { Accessor } from "solid-js";
-import { Signal, SignalOptions } from "solid-js/types/reactive/signal";
 
-export type UseSelectOptions<
-	GState extends State,
-	Piece
-> = SignalOptions<Piece> & {
-	stateEqualityFn?: EqualityFn<GState>;
-};
+export type SvelteSetValue<T> = (nextValue: T) => void;
 
-export type Solid = {
-	createSignal: <T>(value: T, options?: SignalOptions<T>) => Signal<T>;
-	onCleanup: (fn: () => void) => () => void;
-};
-
-export interface SolidGStatem<GState extends State> {
+export interface SvelteGStatem<GState extends State> {
 	/**
 	 * @template GState, Piece
 	 * Subscribe state piece with selector function, when the selected piece is dispatched by {@link dispatch}, the subscriber function is invoked and the component that wraps the useSelect is re-rendered.
 	 *
+	 * @param {VoidFunction} setValue - The set value function.
 	 * @param {Selector<GState, Piece>} selector - The selector function.
-	 * @param {UseSelectOptions<GState, Piece>} [options] - Options.
+	 * @param {EqualityFn<GState>} [equalityFn] - The equality function.
 	 *
-	 * @returns {Accessor<Piece>} The subscribing piece signal.
+	 * @returns {Piece} The subscribing piece.
 	 *
-	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page}
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/svelte-basic-usage--page}
 	 */
 	useSelect: <Piece>(
+		setValue: SvelteSetValue<Piece>,
 		selector: Selector<GState, Piece>,
-		options?: UseSelectOptions<GState, Piece>
-	) => Accessor<Piece>;
+		equalityFn?: EqualityFn<GState>
+	) => Piece;
 
 	/**
 	 * @see {@link GStatem#dispatch}
 	 * Dispatch a piece of state, the relevant subscribe functions and the components will be triggered.
 	 *
-	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/solid-basic-usage--page}
+	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/svelte-basic-usage--page}
 	 */
 	dispatch: (
 		piece: GState | SelectState<GState>,
