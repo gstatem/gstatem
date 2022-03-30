@@ -1,8 +1,15 @@
 {
 	"name": "solid-gstatem",
 	"description": "A light weight global state management library for Solid JS",
+	"info": "A light weight global state management library for Solid JS",
 	"version": "1.0.6",
 	"author": "shuieryin",
+	"contributors": [
+		{
+			"name": "shuieryin",
+			"email": "shuieryin@gmail.com"
+		}
+	],
 	"main": "dist/index.js",
 	"scripts": {
 		"check-types": "ts-node ../../check-types",
