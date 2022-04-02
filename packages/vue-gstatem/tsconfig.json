@@ -6,7 +6,7 @@
 		"jsx": "preserve",
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
-		"sourceMap": false,
+		"sourceMap": true,
 		"isolatedModules": false,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,

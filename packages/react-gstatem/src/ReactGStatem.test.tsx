@@ -184,7 +184,7 @@ const performanceTest = (name, TestComponent, renderCallback) => {
 	const incrementButton = screen.getAllByRole("button", { name: `+` })[0];
 	fireEvent.click(incrementButton);
 	console.log(
-		`${name} single dispatch to ${numOfComponents} components with ${numOfSelectorForEach} selectors each in single store, took ${
+		`${name} - single dispatch to ${numOfComponents} components with ${numOfSelectorForEach} selectors each in single store, took ${
 			performance.now() - t1
 		} ms.`
 	);
@@ -229,23 +229,23 @@ describe("ReactGStatem tests", () => {
 	});
 
 	it("Recoil performance test", () => {
-		performanceTest("Recoil -", RecoilCounter, children => {
+		performanceTest("Recoil", RecoilCounter, children => {
 			render(<RecoilRoot>{children}</RecoilRoot>);
 		});
 	});
 
 	it("React Redux performance test", () => {
-		performanceTest("React Redux -", ReduxCounter, children => {
+		performanceTest("React Redux", ReduxCounter, children => {
 			render(<Provider store={reduxStore}>{children}</Provider>);
 		});
 	});
 
 	it("Zustand performance test", () => {
-		performanceTest("Zustand -", ZustandCounter, render);
+		performanceTest("Zustand", ZustandCounter, render);
 	});
 
 	it("React GStatem performance test", () => {
-		performanceTest("React GStatem -", CounterFCTest, render);
+		performanceTest("React GStatem", CounterFCTest, render);
 	});
 
 	it("Class component", () => {
