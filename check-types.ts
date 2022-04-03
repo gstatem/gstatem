@@ -1,3 +1,5 @@
+import { TsConfigJson } from "type-fest";
+
 const { execSync } = require("child_process");
 const path = require("path");
 const fs = require("fs");
@@ -5,9 +7,12 @@ const rimraf = require("rimraf");
 
 const workDir = process.cwd();
 const tsConfigPath = path.join(workDir, "src", "tsconfig.json");
-const tsConfig = {
+const tsConfig: TsConfigJson = {
 	extends: "../tsconfig.json",
-	exclude: ["**/*.test.ts", "**/*.test.tsx"]
+	compilerOptions: {
+		sourceMap: false
+	},
+	exclude: ["**/*.test.js", "**/*.test.jsx", "**/*.test.ts", "**/*.test.tsx"]
 };
 
 rimraf.sync(tsConfigPath);

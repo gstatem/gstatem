@@ -7,7 +7,8 @@ import {
 	SetOptions,
 	Subscribers,
 	EqualityFn,
-	DispatchOptions
+	DispatchOptions,
+	SubscriberPayload
 } from "./common/types";
 import { deepCopy, uuidv4 } from "./common/utils";
 
@@ -70,7 +71,7 @@ class GStatem<GState extends State> {
 				let isEqual;
 				if (isForce === true) {
 					isEqual = false;
-				} else if (equalityFn instanceof Function) {
+				} else if (equalityFn) {
 					isEqual = equalityFn(this.state, nextState);
 				} else {
 					isEqual = selector(this.state) === selector(nextState);
@@ -95,15 +96,19 @@ class GStatem<GState extends State> {
 	 *
 	 * @see [Examples]{@link https://gstatem.netlify.app/?path=/docs/vanilla-basic-usage--page}
 	 */
-	subscribe(
-		selector: Selector<GState>,
+	subscribe<Piece>(
+		selector: Selector<GState, Piece>,
 		subscriber: Subscriber<GState>,
 		equalityFn?: EqualityFn<GState>
 	): VoidFunction {
 		let unsubscribe;
 		if (selector instanceof Function && subscriber instanceof Function) {
 			unsubscribe = () => this.subscribers.delete(subscriber);
-			const subscriberPayload = { selector, unsubscribe, equalityFn };
+			const subscriberPayload: SubscriberPayload<GState, Piece> = {
+				selector,
+				unsubscribe,
+				equalityFn
+			};
 			this.subscribers.set(subscriber, subscriberPayload);
 		}
 

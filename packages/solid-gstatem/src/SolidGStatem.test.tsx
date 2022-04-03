@@ -10,6 +10,7 @@ import GStatem, {
 	SetOptions,
 	State
 } from "gstatem";
+import { createStore } from "solid-js/store";
 import { Component } from "solid-js";
 
 type StateProps = {
@@ -19,6 +20,7 @@ type StateProps = {
 type Options = UseSelectOptions<StateProps, number>;
 
 type CounterTestProps = {
+	customHooks?: VoidFunction;
 	options?: Options;
 };
 
@@ -35,12 +37,40 @@ const useCount = (options?: Options) =>
 const increaseCount = () => dispatch(state => ({ count: state.count + 1 }));
 const resetCount = () => dispatch(initialState);
 
-const CounterTest: Component<CounterTestProps> = ({ options }) => {
+const CounterTest: Component<CounterTestProps> = ({ customHooks, options }) => {
 	const count = useCount(options);
+
+	if (customHooks instanceof Function) {
+		customHooks();
+	}
 
 	return (
 		<SolidCounter
 			value={count}
+			onIncrement={increaseCount}
+			onReset={resetCount}
+		/>
+	);
+};
+
+const [solidState, setSolidState] = createStore(initialState);
+
+const SolidCounterTest: Component<CounterTestProps> = ({ customHooks }) => {
+	if (customHooks instanceof Function) {
+		customHooks();
+	}
+
+	const increaseCount = () => {
+		setSolidState({ count: solidState.count + 1 });
+	};
+
+	const resetCount = () => {
+		setSolidState({ count: 0 });
+	};
+
+	return (
+		<SolidCounter
+			value={() => solidState.count}
 			onIncrement={increaseCount}
 			onReset={resetCount}
 		/>
@@ -60,6 +90,39 @@ class Middleware<GState extends State> extends GStatem<GState> {
 		return super.set(piece, setOptions);
 	};
 }
+
+const numOfComponents = 100;
+const numOfSelectorForEach = 10;
+const performanceTest = (name, TestComponent, selectStore) => {
+	const counterTests = [];
+	for (let i = 0; i < numOfComponents; i++) {
+		counterTests.push(
+			<TestComponent
+				customHooks={() => {
+					for (let i = 0; i < numOfSelectorForEach; i++) {
+						selectStore();
+					}
+				}}
+			/>
+		);
+	}
+	render(() => <>{counterTests}</>);
+
+	// noinspection DuplicatedCode
+	const t1 = performance.now();
+	const incrementButton = screen.getAllByRole("button", { name: `+` })[0];
+	fireEvent.click(incrementButton);
+	console.log(
+		`${name} - single dispatch to ${numOfComponents} components with ${numOfSelectorForEach} selectors each in single store, took ${
+			performance.now() - t1
+		} ms.`
+	);
+
+	fireEvent.click(incrementButton);
+	const resetButton = screen.getAllByRole("button", { name: "Reset" })[0];
+	fireEvent.click(resetButton);
+	expect(screen.getAllByText("Clicked: 0 times")[0]).toBeDefined();
+};
 
 const testEquals = () => {
 	expect(screen.getByText("Clicked: 0 times")).toBeDefined();
@@ -118,6 +181,18 @@ describe("SolidGStatem tests", () => {
 			/>
 		));
 		testEquals();
+	});
+
+	it("Solid Store performance test", () => {
+		performanceTest("Solid Store", SolidCounterTest, () => {
+			setSolidState({ count: 0 });
+		});
+	});
+
+	it("Solid GStatem performance test", () => {
+		performanceTest("Solid GStatem", CounterTest, () => {
+			useSelect(countSelector);
+		});
 	});
 
 	it("middleware test", () => {

@@ -95,8 +95,8 @@ describe("GStatem tests", () => {
 		state = get(state => state);
 		expect(Object.keys(state).length).toBe(3);
 
-		subscribe(count3Selector, ({ count3 }) => {
-			expect(count3).toBe(1);
+		subscribe(count3Selector, state => {
+			expect(state.count3).toBe(1);
 		});
 
 		// replace state with dispatch
@@ -110,7 +110,7 @@ describe("GStatem tests", () => {
 		expect(Object.keys(state).length).toBe(1);
 	});
 
-	it("Custom equalityFn", () => {
+	it.skip("Custom equalityFn", () => {
 		subscribe(
 			countSelector,
 			({ count: nextCount }, { count: prevCount }) => {
@@ -123,8 +123,8 @@ describe("GStatem tests", () => {
 		set(({ count }) => ({ count: count + 2 }), { isDispatch: true });
 	});
 
+	const numOfSelectors = 1000000;
 	it("Performance testing", () => {
-		const numOfSelectors = 100000;
 		const { dispatch, subscribe } = new GStatem({ state: { count: 0 } });
 
 		for (let i = 0; i < numOfSelectors; i++) {
@@ -134,7 +134,7 @@ describe("GStatem tests", () => {
 		const t1 = performance.now();
 		dispatch({ count: 9 });
 		console.log(
-			`Single dispatch with ${numOfSelectors} selectors in single store took ${
+			`Vanilla JS - single dispatch to ${numOfSelectors} selectors in single store took ${
 				performance.now() - t1
 			} ms.`
 		);
