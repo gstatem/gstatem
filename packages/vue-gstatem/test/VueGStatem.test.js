@@ -1,6 +1,11 @@
 import { screen, render, fireEvent } from "@testing-library/vue";
 import VueGStatemCounter from "./VueGStatemCounter.vue";
-import { getCount, increaseCount, resetCount } from "./VueGStatemStore";
+import {
+	getCount,
+	increaseCount,
+	resetCount,
+	createMiddleware
+} from "./VueGStatemStore";
 import VueGStatemPerformanceTest from "./VueGStatemPerformanceTest.vue";
 import VuePiniaPerformanceTest from "./VuePiniaPerformanceTest.vue";
 import VueVuexPerformanceTest from "./VueVuexPerformanceTest.vue";
@@ -56,14 +61,6 @@ describe("VueGStatem tests", () => {
 		expect(getCount()).toBe(0);
 	});
 
-	it("Vuex performance test", () => {
-		performanceTest("Vuex", VueVuexPerformanceTest, {
-			global: {
-				plugins: [vuexStore]
-			}
-		});
-	});
-
 	it("Pinia performance test", () => {
 		performanceTest("Pinia", VuePiniaPerformanceTest, {
 			global: {
@@ -72,7 +69,21 @@ describe("VueGStatem tests", () => {
 		});
 	});
 
+	it("Vuex performance test", () => {
+		performanceTest("Vuex", VueVuexPerformanceTest, {
+			global: {
+				plugins: [vuexStore]
+			}
+		});
+	});
+
 	it("Vue GStatem performance test", () => {
 		performanceTest("Vue GStatem", VueGStatemPerformanceTest);
+	});
+
+	it("Middleware test", () => {
+		const { get: middlewareGet, set: middlewareSet } = createMiddleware();
+		middlewareSet({ count: 1 });
+		expect(middlewareGet(state => state.count)).toBe(1);
 	});
 });

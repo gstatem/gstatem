@@ -134,7 +134,7 @@ describe("GStatem tests", () => {
 		const t1 = performance.now();
 		dispatch({ count: 9 });
 		console.log(
-			`Single dispatch to ${numOfSelectors} selectors in single store took ${
+			`Vanilla JS - single dispatch to ${numOfSelectors} selectors in single store took ${
 				performance.now() - t1
 			} ms.`
 		);

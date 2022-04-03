@@ -24,7 +24,7 @@ const countSelector: Selector<StateProps, number> = state => state.count;
 const { useSelect, dispatch, get, set, select, subscribe, unsubscribe } =
 	create<StateProps>(initialConfig);
 
-const useCount = (equalityFn: EqualityFn<StateProps>) =>
+const useCount = (equalityFn?: EqualityFn<StateProps>) =>
 	useSelect<number>(countSelector, equalityFn);
 const increaseCount = () => dispatch(state => ({ count: state.count + 1 }));
 const resetCount = () => dispatch(initialState);
@@ -163,7 +163,7 @@ class Middleware<GState extends State> extends GStatem<GState> {
 
 const numOfComponents = 100;
 const numOfSelectorForEach = 10;
-const performanceTest = (name, TestComponent, renderCallback) => {
+const performanceTest = (name, TestComponent, selectStore, renderCallback) => {
 	const counterTests = [];
 	for (let i = 0; i < numOfComponents; i++) {
 		const index = i + 1;
@@ -172,7 +172,7 @@ const performanceTest = (name, TestComponent, renderCallback) => {
 				key={`counter_${index}`}
 				customHooks={() => {
 					for (let i = 0; i < numOfSelectorForEach; i++) {
-						useSelect(countSelector);
+						selectStore();
 					}
 				}}
 			/>
@@ -180,6 +180,7 @@ const performanceTest = (name, TestComponent, renderCallback) => {
 	}
 	renderCallback(<>{counterTests}</>);
 
+	// noinspection DuplicatedCode
 	const t1 = performance.now();
 	const incrementButton = screen.getAllByRole("button", { name: `+` })[0];
 	fireEvent.click(incrementButton);
@@ -229,23 +230,51 @@ describe("ReactGStatem tests", () => {
 	});
 
 	it("Recoil performance test", () => {
-		performanceTest("Recoil", RecoilCounter, children => {
-			render(<RecoilRoot>{children}</RecoilRoot>);
-		});
+		performanceTest(
+			"Recoil",
+			RecoilCounter,
+			() => {
+				useRecoilState(recoilCounterState);
+			},
+			children => {
+				render(<RecoilRoot>{children}</RecoilRoot>);
+			}
+		);
 	});
 
 	it("React Redux performance test", () => {
-		performanceTest("React Redux", ReduxCounter, children => {
-			render(<Provider store={reduxStore}>{children}</Provider>);
-		});
+		performanceTest(
+			"React Redux",
+			ReduxCounter,
+			() => {
+				useSelector(countSelector);
+			},
+			children => {
+				render(<Provider store={reduxStore}>{children}</Provider>);
+			}
+		);
 	});
 
 	it("Zustand performance test", () => {
-		performanceTest("Zustand", ZustandCounter, render);
+		performanceTest(
+			"Zustand",
+			ZustandCounter,
+			() => {
+				zustandUseStore(countSelector);
+			},
+			render
+		);
 	});
 
 	it("React GStatem performance test", () => {
-		performanceTest("React GStatem", CounterFCTest, render);
+		performanceTest(
+			"React GStatem",
+			CounterFCTest,
+			() => {
+				useCount();
+			},
+			render
+		);
 	});
 
 	it("Class component", () => {
