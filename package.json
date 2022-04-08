@@ -1,5 +1,6 @@
 {
 	"name": "gstatem-workspace",
+	"version": "0.0.0-workspace",
 	"description": "GStatem is a small, simple and fast state-management tool.",
 	"private": true,
 	"scripts": {
@@ -133,5 +134,31 @@
 	},
 	"workspaces": [
 		"packages/*"
+	],
+	"author": "shuieryin",
+	"description": "GStatem is a small, simple and fast state-management tool.",
+	"contributors": [
+		{
+			"name": "shuieryin",
+			"email": "shuieryin@gmail.com"
+		}
+	],
+	"keywords": [
+		"react",
+		"solid",
+		"vue",
+		"state",
+		"management",
+		"redux",
+		"recoil",
+		"pinia",
+		"vuex",
+		"mobx",
+		"zustand",
+		"store",
+		"statem",
+		"gstatem",
+		"solidhack",
+		"best_ecosystem"
 	]
 }
