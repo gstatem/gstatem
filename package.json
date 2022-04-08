@@ -135,8 +135,7 @@
 	"workspaces": [
 		"packages/*"
 	],
-	"author": "shuieryin",
-	"description": "GStatem is a small, simple and fast state-management tool.",
+	"info": "GStatem is a small, simple and fast state-management tool.",
 	"contributors": [
 		{
 			"name": "shuieryin",
